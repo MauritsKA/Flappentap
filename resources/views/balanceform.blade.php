@@ -10,7 +10,7 @@
       </div>
     <hr>    
         
-    <form method="POST" action"{{ url('lists/create')}}">
+    <form method="POST" action"{{ url('lists/create')}}" enctype="multipart/form-data">
         {{ csrf_field() }}
         
     <div class="row">
@@ -20,31 +20,19 @@
     <label for="name">List name</label>
     <input type="text" class="form-control" id="name" name="name" placeholder="" required>
     </div>
-    
-        </div>
-            
-        
-        <div class="col-md-6">
-     
+  
     
     <div class="form-group">
-    <label for="city">City</label>
-    <input type="text" class="form-control" id="city" name="city" required>
-    </div> 
-    
-    <div class="form-group">
-    <label for="address">Address </label>
-    <input type="text" class="form-control" id="address" name="address">
+    <label class="btn-file">
+    <img src="../../public/images/file_1.png" height="25" width="25"> 
+    <input type="file" name="cover" id="cover" ></label>
     </div>
     
-    <div class="form-group">
-    <label for="postalcode">Postalcode </label>
-    <input type="text" class="form-control" id="postalcode" name="postalcode">
-    </div>  
+   <button type="submit" value="Upload" class="btn btn-primary">Create!</button>
     
         </div>
     
-        <button type="submit" class="btn btn-primary">Create!</button>
+      
         
       </div>
         

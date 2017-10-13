@@ -4,12 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class List extends Model
+class Balance extends Model
 {
    protected $guarded = [];
   
     public function getRouteKeyName(){
-        return 'list_code';
+        return 'balance_code';
     }
     
     public function users(){

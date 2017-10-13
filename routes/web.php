@@ -14,10 +14,10 @@ Route::get('/profile', 'ProfileController@index');
 Route::get('/dashboard', 'DashboardController@index');
 
 
-///// Lists 
-Route::get('/lists/create', 'ListController@form');
+///// Balances
+Route::get('/balances/create', 'BalanceController@form');
 
-Route::post('/lists/create', 'ListController@create');
+Route::post('/balances/create', 'BalanceController@create');
 
 
 ///// Personal overview

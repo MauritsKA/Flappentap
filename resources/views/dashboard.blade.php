@@ -11,7 +11,12 @@
     
     <p>Here you'll find all kinds of personal overviews. You'll be able to customize your overviews with personal and business related elements.</p>
     
-    <a class="btn btn-primary" href="dashboard/lists/create" role="button">Add new list</a>
+    <a class="btn btn-primary" href="balances/create" role="button">Add new balance</a>
+    <br>
+     <img src="../public/uploads/1.png">
+    
+    
+   
 
 <!--
     <div class="row">

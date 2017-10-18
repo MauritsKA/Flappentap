@@ -22,9 +22,6 @@ class CreateVersionsTable extends Migration
             $table->datetime('dated_at')->nullable();
             $table->float('size',99,2)->nullable();
             $table->string('description')->nullable();
-            $table->integer('item_id')->nullable();
-            $table->integer('mutationtype_id')->nullable();
-            $table->integer('vattype_id')->nullable();
             $table->timestamps();
         });
     }

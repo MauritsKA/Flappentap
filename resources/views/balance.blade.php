@@ -58,14 +58,13 @@
             <div class="table-responsive">
             <table class="table table-striped">                
               <tbody> 
+                  
+                  @foreach($users as $user)
                 <tr>
-                <td>naam</td>
+                <td>{{$user->pivot->nickname}}</td>
                 <td>stand</td>
                 </tr>
-                  <tr>
-                <td>naam</td>
-                <td>stand</td>
-                </tr>
+                  @endforeach
                 </tbody>
                 
             </table>
@@ -90,6 +89,9 @@
                 <th>Dated at</th>
                 <th>Size</th>
                 <th>Description</th>
+                @foreach($users as $user)
+                <th>{{$user->pivot->nickname}}</th>
+                @endforeach
                 <th></th>
                 <th></th>
                 <th></th>
@@ -105,8 +107,12 @@
                 <td contenteditable="false">{{$mutation->mutation_count}}</td>
                 <td contenteditable="false"><a href="{{ url('balance')}}/{{ $balance->balance_code }}/{{$mutation->mutation_count}}">{{$mutation->version_id}}</a></td>
                 <td>{{$mutation->dated_at}}</td>
-                <td>{{$mutation->basic_size}}</td>                    
+                <td>&euro;{{$mutation->size}}</td>                    
                 <td>{{$mutation->description}}</td>
+                    
+                @foreach($users as $user)
+                <td></td>
+                @endforeach
                     
                 <td><a href="#" role="button" onclick="contentEdit()"><img src="../../public/images/edit_1.png" height="20" width="20"></a></td>
                 <td><a href="#" role="button"><img src="../../public/images/trash_1.png" height="25" width="25"></a></td>
@@ -122,45 +128,20 @@
     
 </div>
 
-<script>
-
- $(function(){
-    var fileInput = $('#cover');
-    var maxSize = fileInput.data('max-size');
-    $('#upload-form').submit(function(e){
-        if(fileInput.get(0).files.length){
-            var fileSize = fileInput.get(0).files[0].size; // in bytes
+<script type="text/javascript">
+        $('#cover').bind('change', function() {
+            var fileSize = this.files[0].size;
+            var maxSize = 2097152;
             if(fileSize>maxSize){
                 alert('File size is more then 2 MB, please choose an other picture!');
                 return false;
+            } else {
+                 document.getElementById("upload-form").submit();
             }
-        }
-        
-    });
-});
+        });
 </script>
 
-<script>
-document.getElementById("cover").onchange = function() {
-    document.getElementById("upload-form").submit();
-    
-    var fileInput = $('#cover');
-    var maxSize = fileInput.data('max-size');
-    $('#upload-form').submit(function(e){
-        if(fileInput.get(0).files.length){
-            var fileSize = fileInput.get(0).files[0].size; // in bytes
-            if(fileSize>maxSize){
-                alert('File size is more then 2 MB, please choose an other picture!');
-                return false;
-            }else{
-               document.getElementById("upload-form").submit(); 
-            }
-        }
-        
-    });
-    
-}
-</script>
+
 
 
 

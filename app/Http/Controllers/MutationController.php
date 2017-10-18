@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Company;
+use App\Balance;
 use App\Mutation;
 use App\Mutationtype;
 use App\Vattype;
@@ -17,18 +18,44 @@ class MutationController extends Controller
         $this->middleware('auth');
     }
     
-    public function show(Company $company)
-    {    
-        $mutations = $company->mutations;
-        $items = $company->items;
-        $vattypes = $company->vattypes;
+    
+     public function create(Balance $balance)
+    { 
+    
+        $size = request('size');
         
-        $mutationtypes = Mutationtype::all();
-
-        return view('company', compact('mutations', 'company', 'items', 'vattypes', 'mutationtypes'));
+        $mutation= Mutation::orderBy('id', 'desc')->where('balance_id', $balance->id)->first();
+        
+        if($mutation == null){ $mutation_count = 1; } 
+        else { $mutation_count = $mutation->mutation_count + 1; }
+        
+        $mutation = Mutation::create([
+            'balance_id' => $balance->id,
+            'mutation_count' => $mutation_count,
+            'version_id' => 1,
+            'user_id' =>  Auth::user()->id,
+            'dated_at' => request('date'),
+            'size' => $size,
+            'description' => request('description'),
+            'show' => true,
+        ]);
+        
+        $mutation_id= Mutation::orderBy('id', 'desc')->where('balance_id', $balance->id)->first()->id;
+        
+        $version = Version::create([
+            'mutation_id' => $mutation_id,
+            'version_count' => 1,
+            'updatetype_id' => 1,
+            'user_id' => Auth::user()->id,
+            'dated_at' => request('date'),
+            'size' => $size,
+            'description' => request('description'),
+        ]);
+        
+        return back()->withInput();
     }
     
-    public function create(Company $company)
+    public function oldcreate(Company $company)
     { 
     
         $size = request('size');

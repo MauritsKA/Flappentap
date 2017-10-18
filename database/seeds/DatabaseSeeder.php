@@ -12,49 +12,40 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        
-        DB::table('items')->insert([
-            'company_id' => 1,
-            'description' => "Development",
+        DB::table('balance_user')->insert([
+            'balance_id' => 1,
+            'user_id' => 1,
+            'nickname' => "noodle",
         ]);
         
-        DB::table('items')->insert([
-            'company_id' => 1,
-            'description' => "Marketing",
+        DB::table('balance_user')->insert([
+            'balance_id' => 1,
+            'user_id' => 2,
+            'nickname' => "Puk",
         ]);
         
-        DB::table('items')->insert([
-            'company_id' => 1,
-            'description' => "Transportation",
+        DB::table('balance_user')->insert([
+            'balance_id' => 1,
+            'user_id' => 3,
+            'nickname' => "bolus",
         ]);
         
-         DB::table('items')->insert([
-            'company_id' => 2,
-            'description' => "Prototyping",
+        DB::table('balance_user')->insert([
+            'balance_id' => 1,
+            'user_id' => 4,
+            'nickname' => "bert",
         ]);
         
-        DB::table('vattypes')->insert([
-            'company_id' => 1,
-            'fraction' => 0.21,
-            'type' => "High",
+        DB::table('balance_user')->insert([
+            'balance_id' => 1,
+            'user_id' => 5,
+            'nickname' => "mol",
         ]);
         
-        DB::table('vattypes')->insert([
-            'company_id' => 1,
-            'fraction' => 0.06,
-            'type' => "Low",
-        ]);
-        
-        DB::table('vattypes')->insert([
-            'company_id' => 1,
-            'fraction' => 0,
-            'type' => "International",
-        ]);
-        
-        DB::table('vattypes')->insert([
-            'company_id' => 2,
-            'fraction' => 0,
-            'type' => "European",
+        DB::table('balance_user')->insert([
+            'balance_id' => 1,
+            'user_id' => 6,
+            'nickname' => "yoko",
         ]);
         
         DB::table('updatetypes')->insert([
@@ -82,5 +73,42 @@ class DatabaseSeeder extends Seeder
             'email' => "maurits@blulocks.com",
             'password' => bcrypt('123mau..'),
         ]);
+        
+         DB::table('users')->insert([
+            'name' => "Alexander",
+            'email' => "alexander@blulocks.com",
+            'password' => bcrypt('123mau..'),
+        ]);
+        
+         DB::table('users')->insert([
+            'name' => "gijs",
+            'email' => "gijs@blulocks.com",
+            'password' => bcrypt('123mau..'),
+        ]);
+        
+         DB::table('users')->insert([
+            'name' => "hugo",
+            'email' => "hugo@blulocks.com",
+            'password' => bcrypt('123mau..'),
+        ]);
+        
+        DB::table('users')->insert([
+            'name' => "duco",
+            'email' => "duco@blulocks.com",
+            'password' => bcrypt('123mau..'),
+        ]);
+        
+        DB::table('users')->insert([
+            'name' => "ronald",
+            'email' => "ronald@blulocks.com",
+            'password' => bcrypt('123mau..'),
+        ]);
+        
+        DB::table('users')->insert([
+            'name' => "filip",
+            'email' => "filip@blulocks.com",
+            'password' => bcrypt('123mau..'),
+        ]);
+        
     }
 }

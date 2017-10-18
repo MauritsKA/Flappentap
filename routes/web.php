@@ -23,6 +23,7 @@ Route::post('/balances/edit/{balance}', 'BalanceController@edit');
 
 Route::get('/balances/{balance}', 'BalanceController@index');
 
+Route::post('/balances/{balance}', 'MutationController@create');
 
 ///// Personal overview
 Route::get('/personal', 'PersonalController@index');

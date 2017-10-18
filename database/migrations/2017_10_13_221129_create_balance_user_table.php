@@ -16,6 +16,7 @@ class CreateBalanceUserTable extends Migration
         Schema::create('balance_user', function (Blueprint $table) {
             $table->integer('balance_id');
             $table->integer('user_id');
+            $table->string('nickname')->nullable();
             $table->primary(['balance_id','user_id']);
         });
     }

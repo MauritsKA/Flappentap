@@ -16,10 +16,11 @@ class BalanceController extends Controller
     
     public function index(Balance $balance)
     {       
-         $user = Auth::user();
+        $user = Auth::user();
         $mutations = Mutation::all();
+        $users = $balance->users;
         
-        return view('balance', compact('balance','user','mutations'));
+        return view('balance', compact('balance','user','mutations','users'));
     }
     
     public function form()
@@ -37,7 +38,7 @@ class BalanceController extends Controller
         ]);
         
         $id = $balance->id;
-        $code = 'L'. $id. str_random(10);
+        $code = 'B'. $id. str_random(10);
         
         Balance::find($id)->update(['balance_code'=>$code]);
         

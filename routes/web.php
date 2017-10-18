@@ -19,6 +19,10 @@ Route::get('/balances/create', 'BalanceController@form');
 
 Route::post('/balances/create', 'BalanceController@create');
 
+Route::post('/balances/edit/{balance}', 'BalanceController@edit');
+
+Route::get('/balances/{balance}', 'BalanceController@index');
+
 
 ///// Personal overview
 Route::get('/personal', 'PersonalController@index');

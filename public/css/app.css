@@ -46,6 +46,55 @@ body > .container {
   color: #353841;
 }
 
+/* Covers & avatars
+-------------------------------------------------- */
+
+.balance_cover {
+  border-radius: 20%;
+  height: 120px;
+  width: 120px;
+}
+
+.balance_cover_hover {
+  border-radius: 20%;
+  height: 120px;
+  width: 120px;
+  position: absolute;
+  z-index: 10;
+  right: 0.2em;
+  top: 1.4em;
+}
+
+.balance_cover_hover:hover {
+  opacity: 0.9;
+}
+
+.balance_cover:hover {
+  -webkit-box-shadow: 0 0 2px 1px #EF5E57;
+          box-shadow: 0 0 2px 1px #EF5E57;
+}
+
+.middle {
+  -webkit-transition: 0s ease;
+  transition: 0s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+}
+
+.middle:hover {
+  opacity: 1;
+}
+
+.text {
+  font-size: 16px;
+  padding: 16px 32px;
+}
+
 /* Buttons 
 -------------------------------------------------- */
 
@@ -77,11 +126,11 @@ body > .container {
 .btn-primary:hover {
   background-color: #353841;
   border: none;
-  cursor: pointer;
 }
 
-.btn-file {
+.btn {
   cursor: pointer;
+  cursor: hand;
 }
 
 /* nav & 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Balance;
+use App\Mutation;
 use Auth;
 
 class BalanceController extends Controller
@@ -11,6 +12,14 @@ class BalanceController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+    
+    public function index(Balance $balance)
+    {       
+         $user = Auth::user();
+        $mutations = Mutation::all();
+        
+        return view('balance', compact('balance','user','mutations'));
     }
     
     public function form()
@@ -36,11 +45,28 @@ class BalanceController extends Controller
         
         if(request('cover') != null){
         $cover = request('cover');
-        $cover_name = $balance->id.'.'.$cover->getClientOriginalExtension();
+        $cover_name = $code.'.'.$cover->getClientOriginalExtension();
         Balance::find($id)->update(['cover_name'=>$cover_name]);
-        $cover->move('uploads', $cover_name);
+        $cover->move('../storage/uploads/covers', $cover_name);
         }       
         
         return redirect('/dashboard');
+    }
+    
+    public function edit(Balance $balance)
+    {
+        $user = Auth::user();
+        
+        $id = $balance->id;
+        $code = $balance->balance_code; 
+        
+        if(request('cover') != null){
+        $cover = request('cover');
+        $cover_name = $code.'.'.$cover->getClientOriginalExtension();
+        Balance::find($id)->update(['cover_name'=>$cover_name]);
+        $cover->move('../storage/uploads/covers', $cover_name);
+        }       
+        
+        return back();
     }
 }

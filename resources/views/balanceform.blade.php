@@ -10,7 +10,7 @@
       </div>
     <hr>    
         
-    <form method="POST" action"{{ url('lists/create')}}" enctype="multipart/form-data">
+    <form id="upload-form" method="POST" action="{{ url('balances/create')}}" enctype="multipart/form-data">
         {{ csrf_field() }}
         
     <div class="row">
@@ -25,10 +25,10 @@
     <div class="form-group">
     <label class="btn-file">
     <img src="../../public/images/file_1.png" height="25" width="25"> 
-    <input type="file" name="cover" id="cover" ></label>
+    <input accept="image/x-png, image/gif, image/jpeg" type="file" name="cover" id="cover" data-max-size="2097152" ></label>
     </div>
     
-   <button type="submit" value="Upload" class="btn btn-primary">Create!</button>
+   <button onclick="checkSize();"  type="submit" value="Upload" class="btn btn-primary">Create!</button>
     
         </div>
     
@@ -40,7 +40,22 @@
 </div>
 
 
-
+<script>
+  $(function(){
+    var fileInput = $('#cover');
+    var maxSize = fileInput.data('max-size');
+    $('#upload-form').submit(function(e){
+        if(fileInput.get(0).files.length){
+            var fileSize = fileInput.get(0).files[0].size; // in bytes
+            if(fileSize>maxSize){
+                alert('File size is more then 2 MB, please choose an other picture!');
+                return false;
+            }
+        }
+        
+    });
+});
+</script>
   
 @endsection
 

@@ -30,7 +30,7 @@
                 -webkit-background-size: cover;
                 -moz-background-size: cover; 
                 -o-background-size: cover;"></div></a></td>
-                <td></td>
+                <td>{{$balance->name}}</td>
                 <td></td>
             </tr>
             @endforeach

@@ -83,14 +83,15 @@
             <table class="table table-striped">
               <thead>
                  <tr>
-                <th>ID</th>
-                <th>#</th>
-                <th>Version</th>
-                <th>Dated at</th>
-                <th>Size</th>
-                <th>Description</th>
+                <th style="min-width:10px; max-width:10px;">#</th>
+                <th style="min-width:10px; max-width:10px;">V</th>
+                <th style="min-width:120px; max-width:120px;">Dated at</th>
+                <th style="min-width:120px; max-width:120px;">Size</th>
+                <th style="min-width:200px; max-width:200px;">Description</th>
+                <th>User</th>
+                <th>PP</th>
                 @foreach($users as $user)
-                <th>{{$user->pivot->nickname}}</th>
+                <th style="min-width:80px; max-width:80px;">{{$user->pivot->nickname}}</th>
                 @endforeach
                 <th></th>
                 <th></th>
@@ -100,15 +101,44 @@
                 
               <tbody> 
                   
+                    <form class="form-inline" method="POST" action"{{ url('balances')}}/{{ $balance->balance_code}}">
+        {{ csrf_field() }}
+                  <tr>
+                      
+                  <td></td> 
+                  <td></td> 
+               
+                  <td> <input type="date" class="form-control" id="date" name="date" placeholder="Date"></td> 
+                  <td><input type="number" step="0.01"  class="form-control" id="size" name="size" placeholder="Size"></td> 
+                    <td><textarea class="form-control" id="description" name="description" placeholder="Description" rows="1"></textarea></td> 
+                       
+                       <td><select class="custom-select" name="user">
+                            @foreach($users as $user)
+                           <option value="{{$user->id}}">{{$user->pivot->nickname}}</option>
+                           @endforeach
+                           </select></td>
+                       <td></td>
+                      
+                       @foreach($users as $user)
+                <td><input type="number" step="1"  class="form-control" id="{{$user->id}}" name="{{$user->id}}"></td>
+                @endforeach
+            
+                      
+                  <td> <button type="submit" class="btn btn-outline-primary">Add</button></td>
+                    <td></td>
+                       <td></td>
+                      </tr>     
+                  </form>
                   
                    @foreach ($mutations as $mutation)
                 <tr id="selection">
-                <td contenteditable="false">{{$mutation->id}}</td>
                 <td contenteditable="false">{{$mutation->mutation_count}}</td>
                 <td contenteditable="false"><a href="{{ url('balance')}}/{{ $balance->balance_code }}/{{$mutation->mutation_count}}">{{$mutation->version_id}}</a></td>
                 <td>{{$mutation->dated_at}}</td>
                 <td>&euro;{{$mutation->size}}</td>                    
                 <td>{{$mutation->description}}</td>
+                    <td></td>
+                <td></td>
                     
                 @foreach($users as $user)
                 <td></td>

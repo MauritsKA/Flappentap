@@ -48,6 +48,42 @@ class DatabaseSeeder extends Seeder
             'nickname' => "yoko",
         ]);
         
+         DB::table('balance_user')->insert([
+            'balance_id' => 1,
+            'user_id' => 7,
+            'nickname' => "poef",
+        ]);
+        
+         DB::table('balance_user')->insert([
+            'balance_id' => 1,
+            'user_id' => 8,
+            'nickname' => "guus",
+        ]);
+        
+         DB::table('balance_user')->insert([
+            'balance_id' => 1,
+            'user_id' => 9,
+            'nickname' => "gert",
+        ]);
+        
+         DB::table('balance_user')->insert([
+            'balance_id' => 1,
+            'user_id' => 10,
+            'nickname' => "lars",
+        ]);
+        
+         DB::table('balance_user')->insert([
+            'balance_id' => 1,
+            'user_id' => 11,
+            'nickname' => "kokkie",
+        ]);
+        
+         DB::table('balance_user')->insert([
+            'balance_id' => 1,
+            'user_id' => 12,
+            'nickname' => "ketamien",
+        ]);
+        
         DB::table('updatetypes')->insert([
             'type' => "Create",
         ]);
@@ -105,10 +141,48 @@ class DatabaseSeeder extends Seeder
         ]);
         
         DB::table('users')->insert([
+            'name' => "michiel",
+            'email' => "michiel@blulocks.com",
+            'password' => bcrypt('123mau..'),
+        ]);
+        
+        DB::table('users')->insert([
+            'name' => "aernout",
+            'email' => "aernout@blulocks.com",
+            'password' => bcrypt('123mau..'),
+        ]);
+        
+        DB::table('users')->insert([
+            'name' => "tjeerd",
+            'email' => "tjeerd@blulocks.com",
+            'password' => bcrypt('123mau..'),
+        ]);
+        
+        DB::table('users')->insert([
+            'name' => "ludo",
+            'email' => "ludo@blulocks.com",
+            'password' => bcrypt('123mau..'),
+        ]);
+        
+        DB::table('users')->insert([
+            'name' => "matthijs",
+            'email' => "matthijs@blulocks.com",
+            'password' => bcrypt('123mau..'),
+        ]);
+        
+        DB::table('users')->insert([
+            'name' => "rik",
+            'email' => "rik@blulocks.com",
+            'password' => bcrypt('123mau..'),
+        ]);
+        
+        DB::table('users')->insert([
             'name' => "filip",
             'email' => "filip@blulocks.com",
             'password' => bcrypt('123mau..'),
         ]);
+        
+        
         
     }
 }

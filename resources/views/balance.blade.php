@@ -2,9 +2,11 @@
 
 @section('content')
 
+@include('usermodal')
+
 <div class="container">
       <div class="mt-3">
-        <h1 style="   max-width: 68%;">{{$balance->name}} <div class='balance_cover_hover' style="background:url(../../storage/uploads/covers/{{$balance->cover_name}}) no-repeat center center;
+        <h1 style="max-width: 68%;"><div class="balancetitle">{{$balance->name}} </div><div class='balance_cover_hover' style="background:url(../../storage/uploads/covers/{{$balance->cover_name}}) no-repeat center center;
                 background-size: cover;
                 -webkit-background-size: cover;
                 -moz-background-size: cover; 
@@ -13,7 +15,7 @@
             <div class="middle">
             <div class="text">
                 <label class="btn-file">
-                <img src="../../public/images/file_1.png" height="25" width="25">
+                <img style=" cursor: pointer; cursor: hand;" src="../../public/images/file_1.png" height="25" width="25">
                     
                     <form id="upload-form" method="POST" action="{{ url('balances/edit')}}/{{$balance->balance_code}}" enctype="multipart/form-data">
                     {{ csrf_field() }}
@@ -26,54 +28,63 @@
             
             </div></h1>
       </div>
-    <hr> 
+    <hr class="backdropline"> 
     
-    
-    
+  
 
-    <form method="POST" action"{{ url('balances')}}/{{ $balance->balance_code}}">
-        {{ csrf_field() }}
-        
         <div class="col-md-12">
         <div class="row">
-        <div class="col-md-6">
-        <div class="form-group">
-        <label for="date">Date</label>
-        <input type="date" class="form-control" id="date" name="date" placeholder="Date"></div>
-        
-     <div class="form-group">
-        <label for="size">Amount</label>
-        <input type="number" step="0.01"  class="form-control" id="size" name="size" placeholder="Size"></div>
-        
-     <div class="form-group">
-        <label for="description">Description</label>
-        <textarea class="form-control" id="description" name="description" placeholder="Description"></textarea></div>
-            
-        <button type="submit" class="btn btn-outline-primary">Add</button>
-            
-        </div>   
+          
             
         <div class="col-md-6">
         <label>Balance</label>
-            <div class="table-responsive">
-            <table class="table table-striped">                
-              <tbody> 
-                  
+           
+       <!--            <div class="table-responsive">
+     <table class="table table-striped">                
+              <thead></thead>
+
+                <tbody> 
+                 
                   @foreach($users as $user)
                 <tr>
-                <td>{{$user->pivot->nickname}}</td>
+                <td><button type="button" class="btn btn-link" onclick="openUsermodal()" >{{$user->pivot->nickname}}</button></td>
                 <td>stand</td>
                 </tr>
                   @endforeach
                 </tbody>
+            
+                
+            </table>
+          </div>    -->
+             
+                 <div class="table-responsive">
+            <table class="table table-striped">
+                
+              <thead>
+                 <tr> </tr>
+              </thead>
+                
+              <tbody>
+ 
+               
+            <tr>
+               @foreach($users as $user)
+                 <td><button type="button" class="btn btn-link" onclick="openUsermodal('{{$user->name}}','{{$user->pivot->nickname}}')">{{$user->pivot->nickname}}</button></td>
+                @endforeach
+            </tr>            
+                  
+             </tbody>
                 
             </table>
           </div>
+            
+            
+            
         </div>        
         </div>
         </div>
             
-        </form>
+       
     
         <br>
     
@@ -171,9 +182,16 @@
         });
 </script>
 
-
-
-
+<script>
+function openUsermodal(username,nickname) {
+    
+    document.getElementById("modalLabelSmall").innerHTML = nickname;
+    var currentusername = document.getElementById("currentusername").innerHTML;
+    document.getElementById("currentusername").innerHTML = username;
+    document.getElementById("pname").innerHTML = document.getElementById("pname").innerHTML.replace(currentusername, username);
+     $('#usermodal').modal('show');
+}
+</script>
 
 @endsection
 

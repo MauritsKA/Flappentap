@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Balance;
 use App\Mutation;
+use Storage;
 use Auth;
 
 class BalanceController extends Controller
@@ -42,14 +43,14 @@ class BalanceController extends Controller
         
         Balance::find($id)->update(['balance_code'=>$code]);
         
-        $balance->users()->attach($user->id);
-        
         if(request('cover') != null){
         $cover = request('cover');
         $cover_name = $code.'.'.$cover->getClientOriginalExtension();
         Balance::find($id)->update(['cover_name'=>$cover_name]);
         $cover->move('../storage/uploads/covers', $cover_name);
-        }       
+        }   
+        
+        $balance->users()->attach($user->id);
         
         return redirect('/dashboard');
     }
@@ -62,6 +63,9 @@ class BalanceController extends Controller
         $code = $balance->balance_code; 
         
         if(request('cover') != null){
+        $base = base_path();
+        Storage::Delete($base. '/storage/uploads/covers/'. $balance->cover_name); 
+                
         $cover = request('cover');
         $cover_name = $code.'.'.$cover->getClientOriginalExtension();
         Balance::find($id)->update(['cover_name'=>$cover_name]);

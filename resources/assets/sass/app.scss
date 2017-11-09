@@ -53,12 +53,24 @@ body > .container {
     width:120px;
 }
 
+.balancetitle{
+    z-index: 20;
+    position: relative; 
+}
+
+.backdropline{
+    z-index:-10;
+    position: relative; 
+}
+
 .balance_cover_hover {
     border-radius:20%; 
-    height:120px;
-    width:120px;
+    height:10vw;
+    width:10vw;
+    min-height: 120px;
+    min-width: 120px;
     position:absolute;
-    z-index: 10;
+    z-index: -1;
     right: 0.2em;
     top: 1.4em;
 }
@@ -85,11 +97,13 @@ body > .container {
 
 .middle:hover {
   opacity: 1;
+   
 }
 
 .text {
   font-size: 16px;
   padding: 16px 32px;
+    
 }
 
 /* Buttons 

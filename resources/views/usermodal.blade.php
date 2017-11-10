@@ -4,7 +4,7 @@
 <div class="modal-content usermodal">
 
 <div class="modal-header">
-<h4 class="modal-title" id="modalLabelSmall">User info</h4>
+<h4 class="modal-title" id="modalLabelSmall">User info <span id="JSnickname"></span></h4>
 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 <span aria-hidden="true">&times;</span>
 </button>
@@ -12,29 +12,32 @@
 
 <div class="modal-body">
     
-<h5><span id="JSnickname"></span></h5>
-<div class="modalitem">
-    <form class="form-inline">
-    <div class="form-group">
-    <input type="text" class="form-control" id="nickname" placeholder="new nickname" required>    
-    </div> 
-    
-    &nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Submit</button>
-    </form>   
-</div>
-    
 <div class="modalitem">    
 <h5>Name</h5>
 <span id="JSusername"></span></div> 
 
 <div class="modalitem">
 <h5>Email</h5>
-<span id="JSemail"></span></div> 
+<span id="JSemail">none</span></div> 
  
 <div class="modalitem">
 <h5>IBAN</h5>
-<span id="JSiban"></span></div>
+<span id="JSiban">0000</span></div>
     
+     
+<div class="modalitem">
+    <form class="form-inline" method="POST" id="nicknameform" action="{{ url('balances/users')}}/{{$balance->balance_code}}/">
+    {{ csrf_field() }}  
+        
+    <div class="form-group">
+    <input type="text" class="form-control" id="newnickname" name="newnickname" placeholder="new nickname" required>    
+    </div> 
+    
+    &nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Submit</button>
+    </form>   
+</div>
+    
+
 </div>
 
 </div>

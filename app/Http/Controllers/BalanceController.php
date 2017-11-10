@@ -7,6 +7,7 @@ use App\Balance;
 use App\Mutation;
 use Storage;
 use Auth;
+use user;
 
 class BalanceController extends Controller
 {
@@ -71,6 +72,14 @@ class BalanceController extends Controller
         Balance::find($id)->update(['cover_name'=>$cover_name]);
         $cover->move('../storage/uploads/covers', $cover_name);
         }       
+        
+        return back();
+    }
+    
+    public function edituser(Balance $balance, $user_id)
+    {
+
+        $balance->users()->updateExistingPivot($user_id, ['nickname' => request('newnickname')]);
         
         return back();
     }

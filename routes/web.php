@@ -21,6 +21,8 @@ Route::post('/balances/create', 'BalanceController@create');
 
 Route::post('/balances/edit/{balance}', 'BalanceController@edit');
 
+Route::post('/balances/users/{balance}/{user}', 'BalanceController@edituser');
+
 Route::get('/balances/{balance}', 'BalanceController@index');
 
 Route::post('/balances/{balance}', 'MutationController@create');

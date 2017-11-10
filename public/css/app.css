@@ -70,21 +70,22 @@ body > .container {
 .balancetitle {
   z-index: 20;
   position: relative;
+  font-size: 100%;
 }
 
 .backdropline {
   z-index: -10;
   position: relative;
+  padding-bottom: 10px;
 }
 
 .balance_cover_hover {
   border-radius: 20%;
-  height: 11vw;
-  width: 11vw;
-  min-height: 120px;
-  min-width: 120px;
+  height: 160px;
+  width: 160px;
+  max-height: 30vmin;
+  max-width: 30vmin;
   position: absolute;
-  z-index: -1;
   right: 0.2em;
   top: 1.4em;
 }
@@ -116,7 +117,7 @@ body > .container {
 
 .text {
   font-size: 16px;
-  padding: 16px 32px;
+  padding: 90px 90px;
 }
 
 /* Buttons 
@@ -136,10 +137,14 @@ body > .container {
   color: #EF5E57;
 }
 
-.btn-outline-primary:hover {
+.btn-outline-primary:hover,
+.btn-outline-primary:active,
+btn-outline-primary:focus {
   background-color: #EF5E57;
   border-color: #EF5E57;
   color: white;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
 .btn-primary {
@@ -147,9 +152,13 @@ body > .container {
   border: none;
 }
 
-.btn-primary:hover {
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus {
   background-color: #353841;
   border: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
 .btn {

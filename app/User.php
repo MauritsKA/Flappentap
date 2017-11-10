@@ -27,6 +27,9 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
     
+    public function getRouteKeyName(){
+        return 'id';
+    }
  
     public function companies(){
        return $this->belongsToMany(Company::class);

@@ -7,9 +7,9 @@
         
         <a class="nav-link {{ Request::is('dashboard') ? 'active' : '' }}" href="{{url('')}}/dashboard">Dashboard</a>
             
-        <a class="nav-link {{ Request::is('personal') ? 'active' : '' }}" href="{{url('')}}/personal">Personal</a>
+  <!--       <a class="nav-link {{ Request::is('personal') ? 'active' : '' }}" href="{{url('')}}/personal">Personal</a>
         
-        <a class="nav-link {{ Request::is('company') ? 'active' : '' }}" href="{{url('')}}/company">Company</a>
+       <a class="nav-link {{ Request::is('company') ? 'active' : '' }}" href="{{url('')}}/company">Company</a> -->
             
         <a class="nav-link {{ Request::is('profile') ? 'active' : '' }}" href="{{url('')}}/profile">Profile</a>
             

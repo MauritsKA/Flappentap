@@ -45,6 +45,17 @@ body > .container {
     color: #353841;
 }
 
+/* Usermodal lay out 
+-------------------------------------------------- */
+.usermodal h5{
+    font-size: 16px;
+    color:#EF5E57;   
+}
+
+.usermodal .modalitem{
+    margin-bottom: 12px;  
+}
+
 /* Covers & avatars
 -------------------------------------------------- */
 .balance_cover {
@@ -65,8 +76,8 @@ body > .container {
 
 .balance_cover_hover {
     border-radius:20%; 
-    height:10vw;
-    width:10vw;
+    height:11vw;
+    width:11vw;
     min-height: 120px;
     min-width: 120px;
     position:absolute;

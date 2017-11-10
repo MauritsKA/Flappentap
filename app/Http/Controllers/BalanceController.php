@@ -62,10 +62,10 @@ class BalanceController extends Controller
         $id = $balance->id;
         $code = $balance->balance_code; 
         
-        if(request('cover') != null){
         $base = base_path();
-        Storage::Delete($base. '/storage/uploads/covers/'. $balance->cover_name); 
-                
+        
+        if(request('cover') != null){
+        unlink($base. '/storage/uploads/covers/'. $balance->cover_name); 
         $cover = request('cover');
         $cover_name = $code.'.'.$cover->getClientOriginalExtension();
         Balance::find($id)->update(['cover_name'=>$cover_name]);

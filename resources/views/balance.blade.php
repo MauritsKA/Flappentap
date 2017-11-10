@@ -37,27 +37,8 @@
           
             
         <div class="col-md-6">
-        <label>Balance</label>
-           
-       <!--            <div class="table-responsive">
-     <table class="table table-striped">                
-              <thead></thead>
-
-                <tbody> 
-                 
-                  @foreach($users as $user)
-                <tr>
-                <td><button type="button" class="btn btn-link" onclick="openUsermodal()" >{{$user->pivot->nickname}}</button></td>
-                <td>stand</td>
-                </tr>
-                  @endforeach
-                </tbody>
-            
-                
-            </table>
-          </div>    -->
-             
-                 <div class="table-responsive">
+        <label>Balance</label>             
+            <div class="table-responsive">
             <table class="table table-striped">
                 
               <thead>
@@ -185,10 +166,8 @@
 <script>
 function openUsermodal(username,nickname) {
     
-    document.getElementById("modalLabelSmall").innerHTML = nickname;
-    var currentusername = document.getElementById("currentusername").innerHTML;
-    document.getElementById("currentusername").innerHTML = username;
-    document.getElementById("pname").innerHTML = document.getElementById("pname").innerHTML.replace(currentusername, username);
+    document.getElementById("JSnickname").innerHTML = nickname;
+    document.getElementById("JSusername").innerHTML = username;
      $('#usermodal').modal('show');
 }
 </script>

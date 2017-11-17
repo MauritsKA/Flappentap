@@ -5,9 +5,17 @@
 Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 
+/////Facebook
+Route::get('/redirect', 'SocialAuthFacebookController@redirect');
+
+Route::get('/callback', 'SocialAuthFacebookController@callback');
 
 /////Profile overview
 Route::get('/profile', 'ProfileController@index');
+
+Route::post('/profile/email', 'ProfileController@email');
+
+Route::post('/profile/iban', 'ProfileController@iban');
 
 
 ///// Dashboard overview

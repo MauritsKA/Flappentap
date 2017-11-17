@@ -22,7 +22,7 @@
  
 <div class="modalitem">
 <h5>IBAN</h5>
-<span id="JSiban">0000</span></div>
+<span id="JSiban"></span></div>
     
      
 <div class="modalitem">

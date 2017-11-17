@@ -49,7 +49,7 @@ body > .container {
 /* Usermodal lay out 
 -------------------------------------------------- */
 
-.usermodal h5 {
+h5 {
   font-size: 16px;
   color: #EF5E57;
 }
@@ -81,8 +81,8 @@ body > .container {
 
 .balance_cover_hover {
   border-radius: 20%;
-  height: 160px;
-  width: 160px;
+  height: 135px;
+  width: 135px;
   max-height: 30vmin;
   max-width: 30vmin;
   position: absolute;

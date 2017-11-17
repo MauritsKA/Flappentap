@@ -34,5 +34,11 @@ return [
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
+    
+    'facebook' => [
+    'client_id' => '189706838341347',
+    'client_secret' => '010a672a08fd98bb254612b60cd2d89f',
+    'redirect' => 'http://localhost/flappentap/public/callback',
+],
 
 ];

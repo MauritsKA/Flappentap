@@ -29,7 +29,6 @@
             </div></h1>
       </div>
     <hr class="backdropline"> 
-      <div id="JSID" hidden>TEKSTEN</div>  
             
         <div class="col-md-6">
         <label>Balance</label>             
@@ -45,7 +44,7 @@
                
             <tr>
                @foreach($users as $user)
-                 <td><button type="button" class="btn btn-link" onclick="openUsermodal('{{$user->name}}','{{$user->pivot->nickname}}','{{$user->id}}')">{{$user->pivot->nickname}}</button></td>
+                 <td><button type="button" class="btn btn-link" onclick="openUsermodal('{{$user->name}}','{{$user->pivot->nickname}}','{{$user->id}}','{{$user->iban}}')">{{$user->pivot->nickname}}</button></td>
                 @endforeach
             </tr>            
                   
@@ -152,10 +151,11 @@
 </script>
 
 <script>
-function openUsermodal(username,nickname,userid) {
+function openUsermodal(username,nickname,userid,iban) {
     
     document.getElementById("JSnickname").innerHTML = nickname;
     document.getElementById("JSusername").innerHTML = username;
+    document.getElementById("JSiban").innerHTML = iban;
     document.getElementById("nicknameform").action = "{{ url('balances/users')}}/{{$balance->balance_code}}/" + userid;
     //$('#nicknameform').attr('action', 'myNewActionTarget.html');
      $('#usermodal').modal('show');

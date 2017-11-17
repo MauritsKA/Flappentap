@@ -22,6 +22,19 @@ class ProfileController extends Controller
         
         return view('profile', compact('user'));
         }
+    
+    public function email()
+    {
+        Auth::user()->update(['email'=>request('email')]);        
+        return back();
+    }
+    
+    public function iban()
+    {
+        //dd(Auth::user()->iban);
+        Auth::user()->update(['iban'=>request('iban')]);        
+        return back();
+    }
 }
 
 

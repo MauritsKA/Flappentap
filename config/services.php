@@ -36,9 +36,9 @@ return [
     ],
     
     'facebook' => [
-    'client_id' => '189706838341347',
-    'client_secret' => '010a672a08fd98bb254612b60cd2d89f',
-    'redirect' => 'http://localhost/flappentap/public/callback',
+    'client_id' => env('FACEBOOK_ID'),
+    'client_secret' => env('FACEBOOK_SECRET'),
+    'redirect' => env('FACEBOOK_URL'),
 ],
 
 ];

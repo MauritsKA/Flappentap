@@ -80,7 +80,7 @@
                 
               <tbody> 
                   
-                    <form class="form-inline" method="POST" action"{{ url('balances')}}/{{ $balance->balance_code}}">
+                    <form class="form-inline" method="POST" action="{{ url('balances')}}/{{ $balance->balance_code}}">
         {{ csrf_field() }}
                   <tr>
                       
@@ -124,7 +124,7 @@
                 @endforeach
                     
                 <td><a href="#" role="button" onclick="contentEdit()"><img src="../../public/images/edit_1.png" height="20" width="20"></a></td>
-                <td><a href="#" role="button"><img src="../../public/images/trash_1.png" height="25" width="25"></a></td>
+                <td><a href="{{ url('balances')}}/{{ $balance->balance_code}}/{{$mutation->id}}" role="button"><img src="../../public/images/trash_1.png" height="25" width="25"></a></td>
                 <td><label class="btn-file">
                 <img src="../../public/images/file_1.png" height="25" width="25"> <input type="file" hidden></label></td>
                     

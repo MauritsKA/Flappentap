@@ -161,6 +161,10 @@ btn-outline-primary:focus {
           box-shadow: none;
 }
 
+.facebook {
+  background-color: #4267B2;
+}
+
 .btn {
   cursor: pointer;
   cursor: hand;

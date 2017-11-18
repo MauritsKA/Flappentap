@@ -11,6 +11,12 @@
 </div>
 
 <div class="modal-body">
+    
+    <div class="col-md-8 col-md-offset-4">
+                              <a href="{{url('/redirect')}}" class="btn btn-primary facebook"><i class="fa fa-facebook-official"></i> Login with Facebook</a>
+                            </div>
+    <hr>
+    
 <form method="POST" action="{{ route('register') }}">
    {{ csrf_field() }}                      
   
@@ -70,9 +76,7 @@
                         </div>
                     </form> 
     
-                <div class="col-md-8 col-md-offset-4">
-                              <a href="{{url('/redirect')}}" class="btn btn-primary facebook"><i class="fa fa-facebook-official"></i> Login with Facebook</a>
-                            </div>
+                
     
 </div>
 

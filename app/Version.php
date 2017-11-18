@@ -18,11 +18,6 @@ class Version extends Model
         return $this->belongsTo(Item::class);
     }
     
-    public function updatetype()
-    {
-        return $this->belongsTo(Updatetype::class);
-    }
-    
     public function mutationtype()
     {
         return $this->belongsTo(Mutationtype::class);

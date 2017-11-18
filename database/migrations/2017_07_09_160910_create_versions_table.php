@@ -17,7 +17,7 @@ class CreateVersionsTable extends Migration
             $table->increments('id');
             $table->integer('mutation_id');
             $table->integer('version_count');
-            $table->integer('updatetype_id');
+            $table->string('updatetype');
             $table->integer('user_id');
             $table->datetime('dated_at')->nullable();
             $table->float('size',99,2)->nullable();

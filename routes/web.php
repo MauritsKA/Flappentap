@@ -31,13 +31,19 @@ Route::post('/balances/edit/{balance}', 'BalanceController@edit');
 
 Route::post('/balances/users/{balance}/{user}', 'BalanceController@edituser');
 
+///// Mutations
+
 Route::get('/balances/{balance}', 'BalanceController@index');
 
 Route::post('/balances/{balance}', 'MutationController@create');
 
-Route::post('/balances/{balance}/edit/{mutation}', 'MutationController@edit');
+Route::get('/balances/{balance}/edit/{mutation}', 'MutationController@edit');
     
-Route::post('/balances/{balance}/delete/{mutation}', 'MutationController@delete');
+Route::get('/balances/{balance}/delete/{mutation}', 'MutationController@delete');
+
+///// Versions
+
+Route::get('/balances/{balance}/{mutation}', 'VersionController@index');
 
 ///// Personal overview
 Route::get('/personal', 'PersonalController@index');

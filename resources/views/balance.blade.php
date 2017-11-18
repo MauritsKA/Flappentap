@@ -112,7 +112,7 @@
                    @foreach ($mutations as $mutation)
                 <tr id="selection">
                 <td contenteditable="false">{{$mutation->mutation_count}}</td>
-                <td contenteditable="false"><a href="{{ url('balance')}}/{{ $balance->balance_code }}/{{$mutation->mutation_count}}">{{$mutation->version_id}}</a></td>
+                <td contenteditable="false"><a href="{{ url('balances')}}/{{ $balance->balance_code }}/{{$mutation->mutation_count}}">{{$mutation->versions->last()->version_count}}</a></td>
                 <td>{{$mutation->dated_at}}</td>
                 <td>&euro;{{$mutation->size}}</td>                    
                 <td>{{$mutation->description}}</td>
@@ -123,8 +123,10 @@
                 <td></td>
                 @endforeach
                     
-                <td><a href="#" role="button" onclick="contentEdit()"><img src="../../public/images/edit_1.png" height="20" width="20"></a></td>
-                <td><a href="{{ url('balances')}}/{{ $balance->balance_code}}/{{$mutation->id}}" role="button"><img src="../../public/images/trash_1.png" height="25" width="25"></a></td>
+                <td><a href="{{ url('balances')}}/{{ $balance->balance_code}}/edit/{{$mutation->mutation_count}}" role="button" onclick="contentEdit()"><img src="../../public/images/edit_1.png" height="20" width="20"></a></td>
+                    
+                <td><a onclick="return confirm('Are you sure?')" href="{{ url('balances')}}/{{ $balance->balance_code}}/delete/{{$mutation->mutation_count}}" role="button"><img src="../../public/images/trash_1.png" height="25" width="25"></a></td>
+                    
                 <td><label class="btn-file">
                 <img src="../../public/images/file_1.png" height="25" width="25"> <input type="file" hidden></label></td>
                     
@@ -157,8 +159,7 @@ function openUsermodal(username,nickname,userid,iban) {
     document.getElementById("JSusername").innerHTML = username;
     document.getElementById("JSiban").innerHTML = iban;
     document.getElementById("nicknameform").action = "{{ url('balances/users')}}/{{$balance->balance_code}}/" + userid;
-    //$('#nicknameform').attr('action', 'myNewActionTarget.html');
-     $('#usermodal').modal('show');
+    $('#usermodal').modal('show');
 }
 </script>
 

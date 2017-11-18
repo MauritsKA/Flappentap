@@ -84,18 +84,6 @@ class DatabaseSeeder extends Seeder
             'nickname' => "ketamien",
         ]);
         
-        DB::table('updatetypes')->insert([
-            'type' => "Create",
-        ]);
-        
-        DB::table('updatetypes')->insert([
-            'type' => "Update",
-        ]);
-        
-        DB::table('updatetypes')->insert([
-            'type' => "Delete",
-        ]);
-        
         DB::table('mutationtypes')->insert([
             'type' => "Add",
         ]);

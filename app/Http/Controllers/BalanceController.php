@@ -17,9 +17,11 @@ class BalanceController extends Controller
     }
     
     public function index(Balance $balance)
-    {       
+    {   
+        
         $user = Auth::user();
-        $mutations = Mutation::all();
+        $mutations = Mutation::where('balance_id', $balance->id)->orderBy('updated_at','desc')->get()->all();
+        //$mutations = $balance->mutations;
         $users = $balance->users;
         
         return view('balance', compact('balance','user','mutations','users'));
@@ -52,6 +54,7 @@ class BalanceController extends Controller
         }   
         
         $balance->users()->attach($user->id);
+        $balance->users()->updateExistingPivot($user->id, ['nickname' => $user->name]);
         
         return redirect('/dashboard');
     }
@@ -66,7 +69,9 @@ class BalanceController extends Controller
         $base = base_path();
         
         if(request('cover') != null){
-        unlink($base. '/storage/uploads/covers/'. $balance->cover_name); 
+            if($balance->cover_name != "default.jpg"){
+            unlink($base. '/storage/uploads/covers/'. $balance->cover_name);
+            }
         $cover = request('cover');
         $cover_name = $code.'.'.$cover->getClientOriginalExtension();
         Balance::find($id)->update(['cover_name'=>$cover_name]);

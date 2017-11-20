@@ -50,6 +50,9 @@ class MutationController extends Controller
             'description' => request('description'),
         ]);
         
+        $user = Auth::user();
+        $mutation->users()->attach($user->id);
+        
         return back()->withInput();
     }
     
@@ -58,7 +61,8 @@ class MutationController extends Controller
       
         $mutation = Mutation::where('balance_id', $balance->id)->where('mutation_count',$mutation_count)->get()->first();
         
-        Mutation::find($mutation->id)->update(['show'=>false]);
+        if($mutation->show == 1){
+        $mutation->update(['show'=>false]);
         
         $version = Version::orderBy('version_count', 'desc')->where('mutation_id', $mutation->id)->first();
             
@@ -71,6 +75,7 @@ class MutationController extends Controller
             'size' => $version->size,
             'description' => $version->description,
         ]);
+        }
         
         return back();
             

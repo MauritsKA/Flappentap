@@ -22,10 +22,19 @@ class Mutation extends Model
         return $this->belongsTo(User::class);
     }
     
+    public function balance()
+    {
+        return $this->belongsTo(Balance::class);
+    }
+    
     public function versions()
     {
         return $this->hasMany(Version::class);
     }
+    
+    public function users(){
+       return $this->belongsToMany(User::class)->withPivot('nickname');
+    } 
     
     public function item()
     {

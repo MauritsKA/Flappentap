@@ -109,10 +109,10 @@
                       </tr>     
                   </form>
                   
-                   @foreach ($mutations as $mutation)
-                <tr id="selection">
-                <td contenteditable="false">{{$mutation->mutation_count}}</td>
-                <td contenteditable="false"><a href="{{ url('balances')}}/{{ $balance->balance_code }}/{{$mutation->mutation_count}}">{{$mutation->versions->last()->version_count}}</a></td>
+                @foreach ($mutations as $mutation)
+                <tr class="{{ $mutation->show == 0 ? "invisiblerow" : "visiblerow"}}">
+                <td class="noline">{{$mutation->mutation_count}}</td>
+                <td class="noline"><a href="{{ url('balances')}}/{{ $balance->balance_code }}/{{$mutation->mutation_count}}">{{$mutation->versions->last()->version_count}}</a></td>
                 <td>{{$mutation->dated_at}}</td>
                 <td>&euro;{{$mutation->size}}</td>                    
                 <td>{{$mutation->description}}</td>
@@ -124,10 +124,11 @@
                 @endforeach
                     
                 <td><a href="{{ url('balances')}}/{{ $balance->balance_code}}/edit/{{$mutation->mutation_count}}" role="button" onclick="contentEdit()"><img src="../../public/images/edit_1.png" height="20" width="20"></a></td>
+                
+                
+                <td class="{{ $mutation->show == 0 ? "invisibletd" : "visibletd"}}"><a onclick="return confirm('Are you sure?')" href="{{ url('balances')}}/{{ $balance->balance_code}}/delete/{{$mutation->mutation_count}}" role="button"><img src="../../public/images/trash_1.png" height="25" width="25"></a></td>
                     
-                <td><a onclick="return confirm('Are you sure?')" href="{{ url('balances')}}/{{ $balance->balance_code}}/delete/{{$mutation->mutation_count}}" role="button"><img src="../../public/images/trash_1.png" height="25" width="25"></a></td>
-                    
-                <td><label class="btn-file">
+                <td class="{{ $mutation->show == 0 ? "invisibletd" : "visibletd"}}"><label class="btn-file">
                 <img src="../../public/images/file_1.png" height="25" width="25"> <input type="file" hidden></label></td>
                     
                 </tr>

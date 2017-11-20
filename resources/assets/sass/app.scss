@@ -118,6 +118,21 @@ h5{
     
 }
 
+/* Table 
+-------------------------------------------------- */
+.invisiblerow{
+    opacity: 0.3;
+}
+
+.invisiblerow td:not(.noline){
+    text-decoration: line-through;
+}
+
+.invisibletd{
+    opacity:0;
+    pointer-events: none;
+}
+
 /* Buttons 
 -------------------------------------------------- */
 .plus{

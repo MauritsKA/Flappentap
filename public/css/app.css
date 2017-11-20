@@ -120,6 +120,22 @@ h5 {
   padding: 90px 90px;
 }
 
+/* Table 
+-------------------------------------------------- */
+
+.invisiblerow {
+  opacity: 0.3;
+}
+
+.invisiblerow td:not(.noline) {
+  text-decoration: line-through;
+}
+
+.invisibletd {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* Buttons 
 -------------------------------------------------- */
 

@@ -40,7 +40,7 @@ class User extends Authenticatable
     }  
     
     public function mutations(){
-       return $this->belongsToMany(Mutation::class);
+       return $this->belongsToMany(Mutation::class)->withPivot('weight');
     } 
     
     public function versions(){

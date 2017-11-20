@@ -31,7 +31,7 @@ class MutationController extends Controller
             'balance_id' => $balance->id,
             'mutation_count' => $mutation_count,
             'version_id' => 1,
-            'user_id' =>  Auth::user()->id,
+            'user_id' =>  request('user'),
             'dated_at' => request('date'),
             'size' => request('size'),
             'description' => request('description'),
@@ -45,13 +45,19 @@ class MutationController extends Controller
             'version_count' => 1,
             'updatetype' => "create",
             'user_id' => Auth::user()->id,
+            'editor_id' => request('user'),
             'dated_at' => request('date'),
             'size' => request('size'),
             'description' => request('description'),
         ]);
         
-        $user = Auth::user();
-        $mutation->users()->attach($user->id);
+        $users = $balance->users;
+        foreach($users as $user){
+            if(request($user->id) != 0 || null){
+            $mutation->users()->attach($user->id);
+            $mutation->users()->updateExistingPivot($user->id, ['weight' => request($user->id)]);
+            }
+        }
         
         return back()->withInput();
     }

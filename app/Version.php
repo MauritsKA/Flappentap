@@ -28,6 +28,11 @@ class Version extends Model
         return $this->belongsTo(User::class);
     }
     
+     public function editor()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
     public function vattype()
     {
         return $this->belongsTo(Vattype::class);

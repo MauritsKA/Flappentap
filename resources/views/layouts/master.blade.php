@@ -7,19 +7,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-        <link rel="icon" href="../../favicon.ico">
+        <link rel="icon" type="image/png" href="../../public/images/Favicon.png" sizes="32x32" />
+         <link rel="icon" type="image/png" href="../public/images/Favicon.png" sizes="32x32" />
         
         <title>Flappentap</title>
         
         <!-- Bootstrap core CSS -->
         <link rel="stylesheet" href="https://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css">
-        
-    
 
         <!-- Custom styles for this template -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        
+
         @yield('css')               
         
         <!-- Fonts -->

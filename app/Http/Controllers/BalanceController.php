@@ -21,7 +21,6 @@ class BalanceController extends Controller
         
         $user = Auth::user();
         $mutations = Mutation::where('balance_id', $balance->id)->orderBy('updated_at','desc')->get()->all();
-        //$mutations = $balance->mutations;
         $users = $balance->users;
         
         return view('balance', compact('balance','user','mutations','users'));

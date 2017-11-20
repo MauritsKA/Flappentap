@@ -41,13 +41,13 @@
                 
               <tbody>
  
-               
-            <tr>
                @foreach($users as $user)
+            <tr>
+               
                  <td><button type="button" class="btn btn-link" onclick="openUsermodal('{{$user->name}}','{{$user->pivot->nickname}}','{{$user->id}}','{{$user->iban}}')">{{$user->pivot->nickname}}</button></td>
-                @endforeach
+        
             </tr>            
-                  
+                @endforeach    
              </tbody>
                 
             </table>
@@ -64,7 +64,7 @@
                  <tr>
                 <th style="min-width:10px; max-width:10px;">#</th>
                 <th style="min-width:10px; max-width:10px;">V</th>
-                <th style="min-width:120px; max-width:120px;">Dated at</th>
+                <th style="min-width:180px; max-width:180px;">Dated at</th>
                 <th style="min-width:120px; max-width:120px;">Size</th>
                 <th style="min-width:200px; max-width:200px;">Description</th>
                 <th>User</th>
@@ -80,47 +80,61 @@
                 
               <tbody> 
                   
-                    <form class="form-inline" method="POST" action="{{ url('balances')}}/{{ $balance->balance_code}}">
-        {{ csrf_field() }}
+               <!-- TABLE FORM -->
+                  <form class="form-inline" method="POST" action="{{ url('balances')}}/{{ $balance->balance_code}}">
+                    {{ csrf_field() }}
                   <tr>
                       
                   <td></td> 
                   <td></td> 
                
                   <td> <input type="date" class="form-control" id="date" name="date" placeholder="Date"></td> 
-                  <td><input type="number" step="0.01"  class="form-control" id="size" name="size" placeholder="Size"></td> 
+                      
+                  <td><input type="number" step="0.01"  class="form-control" id="size" name="size" placeholder="Size"></td>
+                      
                     <td><textarea class="form-control" id="description" name="description" placeholder="Description" rows="1"></textarea></td> 
                        
-                       <td><select class="custom-select" name="user">
-                            @foreach($users as $user)
-                           <option value="{{$user->id}}">{{$user->pivot->nickname}}</option>
-                           @endforeach
-                           </select></td>
-                       <td></td>
+                    <td><select class="custom-select" name="user">
+                        @foreach($users as $user)
+                        <option value="{{$user->id}}">{{$user->pivot->nickname}}</option>
+                        @endforeach
+                        </select>
+                    </td>
                       
-                       @foreach($users as $user)
+                    <td></td>
+                      
+                @foreach($users as $user)
                 <td><input type="number" step="1"  class="form-control" id="{{$user->id}}" name="{{$user->id}}"></td>
                 @endforeach
             
                       
                   <td> <button type="submit" class="btn btn-outline-primary">Add</button></td>
+                      
                     <td></td>
-                       <td></td>
-                      </tr>     
-                  </form>
+                    <td></td>
+                      
+                </tr></form>
                   
+                <!-- TABLE DISPLAY -->
                 @foreach ($mutations as $mutation)
                 <tr class="{{ $mutation->show == 0 ? "invisiblerow" : "visiblerow"}}">
+                    
                 <td class="noline">{{$mutation->mutation_count}}</td>
+                    
                 <td class="noline"><a href="{{ url('balances')}}/{{ $balance->balance_code }}/{{$mutation->mutation_count}}">{{$mutation->versions->last()->version_count}}</a></td>
-                <td>{{$mutation->dated_at}}</td>
-                <td>&euro;{{$mutation->size}}</td>                    
+                    
+                <td>{{date('d-m-Y', strtotime($mutation->dated_at))}}</td>
+                    
+                <td>&euro;{{$mutation->size}}</td>
+                    
                 <td>{{$mutation->description}}</td>
-                    <td></td>
+                
+                <td>{{$mutation->user->balances->where('id', $balance->id)->pluck('pivot.nickname')->first()}}</td>
+                    
                 <td></td>
                     
                 @foreach($users as $user)
-                <td></td>
+                <td>{{$user->mutations->where('id',$mutation->id)->pluck('pivot.weight')->first()}}</td>
                 @endforeach
                     
                 <td><a href="{{ url('balances')}}/{{ $balance->balance_code}}/edit/{{$mutation->mutation_count}}" role="button" onclick="contentEdit()"><img src="../../public/images/edit_1.png" height="20" width="20"></a></td>

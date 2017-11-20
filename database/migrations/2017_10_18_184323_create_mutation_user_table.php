@@ -16,6 +16,7 @@ class CreateMutationUserTable extends Migration
          Schema::create('mutation_user', function (Blueprint $table) {
             $table->integer('mutation_id');
             $table->integer('user_id');
+            $table->integer('weight')->default(0);
             $table->primary(['mutation_id','user_id']);
         });
     }

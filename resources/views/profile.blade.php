@@ -20,7 +20,13 @@
 <input type="text" class="form-control" id="email" name="email" placeholder="new email" required>    
 </div> 
 &nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Submit</button>
-</form>   
+</form>
+    
+     @if ($errors->has('email'))
+        <span class="help-block">
+        {{ $errors->first('email') }}
+        </span>
+    @endif
 <br>
     
 <h5>IBAN</h5>    

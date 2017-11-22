@@ -20,7 +20,7 @@ class CreateVersionsTable extends Migration
             $table->string('updatetype');
             $table->integer('editor_id');
             $table->datetime('dated_at')->nullable();
-            $table->integer('user_id');
+            $table->integer('user_id')->nullable();
             $table->float('size',99,2)->nullable();
             $table->string('description')->nullable();
             $table->timestamps();

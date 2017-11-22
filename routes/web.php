@@ -37,7 +37,7 @@ Route::get('/balances/{balance}', 'BalanceController@index');
 
 Route::post('/balances/{balance}', 'MutationController@create');
 
-Route::get('/balances/{balance}/edit/{mutation}', 'MutationController@edit');
+Route::post('/balances/{balance}/edit/{mutation}', 'MutationController@edit');
     
 Route::get('/balances/{balance}/delete/{mutation}', 'MutationController@delete');
 

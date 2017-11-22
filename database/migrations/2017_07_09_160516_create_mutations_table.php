@@ -17,7 +17,6 @@ class CreateMutationsTable extends Migration
             $table->increments('id');
             $table->integer('mutation_count');
             $table->integer('balance_id');
-            $table->integer('version_id');
             $table->integer('user_id');
             $table->datetime('dated_at')->nullable();
             $table->float('size',99,2)->nullable();

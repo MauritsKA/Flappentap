@@ -30,7 +30,6 @@ class MutationController extends Controller
         $mutation = Mutation::create([
             'balance_id' => $balance->id,
             'mutation_count' => $mutation_count,
-            'version_id' => 1,
             'user_id' =>  request('user'),
             'dated_at' => request('date'),
             'size' => request('size'),
@@ -44,8 +43,8 @@ class MutationController extends Controller
             'mutation_id' => $mutation_id,
             'version_count' => 1,
             'updatetype' => "create",
-            'user_id' => Auth::user()->id,
-            'editor_id' => request('user'),
+            'user_id' => request('user'),
+            'editor_id' => Auth::user()->id,
             'dated_at' => request('date'),
             'size' => request('size'),
             'description' => request('description'),
@@ -62,6 +61,43 @@ class MutationController extends Controller
         return back()->withInput();
     }
     
+    public function edit(Balance $balance, $mutation_count)
+    { 
+        
+        $mutation = Mutation::where('balance_id', $balance->id)->where('mutation_count',$mutation_count)->get()->first();
+        
+        $version = Version::orderBy('version_count', 'desc')->where('mutation_id', $mutation->id)->first();
+        
+        Mutation::find($mutation->id)->update([
+            'user_id'=>request('user'), 
+            'dated_at' => request('date'),
+            'size' => request('size'),
+            'description' => request('description')
+        ]);
+        
+        $version = Version::create([
+            'mutation_id' => $mutation->id,
+            'version_count' => (1+$version->version_count),
+            'updatetype' => "edit",
+            'user_id' => request('user'),
+            'editor_id' => Auth::user()->id,
+            'dated_at' => request('date'),
+            'size' => request('size'),
+            'description' => request('description'),
+        ]);
+        
+        // Nu op 0 gezet verwijderen, aanpassen als weight anders is en anders niet aanpassen
+        $users = $balance->users;
+        foreach($users as $user){
+            if(request($user->id) != 0 || null){
+            $mutation->users()->attach($user->id);
+            $mutation->users()->updateExistingPivot($user->id, ['weight' => request($user->id)]);
+            }
+        }
+        
+        return back();
+    }
+    
     public function delete(Balance $balance, $mutation_count)
     { 
       
@@ -76,7 +112,8 @@ class MutationController extends Controller
             'mutation_id' => $mutation->id,
             'version_count' => (1+$version->version_count),
             'updatetype' => "delete",
-            'user_id' => Auth::user()->id,
+            'user_id' => $version->user->id,
+            'editor_id' => Auth::user()->id,
             'dated_at' => $version->dated_at,
             'size' => $version->size,
             'description' => $version->description,

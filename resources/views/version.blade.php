@@ -40,17 +40,32 @@
                       
                 <td>{{date('d-m-Y H:i:s', strtotime($version->updated_at))}}</td>
                       
-                <td>{{$version->user->balances->where('id', $balance->id)->pluck('pivot.nickname')->first()}}</td>
+                <td>{{$version->editor->balances->where('id', $balance->id)->pluck('pivot.nickname')->first()}}</td>
                       
                 <td>{{date('d-m-Y', strtotime($version->dated_at))}}</td>
-                      
-                <td>{{$version->editor->balances->where('id', $balance->id)->pluck('pivot.nickname')->first()}}</td>
+                
+                @if($version->updatetype != "delete")
+                <td>{{$version->user->balances->where('id', $balance->id)->pluck('pivot.nickname')->first()}}</td>
                       
                 <td>{{$version->size}}</td>
                       
                 <td>{{$version->description}}</td>    
             
-                <td>{{$version->mutation->users->pluck('name','pivot.weight')}}</td>
+                <td>
+                @foreach($users = $version->mutation->users as $user)
+                <span>{{$user->pivot->weight}}x {{$user->balances->where('id', $balance->id)->pluck('pivot.nickname')->first()}}</span>
+                @endforeach
+                </td>
+                      
+                @else
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                      
+                @endif
+               
+               
                       
                   </tr>
                     @endforeach 

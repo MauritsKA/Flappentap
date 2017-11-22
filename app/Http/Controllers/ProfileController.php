@@ -23,15 +23,22 @@ class ProfileController extends Controller
         return view('profile', compact('user'));
         }
     
-    public function email()
+    public function email(Request $request)
     {
-        Auth::user()->update(['email'=>request('email')]);        
-        return back();
+        
+        $this->validate(request(), [
+        'email' => 'required|unique:users',
+        ]);
+        
+        if (User::where('email', request('email'))->first() == null){
+        Auth::user()->update(['email'=>request('email')]);
+            return back();
+        }
+        
     }
     
     public function iban()
     {
-        //dd(Auth::user()->iban);
         Auth::user()->update(['iban'=>request('iban')]);        
         return back();
     }

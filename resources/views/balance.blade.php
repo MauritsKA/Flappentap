@@ -59,7 +59,7 @@
     
   <h4>Mutations</h4>
           <div class="table-responsive">
-            <table class="table table-striped">
+            <table id="mutationtable" class="table table-striped">
               <thead>
                  <tr>
                 <th style="min-width:10px; max-width:10px;">#</th>
@@ -81,12 +81,12 @@
               <tbody> 
                   
                <!-- TABLE FORM -->
-                  <form class="form-inline" method="POST" action="{{ url('balances')}}/{{ $balance->balance_code}}">
+                  <form class="form-inline" id="mutationform" method="POST" action="{{ url('balances')}}/{{ $balance->balance_code}}">
                     {{ csrf_field() }}
                   <tr>
                       
-                  <td></td> 
-                  <td></td> 
+                  <td id="Mid"></td> 
+                  <td id="Vid"></td> 
                
                   <td> <input type="date" class="form-control" id="date" name="date" placeholder="Date"></td> 
                       
@@ -94,9 +94,9 @@
                       
                     <td><textarea class="form-control" id="description" name="description" placeholder="Description" rows="1"></textarea></td> 
                        
-                    <td><select class="custom-select" name="user">
+                    <td><select class="custom-select" name="user" id="user">
                         @foreach($users as $user)
-                        <option value="{{$user->id}}">{{$user->pivot->nickname}}</option>
+                        <option id="{{$user->id}}" value="{{$user->id}}">{{$user->pivot->nickname}}</option>
                         @endforeach
                         </select>
                     </td>
@@ -104,20 +104,20 @@
                     <td></td>
                       
                 @foreach($users as $user)
-                <td><input type="number" step="1"  class="form-control" id="{{$user->id}}" name="{{$user->id}}"></td>
+                <td><input type="number" step="1"  class="form-control" id="u{{$user->id}}" name="{{$user->id}}"></td>
                 @endforeach
             
                       
-                  <td> <button type="submit" class="btn btn-outline-primary">Add</button></td>
+                  <td> <button type="submit" class="btn btn-outline-primary" id="add">Add</button></td>
                       
-                    <td></td>
+                    <td><a  class="btn btn-link" onclick="clearform('{{ url('balances')}}/{{ $balance->balance_code}}');return false;">clear</a></td>
                     <td></td>
                       
                 </tr></form>
                   
                 <!-- TABLE DISPLAY -->
                 @foreach ($mutations as $mutation)
-                <tr class="{{ $mutation->show == 0 ? "invisiblerow" : "visiblerow"}}">
+                <tr id="mut{{$mutation->mutation_count}}" class="{{ $mutation->show == 0 ? "invisiblerow" : "visiblerow"}}">
                     
                 <td class="noline">{{$mutation->mutation_count}}</td>
                     
@@ -137,7 +137,7 @@
                 <td>{{$user->mutations->where('id',$mutation->id)->pluck('pivot.weight')->first()}}</td>
                 @endforeach
                     
-                <td><a href="{{ url('balances')}}/{{ $balance->balance_code}}/edit/{{$mutation->mutation_count}}" role="button" onclick="contentEdit()"><img src="../../public/images/edit_1.png" height="20" width="20"></a></td>
+                <td><a onclick="contentEdit('{{$mutation->mutation_count}}','{{ url('balances')}}/{{ $balance->balance_code}}','{{$mutation->mutation_count}}')"><img src="../../public/images/edit_1.png" height="20" width="20"></a></td>
                 
                 
                 <td class="{{ $mutation->show == 0 ? "invisibletd" : "visibletd"}}"><a onclick="return confirm('Are you sure?')" href="{{ url('balances')}}/{{ $balance->balance_code}}/delete/{{$mutation->mutation_count}}" role="button"><img src="../../public/images/trash_1.png" height="25" width="25"></a></td>
@@ -165,6 +165,47 @@
                  document.getElementById("upload-form").submit();
             }
         });
+</script>
+
+<script>
+function contentEdit(mutid,link,mutcount){
+    
+    var countTD=$("#mutationtable > tbody > tr:first > td").length;
+    
+    var date = $('#mut'+mutid+' td:nth-child(3)').text(); 
+    var size = $('#mut'+mutid+' td:nth-child(4)').text().substring(1);
+    var description = $('#mut'+mutid+' td:nth-child(5)').text();
+    var user = $('#mut'+mutid+' td:nth-child(6)').text();
+    var newdate = date.split("-").reverse().join("-");
+    var userid = $('option:contains("'+user+'")').attr('id');
+    
+    var users = [];
+    for (var i=8; i < countTD-1; i++){
+   users.push($('#mut'+mutid+' td:nth-child('+i+')').text());
+    }
+    
+    $('#mutationform').prop('action', link+'/edit/'+mutcount);
+    $("#Mid").text(mutid);
+    $("#date").val(newdate);
+    $("#size").val(size);
+    $("#description").text(description);
+    $("#user").val(userid);
+    for (var i=1; i < countTD-9; i++){
+    $("#u"+i).val(users[i-1]);
+    }
+    $("#add").text("edit");
+}    
+</script>
+
+<script>
+function clearform(link){
+    $("#mutationform")[0].reset();
+    $('#description').val('');
+    $("#Mid").text('');
+    $("#add").text("add");
+    $('#mutationform').prop('action', link);
+  return false; // prevent submitting
+};
 </script>
 
 <script>

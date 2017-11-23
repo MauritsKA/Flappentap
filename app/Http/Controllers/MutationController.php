@@ -52,9 +52,10 @@ class MutationController extends Controller
         
         $users = $balance->users;
         foreach($users as $user){
-            if(request($user->id) != 0 || null){
+            $weight = request($user->id);
+            if($weight != 0 || null){
             $mutation->users()->attach($user->id);
-            $mutation->users()->updateExistingPivot($user->id, ['weight' => request($user->id)]);
+            $mutation->users()->updateExistingPivot($user->id, ['weight' => $weight]);
             }
         }
         
@@ -86,12 +87,18 @@ class MutationController extends Controller
             'description' => request('description'),
         ]);
         
-        // Nu op 0 gezet verwijderen, aanpassen als weight anders is en anders niet aanpassen
+        
         $users = $balance->users;
         foreach($users as $user){
-            if(request($user->id) != 0 || null){
+            $weight = request($user->id);
+            
+            if($mutation->users->contains($user->id)){
+            $mutation->users()->detach($user->id);
+            }
+            
+            if($weight != 0 || null){
             $mutation->users()->attach($user->id);
-            $mutation->users()->updateExistingPivot($user->id, ['weight' => request($user->id)]);
+            $mutation->users()->updateExistingPivot($user->id, ['weight' => $weight]);
             }
         }
         

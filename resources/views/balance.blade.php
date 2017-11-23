@@ -194,6 +194,10 @@ function contentEdit(mutid,link,mutcount){
     $("#u"+i).val(users[i-1]);
     }
     $("#add").text("edit");
+    
+    var $form = $('form');
+    editformstate = setform(); 
+    return editformstate;
 }    
 </script>
 
@@ -206,6 +210,36 @@ function clearform(link){
     $('#mutationform').prop('action', link);
   return false; // prevent submitting
 };
+</script>
+
+<script>
+    
+function setform(){
+    var $form = $('form');
+    var setForm = $form.serialize();
+    return setForm;
+}
+   
+var formstate = setform();
+var editformstate = "";
+
+    
+$('#mutationform').submit(function(e) {
+var $form = $('form');
+if ($form.serialize() !== formstate) {
+    if ($form.serialize() !== editformstate) {
+    } else {
+    alert('You did not change any value');
+    e.preventDefault();
+    return false; 
+    }
+} else {
+    alert('You did not change any value');
+    e.preventDefault();
+    return false; 
+}
+});
+
 </script>
 
 <script>

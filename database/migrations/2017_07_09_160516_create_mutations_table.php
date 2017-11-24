@@ -20,6 +20,7 @@ class CreateMutationsTable extends Migration
             $table->integer('user_id');
             $table->datetime('dated_at')->nullable();
             $table->float('size',99,2)->nullable();
+            $table->float('PP',99,2)->nullable();
             $table->string('description')->nullable();
             $table->boolean('show');
             $table->timestamps();

@@ -37,10 +37,8 @@ class MutationController extends Controller
             'show' => true,
         ]);
         
-        $mutation_id= Mutation::orderBy('id', 'desc')->where('balance_id', $balance->id)->first()->id;
-        
         $version = Version::create([
-            'mutation_id' => $mutation_id,
+            'mutation_id' => $mutation->id,
             'version_count' => 1,
             'updatetype' => "create",
             'user_id' => request('user'),
@@ -54,17 +52,18 @@ class MutationController extends Controller
         foreach($users as $user){
             $weight = request($user->id);
             if($weight != 0 || null){
-            $mutation->users()->attach($user->id);
-            $mutation->users()->updateExistingPivot($user->id, ['weight' => $weight]);
+            $version->users()->attach($user->id);
+            $version->users()->updateExistingPivot($user->id, ['weight' => $weight]);
             }
         }
+        
+        Mutation::find($mutation->id)->update(['PP'=>($mutation->size)/($version->users->sum('pivot.weight'))]);
         
         return back()->withInput();
     }
     
     public function edit(Balance $balance, $mutation_count)
     { 
-        
         $mutation = Mutation::where('balance_id', $balance->id)->where('mutation_count',$mutation_count)->get()->first();
         
         $version = Version::orderBy('version_count', 'desc')->where('mutation_id', $mutation->id)->first();
@@ -90,17 +89,18 @@ class MutationController extends Controller
         
         $users = $balance->users;
         foreach($users as $user){
+            
             $weight = request($user->id);
             
-            if($mutation->users->contains($user->id)){
-            $mutation->users()->detach($user->id);
-            }
-            
             if($weight != 0 || null){
-            $mutation->users()->attach($user->id);
-            $mutation->users()->updateExistingPivot($user->id, ['weight' => $weight]);
+            $version->users()->attach($user->id);
+            $version->users()->updateExistingPivot($user->id, ['weight' => $weight]);
             }
         }
+        
+        Mutation::find($mutation->id)->update(['PP'=>($mutation->size)/($version->users->sum('pivot.weight'))]);
+        
+        $mutation->update(['show'=>true]);
         
         return back();
     }

@@ -65,7 +65,7 @@
                 <th style="min-width:10px; max-width:10px;">#</th>
                 <th style="min-width:10px; max-width:10px;">V</th>
                 <th style="min-width:180px; max-width:180px;">Dated at</th>
-                <th style="min-width:120px; max-width:120px;">Size</th>
+                <th style="min-width:150px; max-width:120px;">Size</th>
                 <th style="min-width:200px; max-width:200px;">Description</th>
                 <th>User</th>
                 <th>PP</th>
@@ -81,16 +81,16 @@
               <tbody> 
                   
                <!-- TABLE FORM -->
-                  <form class="form-inline" id="mutationform" method="POST" action="{{ url('balances')}}/{{ $balance->balance_code}}">
+                  <form class="form-inline" id="mutationform" method="POST" action="{{ url('balances')}}/{{ $balance->balance_code}}" >
                     {{ csrf_field() }}
-                  <tr>
+                  <tr id="formrow">
                       
                   <td id="Mid"></td> 
                   <td id="Vid"></td> 
                
                   <td> <input type="date" class="form-control" id="date" name="date" placeholder="Date"></td> 
                       
-                  <td><input type="number" step="0.01"  class="form-control" id="size" name="size" placeholder="Size"></td>
+                  <td><input onchange="setprice()" type="number" step="0.01"  class="form-control" id="size" name="size" placeholder="Size"></td>
                       
                     <td><textarea class="form-control" id="description" name="description" placeholder="Description" rows="1"></textarea></td> 
                        
@@ -101,10 +101,10 @@
                         </select>
                     </td>
                       
-                    <td></td>
+                    <td id="PP"></td>
                       
                 @foreach($users as $user)
-                <td><input type="number" step="1"  class="form-control" id="u{{$user->id}}" name="{{$user->id}}"></td>
+                <td><input onchange="setprice()" type="number" step="1"  min="0" class="form-control" id="u{{$user->id}}" name="{{$user->id}}"></td>
                 @endforeach
             
                       
@@ -131,10 +131,10 @@
                 
                 <td>{{$mutation->user->balances->where('id', $balance->id)->pluck('pivot.nickname')->first()}}</td>
                     
-                <td></td>
+                <td>&euro;{{$mutation->PP}}</td>
                     
                 @foreach($users as $user)
-                <td>{{$user->mutations->where('id',$mutation->id)->pluck('pivot.weight')->first()}}</td>
+                <td>{{$user->mutations->where('id',$mutation->versions->sortByDesc('id')->first()->id)->pluck('pivot.weight')->first()}}</td>
                 @endforeach
                     
                 <td><a onclick="contentEdit('{{$mutation->mutation_count}}','{{ url('balances')}}/{{ $balance->balance_code}}','{{$mutation->mutation_count}}')"><img src="../../public/images/edit_1.png" height="20" width="20"></a></td>
@@ -176,11 +176,12 @@ function contentEdit(mutid,link,mutcount){
     var size = $('#mut'+mutid+' td:nth-child(4)').text().substring(1);
     var description = $('#mut'+mutid+' td:nth-child(5)').text();
     var user = $('#mut'+mutid+' td:nth-child(6)').text();
+    var PP = $('#mut'+mutid+' td:nth-child(7)').text();
     var newdate = date.split("-").reverse().join("-");
     var userid = $('option:contains("'+user+'")').attr('id');
     
     var users = [];
-    for (var i=8; i < countTD-1; i++){
+    for (var i=8; i < countTD-2; i++){
    users.push($('#mut'+mutid+' td:nth-child('+i+')').text());
     }
     
@@ -188,6 +189,7 @@ function contentEdit(mutid,link,mutcount){
     $("#Mid").text(mutid);
     $("#date").val(newdate);
     $("#size").val(size);
+    $("#PP").text(PP);
     $("#description").text(description);
     $("#user").val(userid);
     for (var i=1; i < countTD-9; i++){
@@ -202,6 +204,32 @@ function contentEdit(mutid,link,mutcount){
 </script>
 
 <script>
+function setprice(){
+    
+    var countTD=$("#mutationtable > tbody > tr:first > td").length;
+    var users = [];
+    for (var i=1; i < countTD-9; i++){
+    var weight = parseInt($("#u"+i).val());
+    console.log(weight);
+    if(isNaN(weight)){var weight=0;}
+    users.push(weight);
+    }
+    console.log(users);
+    function getSum(total, num) {
+    return total + num;
+    }
+    
+    var size = parseInt($("#size").val());
+    if(isNaN(size)){var size=0;}
+    var sum = users.reduce(getSum);
+    if(sum !== 0){
+    $("#PP").text('\u20AC'+ Math.round((size/sum)*100)/100);
+    }
+    console.log(sum);
+}
+</script>
+
+<script>
 function clearform(link){
     $("#mutationform")[0].reset();
     $('#description').val('');
@@ -213,7 +241,6 @@ function clearform(link){
 </script>
 
 <script>
-    
 function setform(){
     var $form = $('form');
     var setForm = $form.serialize();

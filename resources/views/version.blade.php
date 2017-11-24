@@ -23,6 +23,7 @@
                 <th style="min-width:120px; max-width:120px;">Dated at</th>
                 <th style="min-width:120px; max-width:120px;">Payed by</th>
                 <th style="min-width:80px; max-width:80px;">Size</th>
+                <th>PP</th>
                 <th style="min-width:120px; max-width:120px;">Description</th>
                 <th style="min-width:200px; ">Over</th>
                 </tr>
@@ -48,11 +49,13 @@
                 <td>{{$version->user->balances->where('id', $balance->id)->pluck('pivot.nickname')->first()}}</td>
                       
                 <td>{{$version->size}}</td>
+                
+                <td>&euro;{{round(($version->size)/($version->users->sum('pivot.weight')),2)}}</td>
                       
                 <td>{{$version->description}}</td>    
             
                 <td>
-                @foreach($users = $version->mutation->users as $user)
+                @foreach($users = $version->users as $user)
                 <span>{{$user->pivot->weight}}x {{$user->balances->where('id', $balance->id)->pluck('pivot.nickname')->first()}}</span>
                 @endforeach
                 </td>

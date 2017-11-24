@@ -32,10 +32,6 @@ class Mutation extends Model
         return $this->hasMany(Version::class);
     }
     
-    public function users(){
-       return $this->belongsToMany(User::class)->withPivot('weight');
-    } 
-    
     public function item()
     {
         return $this->belongsTo(Item::class);

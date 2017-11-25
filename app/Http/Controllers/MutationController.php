@@ -113,18 +113,24 @@ class MutationController extends Controller
         if($mutation->show == 1){
         $mutation->update(['show'=>false]);
         
-        $version = Version::orderBy('version_count', 'desc')->where('mutation_id', $mutation->id)->first();
+        $oldversion = Version::orderBy('version_count', 'desc')->where('mutation_id', $mutation->id)->first();
             
         $version = Version::create([
             'mutation_id' => $mutation->id,
-            'version_count' => (1+$version->version_count),
+            'version_count' => (1+$oldversion->version_count),
             'updatetype' => "delete",
-            'user_id' => $version->user->id,
+            'user_id' => $oldversion->user->id,
             'editor_id' => Auth::user()->id,
-            'dated_at' => $version->dated_at,
-            'size' => $version->size,
-            'description' => $version->description,
+            'dated_at' => $oldversion->dated_at,
+            'size' => $oldversion->size,
+            'description' => $oldversion->description,
         ]);
+        }
+        
+        foreach($oldversion->users as $user){
+            $weight = $oldversion->users->where('id',$user->id)->pluck('pivot.weight')->first();
+            $version->users()->attach($user->id);
+            $version->users()->updateExistingPivot($user->id, ['weight' => $weight]);
         }
         
         return back();

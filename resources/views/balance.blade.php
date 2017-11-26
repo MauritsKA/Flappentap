@@ -151,6 +151,7 @@
                 
             </table>
           </div>
+        <a href="{{url('balances')}}/{{$balance->balance_code}}/history">History</a>
     
 </div>
 

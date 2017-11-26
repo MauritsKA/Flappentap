@@ -24,4 +24,21 @@ class VersionController extends Controller
         
         return view('version', compact('versions', 'mutation', 'balance'));
     }
+    
+    public function history(Balance $balance)
+    {    
+        $user = Auth::user();
+        $mutations = $balance->mutations;
+        $users = $balance->users;
+        
+        $versions=[];
+        foreach($mutations as $mutation){
+            $versionspermutation = $mutation->versions;
+            $versions= $versionspermutation->merge($versions);
+        }
+        
+        $versions = $versions->sortByDesc('updated_at')->all();
+        
+        return view('history', compact('versions', 'balance'));
+    }
 }

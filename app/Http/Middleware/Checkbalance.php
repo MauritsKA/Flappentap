@@ -17,7 +17,7 @@ class Checkcompany
      */
     public function handle($request, Closure $next)
     {   
-         if (Auth::user()->companies->find($request->company->id) != null )
+         if (Auth::user()->balances->find($request->balance->id) != null )
 		{
 			return $next($request);
 		}

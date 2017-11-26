@@ -48,7 +48,7 @@
                 @if($version->updatetype != "delete")
                 <td>{{$version->user->balances->where('id', $balance->id)->pluck('pivot.nickname')->first()}}</td>
                       
-                <td>{{$version->size}}</td>
+                <td>&euro;{{$version->size}}</td>
                 
                 <td>&euro;{{round(($version->size)/($version->users->sum('pivot.weight')),2)}}</td>
                       

@@ -6,7 +6,12 @@
       <div class="mt-3">
         <h1>Profile</h1>
       </div>
-    <hr> 
+    <hr>
+    @if (session('status'))
+        <div class="col-sm-4 alert alert-success">
+        {{ session('status') }}
+        </div>
+    @endif
  
 <h5>Hi {{ $user->name}} </h5>
 <br>
@@ -39,8 +44,27 @@
 </div> 
 &nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Submit</button>
 </form>   
+<br>
     
+<h5>Password</h5>    
 
+<form class="form-inline" method="POST" id="passwordform" action="{{ url('profile/password')}}">
+{{ csrf_field() }}  
+
+<div class="form-group">
+<input type="password" class="form-control" id="password" name="password" placeholder="new password" required>    
+</div>   &nbsp;&nbsp;&nbsp;
+<div class="form-group">
+<input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="confirm password" required>    
+</div> 
+&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Submit</button>
+</form>   
+    
+@if ($errors->has('password'))
+        <span class="help-block">
+        {{ $errors->first('password') }}
+        </span>
+@endif    
     
 </div>
 

@@ -17,6 +17,7 @@ Route::post('/profile/email', 'ProfileController@email');
 
 Route::post('/profile/iban', 'ProfileController@iban');
 
+Route::post('/profile/password', 'ProfileController@password');
 
 ///// Dashboard overview
 Route::get('/dashboard', 'DashboardController@index');
@@ -43,6 +44,8 @@ Route::get('/balances/{balance}/delete/{mutation}', 'MutationController@delete')
 
 ///// Versions
 
+Route::get('/balances/{balance}/history', 'VersionController@history');
+
 Route::get('/balances/{balance}/{mutation}', 'VersionController@index');
 
 ///// Personal overview
@@ -58,7 +61,7 @@ Route::post('/company/create', 'CompanyController@create');
 
 
 //////////////////////////// Restricted per company 
-Route::group(["middleware" => 'checkcompany'], function(){
+Route::group(["middleware" => 'checkbalance'], function(){
 
 
 ///// Company mutation overview

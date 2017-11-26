@@ -27,20 +27,37 @@ class ProfileController extends Controller
     {
         
         $this->validate(request(), [
-        'email' => 'required|unique:users',
+        'email' => 'required|string|email|max:255|unique:users',
         ]);
         
-        if (User::where('email', request('email'))->first() == null){
+        if(User::where('email', request('email'))->first() == null){
         Auth::user()->update(['email'=>request('email')]);
-            return back();
         }
+        
+        return back()->with('status', 'Succesfully changed your email!');
+        
+    }
+    
+    public function password(Request $request)
+    {
+        
+        $this->validate(request(), [
+        'password' => 'required|string|min:6|confirmed',
+        ]);
+        
+        
+        if ($request->password == $request->checkpassword){
+        Auth::user()->update(['password'=> bcrypt($request->password)]);
+        }
+        
+        return back()->with('status', 'Succesfully changed your password!');
         
     }
     
     public function iban()
     {
         Auth::user()->update(['iban'=>request('iban')]);        
-        return back();
+        return back()->with('status', 'Succesfully changed your IBAN!');
     }
 }
 

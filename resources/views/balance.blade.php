@@ -30,13 +30,13 @@
       </div>
     <hr class="backdropline"> 
             
-        <div class="col-md-6">
-        <label>Balance</label>             
+        <div class="col-md-6">            
             <div class="table-responsive">
             <table class="table table-striped">
                 
               <thead>
-                 <tr> </tr>
+                 <tr><td>User</td><td>Balance</td>
+                  </tr>
               </thead>
                 
               <tbody>
@@ -45,7 +45,7 @@
             <tr>
                
                  <td><button type="button" class="btn btn-link" onclick="openUsermodal('{{$user->name}}','{{$user->pivot->nickname}}','{{$user->id}}','{{$user->iban}}')">{{$user->pivot->nickname}}</button></td>
-        
+                <td>&euro;{{$creditoverview[$user->id-1]-$debtoverview[$user->id-1]}}</td>
             </tr>            
                 @endforeach    
              </tbody>

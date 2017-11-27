@@ -112,7 +112,7 @@ class MutationController extends Controller
         
         if($mutation->show == 1){
         $mutation->update(['show'=>false]);
-        
+            
         $oldversion = Version::orderBy('version_count', 'desc')->where('mutation_id', $mutation->id)->first();
             
         $version = Version::create([
@@ -125,12 +125,12 @@ class MutationController extends Controller
             'size' => $oldversion->size,
             'description' => $oldversion->description,
         ]);
-        }
-        
+               
         foreach($oldversion->users as $user){
             $weight = $oldversion->users->where('id',$user->id)->pluck('pivot.weight')->first();
             $version->users()->attach($user->id);
             $version->users()->updateExistingPivot($user->id, ['weight' => $weight]);
+        }
         }
         
         return back();

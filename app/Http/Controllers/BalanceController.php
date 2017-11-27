@@ -18,11 +18,35 @@ class BalanceController extends Controller
     
     public function index(Balance $balance)
     {   
-        $user = Auth::user();
+        
         $mutations = Mutation::where('balance_id', $balance->id)->orderBy('updated_at','desc')->get()->all();
         $users = $balance->users;
         
-        return view('balance', compact('balance','user','mutations','users'));
+        $totaldebt = 0;
+        $totalcredit = 0;
+        $debtoverview=[];
+        $creditoverview=[];
+        foreach($users as $user){
+            foreach($mutations as $mutation){
+                $version = $mutation->versions->last();
+                
+                if($version->updatetype != 'delete'){
+                    $debt = $version->users->where('id',$user->id)->pluck('pivot.weight')->first()*$mutation->PP;
+                    $totaldebt = $debt+$totaldebt;
+                
+                    if($version->user->id == $user->id){
+                    $totalcredit = $version->size+$totalcredit; 
+                    }
+                }
+                
+            }
+            array_push($debtoverview,$totaldebt);
+            array_push($creditoverview,$totalcredit);
+            $totaldebt = 0;
+            $totalcredit = 0;
+        }
+        
+        return view('balance', compact('balance','user','mutations','users','creditoverview','debtoverview'));
     }
     
     public function form()

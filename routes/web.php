@@ -32,6 +32,9 @@ Route::post('/balances/edit/{balance}', 'BalanceController@edit');
 
 Route::post('/balances/users/{balance}/{user}', 'BalanceController@edituser');
 
+/////Invitations
+Route::get('/invitation/{invitation}', 'BalanceController@invitation');
+
 ///// Mutations
 
 Route::get('/balances/{balance}', 'BalanceController@index');

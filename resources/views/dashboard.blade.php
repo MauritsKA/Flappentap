@@ -6,8 +6,13 @@
       <div class="mt-3">
         <h1>Dashboard</h1>
       </div>
-
 <hr>
+    
+    @if (session('status'))
+        <div class="col-sm-4 alert alert-success">
+        {{ session('status') }}
+        </div>
+    @endif
     
     <a class="btn btn-primary" href="balances/create" role="button">Add new balance</a>
     <br> <br>

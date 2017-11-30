@@ -5,15 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Balance;
 use App\Mutation;
+use App\Invitation;
 use Storage;
 use Auth;
-use user;
+use App\Mail\Invitationmail;
 
 class BalanceController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => ['invitation']]);
     }
     
     public function index(Balance $balance)
@@ -45,7 +46,6 @@ class BalanceController extends Controller
             $totaldebt = 0;
             $totalcredit = 0;
         }
-        
         return view('balance', compact('balance','user','mutations','users','creditoverview','debtoverview'));
     }
     
@@ -55,7 +55,7 @@ class BalanceController extends Controller
     }
     
     public function create()
-    {
+    {        
        $user = Auth::user();
        
        $balance = Balance::create([
@@ -78,7 +78,69 @@ class BalanceController extends Controller
         $balance->users()->attach($user->id);
         $balance->users()->updateExistingPivot($user->id, ['nickname' => $user->name]);
         
-        return redirect('/dashboard');
+        $i = 1;
+        while(request('email'.$i)){
+            $nickname = request('member'.$i);
+            $email = request('email'.$i);
+            $i++;
+            
+            $checkuser = \App\User::where('email',$email)->first();
+            if($checkuser){
+                $user_id = $checkuser->id;
+            } else {
+                $user_id = null;
+            }
+            
+            $token = 'B'.$id.str_random(30);
+            while (\App\Invitation::where('token',$token)->first()){
+                $token = 'B'.$id.str_random(15);
+            } 
+            
+            $invitation = \App\Invitation::create([
+                'balance_id' => $id,
+                'email' => $email,
+                'nickname' => $nickname,
+                'user_id' => $user_id,
+                'token' => $token,
+            ]);
+            
+            $url = url('invitation').'/'.$token;
+            \Mail::to($email)->send(new Invitationmail($user,$balance,$url));
+        }
+        
+        return redirect('/dashboard')->with('status', 'Succesfully added balance!');
+    }
+    
+    public function invitation(Invitation $invitation){
+        $balance = $invitation->balance;
+        $user = $invitation->user;
+        if(!$user){
+        $user = \App\User::where('email',$invitation->email)->first();
+        }        
+
+        if(!$user){
+              //Force user to register and then continue
+        dd($invitation->nickname);
+        } else {
+            Auth::login($user);
+        }
+
+        if($user->email == Auth::user()->email){
+            
+            if(!$invitation->nickname){$nickname=$user->name;} else{ $nickname = $invitation->nickname;}
+            
+            if(!$balance->users()->where('id',$user->id)->first()){
+            $balance->users()->attach($user->id);
+            $balance->users()->updateExistingPivot($user->id, ['nickname' => $nickname]);
+            return redirect('/balances/'.$balance->balance_code)->with('status', 'Succesfully added to the balance!');
+            } 
+            else { 
+            return redirect('/balances/'.$balance->balance_code)->with('status', 'You already accepted the invitation.');
+            }
+            
+        } else{
+            return redirect('/dashboard');      
+        }
     }
     
     public function edit(Balance $balance)

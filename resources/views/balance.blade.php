@@ -29,6 +29,12 @@
             </div></h1>
       </div>
     <hr class="backdropline"> 
+    
+     @if (session('status'))
+        <div class="col-sm-4 alert alert-success">
+        {{ session('status') }}
+        </div>
+    @endif
             
         <div class="col-md-6">            
             <div class="table-responsive">
@@ -40,12 +46,14 @@
               </thead>
                 
               <tbody>
- 
-               @foreach($users as $user)
+            <?php $count=0 ?>
+               @foreach($users as $user) 
+                 
             <tr>
                
                  <td><button type="button" class="btn btn-link" onclick="openUsermodal('{{$user->name}}','{{$user->pivot->nickname}}','{{$user->id}}','{{$user->iban}}')">{{$user->pivot->nickname}}</button></td>
-                <td>&euro;{{$creditoverview[$user->id-1]-$debtoverview[$user->id-1]}}</td>
+                <td>&euro;{{$creditoverview[$count]-$debtoverview[$count]}}</td>
+                <?php $count++ ?>
             </tr>            
                 @endforeach    
              </tbody>
@@ -237,7 +245,7 @@ function clearform(link){
     $("#Mid").text('');
     $("#add").text("add");
     $('#mutationform').prop('action', link);
-  return false; // prevent submitting
+  return false; 
 };
 </script>
 

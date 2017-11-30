@@ -19,4 +19,8 @@ class Balance extends Model
     public function mutations(){
         return $this->hasMany(Mutation::class);
     }
+    
+    public function invitations(){
+        return $this->belongsToMany(Invitation::class);
+    }
 }

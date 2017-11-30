@@ -43,6 +43,10 @@ class User extends Authenticatable
        return $this->belongsToMany(Version::class)->withPivot('weight');
     } 
     
+    public function invitations(){
+        return $this->hasMany(Invitation::class);
+    }
+    
     public function versions(){
        return $this->belongsToMany(Version::class);
     } 

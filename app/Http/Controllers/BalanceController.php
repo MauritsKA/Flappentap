@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Balance;
 use App\Mutation;
 use App\Invitation;
 use Storage;
-use Auth;
 use App\Mail\Invitationmail;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Session;
+use Request;
 
 class BalanceController extends Controller
 {
@@ -19,7 +21,6 @@ class BalanceController extends Controller
     
     public function index(Balance $balance)
     {   
-        
         $mutations = Mutation::where('balance_id', $balance->id)->orderBy('updated_at','desc')->get()->all();
         $users = $balance->users;
         
@@ -112,17 +113,22 @@ class BalanceController extends Controller
     }
     
     public function invitation(Invitation $invitation){
+        
+        session(['urlinvite' => Request::url()]); 
         $balance = $invitation->balance;
         $user = $invitation->user;
         if(!$user){
         $user = \App\User::where('email',$invitation->email)->first();
-        }        
-
+        }    
+    
         if(!$user){
-              //Force user to register and then continue
-        dd($invitation->nickname);
+            Auth::logout();
+            
+            return redirect('/register');
         } else {
-            Auth::login($user);
+            if(!Auth::check()){
+            return redirect('/login');
+            }
         }
 
         if($user->email == Auth::user()->email){
@@ -132,7 +138,7 @@ class BalanceController extends Controller
             if(!$balance->users()->where('id',$user->id)->first()){
             $balance->users()->attach($user->id);
             $balance->users()->updateExistingPivot($user->id, ['nickname' => $nickname]);
-            return redirect('/balances/'.$balance->balance_code)->with('status', 'Succesfully added to the balance!');
+            return redirect('/balances/'.$balance->balance_code)->with('status', 'You are succesfully added to the balance!');
             } 
             else { 
             return redirect('/balances/'.$balance->balance_code)->with('status', 'You already accepted the invitation.');

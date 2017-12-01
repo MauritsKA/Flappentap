@@ -33,6 +33,7 @@ class Invitationmail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.invite');
+        return $this->subject($this->user->name. ' invitated you to join \''.$this->balance->name.'\'')
+            ->markdown('emails.invite');
     }
 }

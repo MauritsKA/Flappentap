@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Mail\Welcome;
 use Auth;
+use Session;
 
 class RegisterController extends Controller
 {
@@ -30,6 +31,11 @@ class RegisterController extends Controller
      * @var string
      */
     protected $redirectTo = '/dashboard';
+    
+    protected function redirectTo()
+    {
+    return Session::get('urlinvite');
+    }
 
     /**
      * Create a new controller instance.
@@ -38,6 +44,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
+        $this->redirectTo = url()->previous();
         $this->middleware('guest');
     }
 

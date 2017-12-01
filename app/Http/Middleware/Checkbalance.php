@@ -4,9 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Auth;
-use App\Company;
+use App\Balance;
 
-class Checkcompany
+class Checkbalance
 {
     /**
      * Handle an incoming request.
@@ -17,8 +17,11 @@ class Checkcompany
      */
     public function handle($request, Closure $next)
     {   
-         if (Auth::user()->balances->find($request->balance->id) != null )
-		{
+        if($request->balance == null){
+            return $next($request);
+        }
+        
+        if (Auth::user()->balances->find($request->balance->id) != null ){
 			return $next($request);
 		}
         

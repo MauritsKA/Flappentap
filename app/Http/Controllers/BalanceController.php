@@ -149,7 +149,7 @@ class BalanceController extends Controller
         }
     }
     
-    public function edit(Balance $balance)
+    public function editcover(Balance $balance)
     {
         $user = Auth::user();
         
@@ -177,5 +177,51 @@ class BalanceController extends Controller
         $balance->users()->updateExistingPivot($user_id, ['nickname' => request('newnickname')]);
         
         return back();
+    }
+    
+    public function balance(Balance $balance){
+        return view('balanceinfo', compact('balance'));
+    }
+    
+    public function edit(Balance $balance){
+        if(!request('balancename')){
+        
+        $user = Auth::user();
+        
+        $i = 1;
+        while(request('email'.$i)){
+            $nickname = request('member'.$i);
+            $email = request('email'.$i);
+            $i++;
+            
+            $checkuser = \App\User::where('email',$email)->first();
+            if($checkuser){
+                $user_id = $checkuser->id;
+            } else {
+                $user_id = null;
+            }
+            
+            $token = 'B'.$balance->id.str_random(30);
+            while (\App\Invitation::where('token',$token)->first()){
+                $token = 'B'.$balance->id.str_random(30);
+            } 
+            
+            $invitation = \App\Invitation::create([
+                'balance_id' => $balance->id,
+                'email' => $email,
+                'nickname' => $nickname,
+                'user_id' => $user_id,
+                'token' => $token,
+            ]);
+            
+            $url = url('invitation').'/'.$token;
+            \Mail::to($email)->send(new Invitationmail($user,$balance,$url));
+        }
+        
+        return redirect('/balances/'.$balance->balance_code)->with('status', 'Succesfully invited new user');
+        } else{
+         Balance::find($balance->id)->update(['name'=>request('balancename')]);  
+         return redirect('/balances/'.$balance->balance_code)->with('status', 'Succesfully changed balance name.');
+        }
     }
 }

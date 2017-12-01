@@ -17,7 +17,7 @@
                 <label class="btn-file">
                 <img style=" cursor: pointer; cursor: hand;" src="../../public/images/file_1.png" height="25" width="25">
                     
-                    <form id="upload-form" method="POST" action="{{ url('balances/edit')}}/{{$balance->balance_code}}" enctype="multipart/form-data">
+                    <form id="upload-form" method="POST" action="{{ url('balances/editcover')}}/{{$balance->balance_code}}" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <input accept="image/x-png, image/gif, image/jpeg" type="file" name="cover" id="cover" data-max-size="2097152" hidden >        
                     </form>
@@ -35,7 +35,7 @@
         {{ session('status') }}
         </div>
     @endif
-            
+        <div class="row"> 
         <div class="col-md-6">            
             <div class="table-responsive">
             <table class="table table-striped">
@@ -61,6 +61,9 @@
             </table>
           </div>
         </div>
+        <div  class="col-md-6">
+        </div>
+    </div>  
     
         <br>
     
@@ -110,9 +113,10 @@
                     </td>
                       
                     <td id="PP"></td>
-                      
+               <?php $i=1; ?>       
                 @foreach($users as $user)
-                <td><input onchange="setprice()" type="number" step="1"  min="0" class="form-control" id="u{{$user->id}}" name="{{$user->id}}"></td>
+                <td><input onchange="setprice()" type="number" step="1"  min="0" class="form-control" id="u{{$i}}" name="{{$user->id}}"></td>
+                <?php $i++; ?> 
                 @endforeach
             
                       
@@ -159,7 +163,8 @@
                 
             </table>
           </div>
-        <a href="{{url('balances')}}/{{$balance->balance_code}}/history">History</a>
+        <a href="{{url('balances')}}/{{$balance->balance_code}}/history">History</a><br>
+        <a href="{{url('balances')}}/{{$balance->balance_code}}/edit">Edit balance</a>
     
 </div>
 
@@ -180,6 +185,7 @@
 function contentEdit(mutid,link,mutcount){
     
     var countTD=$("#mutationtable > tbody > tr:first > td").length;
+    console.log(countTD);
     
     var date = $('#mut'+mutid+' td:nth-child(3)').text(); 
     var size = $('#mut'+mutid+' td:nth-child(4)').text().substring(1);
@@ -217,7 +223,7 @@ function setprice(){
     
     var countTD=$("#mutationtable > tbody > tr:first > td").length;
     var users = [];
-    for (var i=1; i < countTD-9; i++){
+    for (var i=1; i < countTD-8; i++){
     var weight = parseInt($("#u"+i).val());
     console.log(weight);
     if(isNaN(weight)){var weight=0;}
@@ -245,6 +251,7 @@ function clearform(link){
     $("#Mid").text('');
     $("#add").text("add");
     $('#mutationform').prop('action', link);
+    $("#PP").text('');
   return false; 
 };
 </script>

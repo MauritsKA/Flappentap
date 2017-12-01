@@ -38,7 +38,11 @@ Route::get('/balances/create', 'BalanceController@form');
 
 Route::post('/balances/create', 'BalanceController@create');
 
-Route::post('/balances/edit/{balance}', 'BalanceController@edit');
+Route::post('/balances/editcover/{balance}', 'BalanceController@editcover');
+    
+Route::get('/balances/{balance}/edit', 'BalanceController@balance');
+    
+Route::post('/balances/{balance}/edit', 'BalanceController@edit');
 
 Route::post('/balances/users/{balance}/{user}', 'BalanceController@edituser');
 

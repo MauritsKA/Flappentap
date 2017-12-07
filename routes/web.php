@@ -23,8 +23,10 @@ Route::post('/profile/iban', 'ProfileController@iban');
 
 Route::post('/profile/password', 'ProfileController@password');
 
-/////Invitations
+/////Invitations & approvals
 Route::get('/invitation/{invitation}', 'InvitationController@accept');
+
+Route::get('/approval/{approval}', 'InvitationController@approval');
 
 ///// Dashboard overview
 Route::get('/dashboard', 'DashboardController@index');

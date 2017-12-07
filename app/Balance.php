@@ -21,6 +21,10 @@ class Balance extends Model
     }
     
     public function invitations(){
-        return $this->belongsToMany(Invitation::class);
+        return $this->hasMany(Invitation::class);
+    }
+    
+     public function approvals(){
+        return $this->hasMany(Invitation::class);
     }
 }

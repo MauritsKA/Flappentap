@@ -49,7 +49,9 @@
             <table class="table table-striped">
                 
               <thead>
-                 <tr><td>User</td><td>Balance</td>
+                 <tr>
+                     <th>&nbsp;&nbsp;&nbsp;&nbsp;User</th>
+                     <th>Balance</th>
                   </tr>
               </thead>
                 
@@ -59,8 +61,8 @@
                  
             <tr>
                
-                 <td><button type="button" class="btn btn-link" onclick="openUsermodal('{{$user->name}}','{{$user->pivot->nickname}}','{{$user->id}}','{{$user->iban}}','{{$user->email}}')">{{$user->pivot->nickname}}</button></td>
-                <td>&euro;{{round($creditoverview[$count]-$debtoverview[$count],2)}}</td>
+                 <td style="vertical-align:middle;"><button type="button" class="btn btn-link" onclick="openUsermodal('{{$user->name}}','{{$user->pivot->nickname}}','{{$user->id}}','{{$user->iban}}','{{$user->email}}')">{{$user->pivot->nickname}}</button></td>
+                <td class="{{ $creditoverview[$count]-$debtoverview[$count] < 0 ? "negative" : "positive"}}" style="vertical-align:middle;">&euro;{{round($creditoverview[$count]-$debtoverview[$count],2)}}</td>
                 <?php $count++ ?>
             </tr>            
                 @endforeach    

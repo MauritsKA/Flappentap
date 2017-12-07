@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Balance;
 use App\Mutation;
 use App\Invitation;
+use App\Mail\Userdelete;
 use Storage;
 use App\Mail\Invitationmail;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +22,8 @@ class BalanceController extends Controller
     
     public function index(Balance $balance)
     {   
+        $user = Auth::user();
+        
         $mutations = Mutation::where('balance_id', $balance->id)->orderBy('updated_at','desc')->get();
     
         $otherusers = $balance->users->where('pivot.archived',false)->whereNotIn('id',$user->id);
@@ -147,7 +150,7 @@ class BalanceController extends Controller
     
     public function removeuser(Balance $balance, $user_id)
     {
-        $user=\App\User::where('id',$user_id)->get()->first();
+        $removeduser=\App\User::where('id',$user_id)->get()->first();
         $mutations = $balance->mutations; 
         
         $totaldebt = 0;
@@ -156,22 +159,44 @@ class BalanceController extends Controller
             $version = $mutation->versions->last();
                 
             if($version->updatetype != 'delete'){
-                $debt = $version->users->where('id',$user->id)->pluck('pivot.weight')->first()*$mutation->PP;
+                $debt = $version->users->where('id',$removeduser->id)->pluck('pivot.weight')->first()*$mutation->PP;
                 $totaldebt = $debt+$totaldebt;
                 
-                if($version->user->id == $user->id){
+                if($version->user->id == $removeduser->id){
                 $totalcredit = $version->size+$totalcredit; 
                 }
             }        
         }
         
         $result = $totalcredit-$totaldebt; 
-        if($result != 0){
-            return back()->with('alert', 'Cannot remove '. $user->name. ' as debt is not zero!');
+        if($result < 0.01 && $result > -0.01){
+            
+        $token = 'B'.$balance->id.str_random(30);
+        while (\App\Invitation::where('token',$token)->first()){
+            $token = 'B'.$balance->id.str_random(30);
+        } 
+        $editor = Auth::user();  
+            
+        $approval = \App\Approval::create([
+                'type' => 'removal',
+                'balance_id' => $balance->id,
+                'user_id' => $removeduser->id,
+                'editor_id' => Auth::user()->id,
+                'token' => $token,
+        ]);
+            
+        $url = url('approval').'/'.$token;
+            
+        $admins = $balance->users->where('pivot.admin',1)->all();
+            
+        foreach($admins as $admin){
+            \Mail::to($admin->email)->send(new Userdelete($editor,$balance,$url,$removeduser,$admin));
+        }
+            
+        return back()->with('status', 'Succesfully sent approval to admins for removal of '. $removeduser->name); 
+         
         } else {
-            $balance->users()->updateExistingPivot($user->id, ['archived' => true]);
-        
-            return back()->with('status', 'Succesfully removed '. $user->name. ' from balance');
+            return back()->with('alert', 'Cannot remove '. $removeduser->name. ' as debt is not zero!');
         }
     }
     

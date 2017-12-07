@@ -4,13 +4,17 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Version extends Model
+class Approval extends Model
 {
     protected $guarded = [];
     
-    public function mutation()
+    public function getRouteKeyName(){
+        return 'token';
+    }
+    
+    public function balance()
     {
-        return $this->belongsTo(Mutation::class);
+        return $this->belongsTo(Balance::class);
     }
     
     public function user()
@@ -18,13 +22,8 @@ class Version extends Model
         return $this->belongsTo(User::class);
     }
     
-    public function users(){
-       return $this->belongsToMany(User::class)->withPivot('weight');
-    } 
-    
-     public function editor()
+    public function editor()
     {
         return $this->belongsTo(User::class);
     }
-    
 }

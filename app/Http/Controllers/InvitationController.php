@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Balance;
 use App\Mutation;
 use App\Invitation;
+use App\Approval;
 use Storage;
 use App\Mail\Invitationmail;
 use Illuminate\Support\Facades\Auth;
@@ -59,6 +60,27 @@ class InvitationController extends Controller
         } else{
             Auth::logout();
             return redirect('/login');    
+        }
+    }
+    
+    public function approval(Approval $approval){
+        $balance = $approval->balance;
+        $user = $approval->user;
+        
+        if($balance->users->sum('pivot.admin') == 1 && $balance->users->where('pivot.admin',1)->first()->id == $user->id){
+            return redirect('/balances/'.$balance->balance_code)->with('alert', $user->name. ' cannot be removed as long as there are no other admins. Admins can be assigned by the current admin.');
+        }
+            
+            
+        if($balance->users->where('id',$user->id)->pluck('pivot.archived')->first() == 0){
+            $balance->users()->updateExistingPivot($user->id, ['archived' => true]);
+            
+            Approval::find($approval->id)->update(['approved'=>true]);
+            
+            return redirect('/balances/'.$balance->balance_code)->with('status', 'You succesfully removed '. $user->name .'!');
+            
+        } else {
+            return redirect('/balances/'.$balance->balance_code)->with('alert', $user->name. ' is already removed!');
         }
     }
 }

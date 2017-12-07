@@ -30,10 +30,6 @@ class User extends Authenticatable
     public function getRouteKeyName(){
         return 'id';
     }
- 
-    public function companies(){
-       return $this->belongsToMany(Company::class);
-    } 
     
     public function balances(){
        return $this->belongsToMany(Balance::class)->withPivot('nickname','archived','admin');
@@ -50,4 +46,8 @@ class User extends Authenticatable
     public function versions(){
        return $this->belongsToMany(Version::class);
     } 
+    
+    public function approvals(){
+        return $this->hasMany(Invitation::class);
+    }
 }

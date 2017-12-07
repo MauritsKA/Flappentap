@@ -24,7 +24,7 @@ Route::post('/profile/iban', 'ProfileController@iban');
 Route::post('/profile/password', 'ProfileController@password');
 
 /////Invitations
-Route::get('/invitation/{invitation}', 'BalanceController@invitation');
+Route::get('/invitation/{invitation}', 'InvitationController@accept');
 
 ///// Dashboard overview
 Route::get('/dashboard', 'DashboardController@index');
@@ -44,6 +44,8 @@ Route::get('/balances/{balance}/edit', 'BalanceController@balance');
     
 Route::post('/balances/{balance}/edit', 'BalanceController@edit');
 
+Route::post('/balances/users/{balance}/remove/{user}', 'BalanceController@removeuser');
+    
 Route::post('/balances/users/{balance}/{user}', 'BalanceController@edituser');
 
 ///// Mutations
@@ -64,27 +66,5 @@ Route::get('/balances/{balance}/{mutation}', 'VersionController@index');
 
 });
 
-/////// Personal overview
-//Route::get('/personal', 'PersonalController@index');
-
-
-/////// Company overview
-//Route::get('/company', 'CompanyController@index');
-//
-//Route::get('/company/create', 'CompanyController@form');
-//
-//Route::post('/company/create', 'CompanyController@create');
-
-
-//////////////////////////// Restricted per balance
-
-/////// Company mutation overview
-//Route::get('/company/{company}', 'MutationController@show');
-//
-//Route::post('/company/{company}', 'MutationController@create');
-//
-//    
-/////// Version per mutation overview
-//Route::get('/company/{company}/{mutation}', 'VersionController@show');
     
 

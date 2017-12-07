@@ -65,6 +65,8 @@ h5 {
   border-radius: 20%;
   height: 120px;
   width: 120px;
+  max-height: 20vmin;
+  max-width: 20vmin;
 }
 
 .balancetitle {
@@ -136,6 +138,14 @@ h5 {
   pointer-events: none;
 }
 
+.positive {
+  color: green;
+}
+
+.negative {
+  color: red;
+}
+
 /* Buttons 
 -------------------------------------------------- */
 
@@ -182,6 +192,11 @@ btn-outline-primary:focus {
 }
 
 .btn {
+  cursor: pointer;
+  cursor: hand;
+}
+
+.btnextra {
   cursor: pointer;
   cursor: hand;
 }

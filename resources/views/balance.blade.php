@@ -30,11 +30,19 @@
       </div>
     <hr class="backdropline"> 
     
-     @if (session('status'))
-        <div class="col-sm-4 alert alert-success">
+    @if (session('status'))
+        <div class="col-sm-6 alert alert-success">
         {{ session('status') }}
         </div>
     @endif
+    
+    @if (session('alert'))
+        <div class="col-sm-6 alert alert-warning">
+        {{ session('alert') }}
+        </div>
+    @endif
+    
+    <br>
         <div class="row"> 
         <div class="col-md-6">            
             <div class="table-responsive">
@@ -51,8 +59,8 @@
                  
             <tr>
                
-                 <td><button type="button" class="btn btn-link" onclick="openUsermodal('{{$user->name}}','{{$user->pivot->nickname}}','{{$user->id}}','{{$user->iban}}')">{{$user->pivot->nickname}}</button></td>
-                <td>&euro;{{$creditoverview[$count]-$debtoverview[$count]}}</td>
+                 <td><button type="button" class="btn btn-link" onclick="openUsermodal('{{$user->name}}','{{$user->pivot->nickname}}','{{$user->id}}','{{$user->iban}}','{{$user->email}}')">{{$user->pivot->nickname}}</button></td>
+                <td>&euro;{{round($creditoverview[$count]-$debtoverview[$count],2)}}</td>
                 <?php $count++ ?>
             </tr>            
                 @endforeach    
@@ -83,7 +91,6 @@
                 @foreach($users as $user)
                 <th style="min-width:80px; max-width:80px;">{{$user->pivot->nickname}}</th>
                 @endforeach
-                <th></th>
                 <th></th>
                 <th></th>
                 </tr>
@@ -120,9 +127,9 @@
                 @endforeach
             
                       
-                  <td> <button type="submit" class="btn btn-outline-primary" id="add">Add</button></td>
+                  <td> <button onsubmit="checksum()" type="submit" class="btn btn-outline-primary" id="add">Add</button></td>
                       
-                    <td><a  class="btn btn-link" onclick="clearform('{{ url('balances')}}/{{ $balance->balance_code}}');return false;">clear</a></td>
+                    <td><a  class="btnextra" onclick="clearform('{{ url('balances')}}/{{ $balance->balance_code}}');return false;" style="vertical-align:middle;">clear</a></td>
                     <td></td>
                       
                 </tr></form>
@@ -149,13 +156,9 @@
                 <td>{{$user->mutations->where('id',$mutation->versions->sortByDesc('id')->first()->id)->pluck('pivot.weight')->first()}}</td>
                 @endforeach
                     
-                <td><a onclick="contentEdit('{{$mutation->mutation_count}}','{{ url('balances')}}/{{ $balance->balance_code}}','{{$mutation->mutation_count}}')"><img src="../../public/images/edit_1.png" height="20" width="20"></a></td>
+                <td><a onclick="contentEdit('{{$mutation->mutation_count}}','{{ url('balances')}}/{{ $balance->balance_code}}','{{$mutation->mutation_count}}')" class="btnextra"><img src="../../public/images/edit_1.png" height="20" width="20"></a></td>
                 
-                
-                <td class="{{ $mutation->show == 0 ? "invisibletd" : "visibletd"}}"><a onclick="return confirm('Are you sure?')" href="{{ url('balances')}}/{{ $balance->balance_code}}/delete/{{$mutation->mutation_count}}" role="button"><img src="../../public/images/trash_1.png" height="25" width="25"></a></td>
-                    
-                <td class="{{ $mutation->show == 0 ? "invisibletd" : "visibletd"}}"><label class="btn-file">
-                <img src="../../public/images/file_1.png" height="25" width="25"> <input type="file" hidden></label></td>
+                <td class="{{ $mutation->show == 0 ? "invisibletd" : "visibletd"}}"><a onclick="return confirm('Are you sure to delete this item?')" href="{{ url('balances')}}/{{ $balance->balance_code}}/delete/{{$mutation->mutation_count}}" role="button"><img src="../../public/images/trash_1.png" height="25" width="25"></a></td>
                     
                 </tr>
                 @endforeach
@@ -182,10 +185,30 @@
 </script>
 
 <script>
+    function checksum(){
+        
+    var countTD=$("#mutationtable > tbody > tr:first > td").length;
+    var users = [];
+    for (var i=1; i < countTD-8; i++){
+    var weight = parseInt($("#u"+i).val());
+
+    if(isNaN(weight)){var weight=0;}
+    users.push(weight);
+    }
+    
+    function getSum(total, num) {
+    return total + num;
+    }
+    
+    var sum = users.reduce(getSum);
+    return sum; 
+    }
+</script>
+
+<script>
 function contentEdit(mutid,link,mutcount){
     
     var countTD=$("#mutationtable > tbody > tr:first > td").length;
-    console.log(countTD);
     
     var date = $('#mut'+mutid+' td:nth-child(3)').text(); 
     var size = $('#mut'+mutid+' td:nth-child(4)').text().substring(1);
@@ -221,26 +244,13 @@ function contentEdit(mutid,link,mutcount){
 <script>
 function setprice(){
     
-    var countTD=$("#mutationtable > tbody > tr:first > td").length;
-    var users = [];
-    for (var i=1; i < countTD-8; i++){
-    var weight = parseInt($("#u"+i).val());
-    console.log(weight);
-    if(isNaN(weight)){var weight=0;}
-    users.push(weight);
-    }
-    console.log(users);
-    function getSum(total, num) {
-    return total + num;
-    }
-    
     var size = parseInt($("#size").val());
+    console.log(size);
     if(isNaN(size)){var size=0;}
-    var sum = users.reduce(getSum);
+    var sum = checksum();
     if(sum !== 0){
     $("#PP").text('\u20AC'+ Math.round((size/sum)*100)/100);
     }
-    console.log(sum);
 }
 </script>
 
@@ -269,6 +279,12 @@ var editformstate = "";
     
 $('#mutationform').submit(function(e) {
 var $form = $('form');
+var sum = checksum();
+if  (sum == 0){
+    alert('You did not state who should pay');
+    e.preventDefault();
+    return false; 
+}
 if ($form.serialize() !== formstate) {
     if ($form.serialize() !== editformstate) {
     } else {
@@ -286,11 +302,14 @@ if ($form.serialize() !== formstate) {
 </script>
 
 <script>
-function openUsermodal(username,nickname,userid,iban) {
+function openUsermodal(username,nickname,userid,iban,email) {
     
     document.getElementById("JSnickname").innerHTML = nickname;
     document.getElementById("JSusername").innerHTML = username;
     document.getElementById("JSiban").innerHTML = iban;
+    document.getElementById("JSemail").innerHTML = email;
+    document.getElementById("JSuserid").value= userid;
+    document.getElementById("removeform").action = "{{ url('balances/users')}}/{{$balance->balance_code}}/remove/" + userid;
     document.getElementById("nicknameform").action = "{{ url('balances/users')}}/{{$balance->balance_code}}/" + userid;
     $('#usermodal').modal('show');
 }

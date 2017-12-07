@@ -53,8 +53,8 @@
         
 <div class="row">
     <div class="col-md-2">
-    <a onclick="appendform()"><img id="extra" src="../../public/images/plus.png" height="25" width="25"></a>&nbsp;&nbsp;
-    <a onclick="cutform()"><img id="extra" src="../../public/images/minus.png" height="25" width="25"></a>
+    <a onclick="appendform()"><img class="btnextra" src="../../public/images/plus.png" height="25" width="25"></a>&nbsp;&nbsp;
+    <a onclick="cutform()"><img class="btnextra" src="../../public/images/minus.png" height="25" width="25"></a>
     </div>
 </div><br>
 

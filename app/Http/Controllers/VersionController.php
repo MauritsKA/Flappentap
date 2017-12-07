@@ -20,7 +20,7 @@ class VersionController extends Controller
         
         $mutation = Mutation::where('balance_id', $balance->id)->where('mutation_count',$mutation_count)->first();
         
-        $versions = $mutation->versions;
+        $versions = $mutation->versions->sortbyDesc('updated_at');
         
         return view('version', compact('versions', 'mutation', 'balance'));
     }
@@ -30,14 +30,16 @@ class VersionController extends Controller
         $user = Auth::user();
         $mutations = $balance->mutations;
         $users = $balance->users;
-        
+    
         $versions=[];
         foreach($mutations as $mutation){
             $versionspermutation = $mutation->versions;
             $versions= $versionspermutation->merge($versions);
         }
         
+        if($versions){
         $versions = $versions->sortByDesc('updated_at')->all();
+        } 
         
         return view('history', compact('versions', 'balance'));
     }

@@ -16,19 +16,25 @@ class BalanceController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['invitation']]);
+        $this->middleware('auth');
     }
     
     public function index(Balance $balance)
     {   
-        $mutations = Mutation::where('balance_id', $balance->id)->orderBy('updated_at','desc')->get()->all();
-        $users = $balance->users;
+        $mutations = Mutation::where('balance_id', $balance->id)->orderBy('updated_at','desc')->get();
+    
+        $otherusers = $balance->users->where('pivot.archived',false)->whereNotIn('id',$user->id);
         
-        $totaldebt = 0;
-        $totalcredit = 0;
+        $thisuser = $balance->users->where('pivot.archived',false)->where('id',$user->id);
+        
+        $users = $thisuser->merge($otherusers);
+
         $debtoverview=[];
         $creditoverview=[];
         foreach($users as $user){
+            $totaldebt = 0;
+            $totalcredit = 0;
+            
             foreach($mutations as $mutation){
                 $version = $mutation->versions->last();
                 
@@ -44,11 +50,15 @@ class BalanceController extends Controller
             }
             array_push($debtoverview,$totaldebt);
             array_push($creditoverview,$totalcredit);
-            $totaldebt = 0;
-            $totalcredit = 0;
         }
+        
         return view('balance', compact('balance','user','mutations','users','creditoverview','debtoverview'));
     }
+    
+    public function balance(Balance $balance){
+        return view('balanceinfo', compact('balance'));
+    }
+    
     
     public function form()
     {
@@ -78,6 +88,7 @@ class BalanceController extends Controller
         
         $balance->users()->attach($user->id);
         $balance->users()->updateExistingPivot($user->id, ['nickname' => $user->name]);
+        $balance->users()->updateExistingPivot($user->id, ['admin' => true]);
         
         $i = 1;
         while(request('email'.$i)){
@@ -112,43 +123,6 @@ class BalanceController extends Controller
         return redirect('/dashboard')->with('status', 'Succesfully added balance!');
     }
     
-    public function invitation(Invitation $invitation){
-        
-        session(['urlinvite' => Request::url()]); 
-        $balance = $invitation->balance;
-        $user = $invitation->user;
-        if(!$user){
-        $user = \App\User::where('email',$invitation->email)->first();
-        }    
-    
-        if(!$user){
-            Auth::logout();
-            
-            return redirect('/register');
-        } else {
-            if(!Auth::check()){
-            return redirect('/login');
-            }
-        }
-
-        if($user->email == Auth::user()->email){
-            
-            if(!$invitation->nickname){$nickname=$user->name;} else{ $nickname = $invitation->nickname;}
-            
-            if(!$balance->users()->where('id',$user->id)->first()){
-            $balance->users()->attach($user->id);
-            $balance->users()->updateExistingPivot($user->id, ['nickname' => $nickname]);
-            return redirect('/balances/'.$balance->balance_code)->with('status', 'You are succesfully added to the balance!');
-            } 
-            else { 
-            return redirect('/balances/'.$balance->balance_code)->with('status', 'You already accepted the invitation.');
-            }
-            
-        } else{
-            return redirect('/dashboard');      
-        }
-    }
-    
     public function editcover(Balance $balance)
     {
         $user = Auth::user();
@@ -171,16 +145,42 @@ class BalanceController extends Controller
         return back();
     }
     
+    public function removeuser(Balance $balance, $user_id)
+    {
+        $user=\App\User::where('id',$user_id)->get()->first();
+        $mutations = $balance->mutations; 
+        
+        $totaldebt = 0;
+        $totalcredit = 0;
+        foreach($mutations as $mutation){
+            $version = $mutation->versions->last();
+                
+            if($version->updatetype != 'delete'){
+                $debt = $version->users->where('id',$user->id)->pluck('pivot.weight')->first()*$mutation->PP;
+                $totaldebt = $debt+$totaldebt;
+                
+                if($version->user->id == $user->id){
+                $totalcredit = $version->size+$totalcredit; 
+                }
+            }        
+        }
+        
+        $result = $totalcredit-$totaldebt; 
+        if($result != 0){
+            return back()->with('alert', 'Cannot remove '. $user->name. ' as debt is not zero!');
+        } else {
+            $balance->users()->updateExistingPivot($user->id, ['archived' => true]);
+        
+            return back()->with('status', 'Succesfully removed '. $user->name. ' from balance');
+        }
+    }
+    
     public function edituser(Balance $balance, $user_id)
     {
 
         $balance->users()->updateExistingPivot($user_id, ['nickname' => request('newnickname')]);
         
         return back();
-    }
-    
-    public function balance(Balance $balance){
-        return view('balanceinfo', compact('balance'));
     }
     
     public function edit(Balance $balance){

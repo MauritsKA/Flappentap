@@ -36,7 +36,7 @@ class User extends Authenticatable
     } 
     
     public function balances(){
-       return $this->belongsToMany(Balance::class)->withPivot('nickname');
+       return $this->belongsToMany(Balance::class)->withPivot('nickname','archived','admin');
     }  
     
     public function mutations(){

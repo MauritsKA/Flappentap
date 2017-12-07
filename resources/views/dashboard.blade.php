@@ -16,35 +16,45 @@
     
     <a class="btn btn-primary" href="balances/create" role="button">Add new balance</a>
     <br> <br>
-     
+    <div class="row">
+     <div class="col-md-8">   
      <div class="table-responsive">
         <table class="table table-hover">
             <thead>
             <tr>
                 <th></th>
-                <th>Name</th>
-                <th>Balance</th>
+                <th style="text-align:center">Name</th>
+                <th style="text-align:center">Balance</th>
             </tr>
             </thead>
                 
             <tbody> 
+            <?php $count=0 ?>
             @foreach ($balances as $balance)
-            <tr>
-                <td><a href="{{url('')}}/balances/{{$balance->balance_code}}"><div class='balance_cover' style="background:url(../storage/uploads/covers/{{$balance->cover_name}}) no-repeat center center;
+            <tr onclick="document.location.href='{{url('')}}/balances/{{$balance->balance_code}}';return false;" class="btnextra">
+                <td style="min-width:80px; max-width:80px;"><a href="{{url('')}}/balances/{{$balance->balance_code}}"><div class='balance_cover' style="background:url(../storage/uploads/covers/{{$balance->cover_name}}) no-repeat center center;
                 background-size: cover;
                 -webkit-background-size: cover;
                 -moz-background-size: cover; 
                 -o-background-size: cover;"></div></a></td>
-                <td>{{$balance->name}}</td>
-                <td></td>
+                <td style="vertical-align:middle; text-align:center;"><h5>{{$balance->name}}</h5></td>
+                <td class="{{ $creditoverview[$count]-$debtoverview[$count] < 0 ? "negative" : "positive"}}" style="vertical-align:middle; text-align:center;">&euro;{{round($creditoverview[$count]-$debtoverview[$count],2)}}</td>
             </tr>
+            <?php $count++ ?>
             @endforeach
+            
             </tbody>
                 
         </table>
+        </div>
+         </div>
+        <br>
+        <div class="col-md-4"> 
+            <h5 style="text-align:center; font-size: 26px;">Your total:</h5>
+            <h5 style="text-align:center; font-size: 26px;">&euro;{{ array_sum($creditoverview)-array_sum($debtoverview)}}</h5>
+        </div>
         </div>
     
 </div>
 
 @endsection
-

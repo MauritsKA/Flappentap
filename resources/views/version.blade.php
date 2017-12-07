@@ -11,7 +11,6 @@
 
 <hr>   
     <h4>Mutation {{$mutation->mutation_count}}</h4>
-    <a href="{{url('balances')}}/{{$balance->balance_code}}">Back</a>
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
@@ -65,6 +64,7 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
                       
                 @endif
                
@@ -77,7 +77,7 @@
                 </tbody>
             </table>
           </div>
-    
+      <a href="{{url('balances')}}/{{$balance->balance_code}}">Back</a>
     
 </div>
 

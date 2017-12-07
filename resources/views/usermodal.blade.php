@@ -23,8 +23,7 @@
 <div class="modalitem">
 <h5>IBAN</h5>
 <span id="JSiban"></span></div>
-    
-     
+
 <div class="modalitem">
     <form class="form-inline" method="POST" id="nicknameform" action="{{ url('balances/users')}}/{{$balance->balance_code}}/">
     {{ csrf_field() }}  
@@ -34,6 +33,18 @@
     </div> 
     
     &nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Submit</button>
+    </form>   
+</div>
+
+<hr>
+    
+<div class="modalitem">
+    <form class="form-inline" method="POST" id="removeform" action="{{ url('balances/users')}}/{{$balance->balance_code}}/">
+    {{ csrf_field() }}  
+    
+    <input id="JSuserid" name="userid" type="hidden">   
+    
+   <button type="submit" onclick="return confirm('Are you completely sure to remove this user?')" class="btn btn-link">Remove user from balance</button>
     </form>   
 </div>
     

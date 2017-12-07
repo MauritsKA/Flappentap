@@ -17,11 +17,12 @@ class CreateBalanceUserTable extends Migration
             $table->integer('balance_id');
             $table->integer('user_id');
             $table->string('nickname')->nullable();
+            $table->boolean('archived')->default(false);
+            $table->boolean('admin')->default(false);
             $table->primary(['balance_id','user_id']);
         });
     }
 
-   
     public function down()
     {
         Schema::dropIfExists('balance_user');

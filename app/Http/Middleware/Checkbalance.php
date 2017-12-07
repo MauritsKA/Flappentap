@@ -21,8 +21,10 @@ class Checkbalance
             return $next($request);
         }
         
-        if (Auth::user()->balances->find($request->balance->id) != null ){
-			return $next($request);
+        if (Auth::user()->balances->find($request->balance->id) != null){
+            if(Auth::user()->balances->find($request->balance->id)->pivot->archived == 0){
+			     return $next($request);
+            }
 		}
         
         return redirect('/');

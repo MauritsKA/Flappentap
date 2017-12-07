@@ -2,14 +2,14 @@
 
 <h1>Hi {{$user->name}},</h1>
 
-Welcome to Flappentap.
+Thank you for making an account at Flappentap. If you've any questions, feel free to contact us!
 
 @component('mail::button', ['url' => url('/dashboard'), 'color' => 'blue'])
-Let's start!
+Let's start
 @endcomponent
 
 @component('mail::panel')
-Flappentap provides a basic and intuitive platform for start-up financials, group expenditures and personal finance.
+Flappentap provides a basic and intuitive platform for group expenditures and personal finance.
 @endcomponent
 
 Regards, <br>

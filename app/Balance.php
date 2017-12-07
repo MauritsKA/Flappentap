@@ -13,7 +13,7 @@ class Balance extends Model
     }
     
     public function users(){
-       return $this->belongsToMany(User::class)->withPivot('nickname');
+       return $this->belongsToMany(User::class)->withPivot('nickname','archived','admin');
     } 
     
     public function mutations(){

@@ -14,7 +14,7 @@
  <div class="container">
      <div class="home">
             <h1 class="cover-heading">Keep track of your cash</h1>
-            <p class="lead">Flappentap provides a basic and intuitive platform for start-up financials, group expenditures and personal finance.</p>
+            <p class="lead">Flappentap provides a basic and intuitive platform for group expenditures and personal finance.</p>
               
                 
               

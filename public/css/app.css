@@ -122,6 +122,18 @@ h5 {
   padding: 90px 90px;
 }
 
+/* Dashboard
+-------------------------------------------------- */
+
+.overview {
+  list-style-type: none;
+}
+
+.borderless td,
+.borderless th {
+  border: none;
+}
+
 /* Table 
 -------------------------------------------------- */
 

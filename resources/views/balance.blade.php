@@ -108,13 +108,13 @@
                   <td id="Mid"></td> 
                   <td id="Vid"></td> 
                
-                  <td> <input type="date" class="form-control" id="date" name="date" placeholder="Date"></td> 
+                  <td> <input type="date" class="move form-control" id="date" name="date" placeholder="Date"></td> 
                       
-                  <td><input onchange="setprice()" type="number" step="0.01"  class="form-control" id="size" name="size" placeholder="Size"></td>
+                  <td><input onchange="setprice()" type="number" step="0.01"  class="move form-control" id="size" name="size" placeholder="Size"></td>
                       
-                    <td><textarea class="form-control" id="description" name="description" placeholder="Description" rows="1"></textarea></td> 
+                    <td><textarea class="move form-control" id="description" name="description" placeholder="Description" rows="1"></textarea></td> 
                        
-                    <td><select class="custom-select" name="user" id="user">
+                    <td><select class="move custom-select" name="user" id="user">
                         @foreach($users as $user)
                         <option id="{{$user->id}}" value="{{$user->id}}">{{$user->pivot->nickname}}</option>
                         @endforeach
@@ -124,7 +124,7 @@
                     <td id="PP"></td>
                <?php $i=1; ?>       
                 @foreach($users as $user)
-                <td><input onchange="setprice()" type="number" step="1"  min="0" class="form-control" id="u{{$i}}" name="{{$user->id}}"></td>
+                <td><input onchange="setprice()" type="number" step="1"  min="0" class="move form-control" id="u{{$i}}" name="{{$user->id}}"></td>
                 <?php $i++; ?> 
                 @endforeach
             
@@ -146,16 +146,16 @@
                     
                 <td>{{date('d-m-Y', strtotime($mutation->dated_at))}}</td>
                     
-                <td>&euro;{{$mutation->size}}</td>
+                <td>&euro;{{number_format($mutation->size, 2)}}</td>
                     
                 <td>{{$mutation->description}}</td>
                 
                 <td>{{$mutation->user->balances->where('id', $balance->id)->pluck('pivot.nickname')->first()}}</td>
                     
-                <td>&euro;{{$mutation->PP}}</td>
+                <td>&euro;{{number_format($mutation->PP,2)}}</td>
                     
                 @foreach($users as $user)
-                <td>{{$user->mutations->where('id',$mutation->versions->sortByDesc('id')->first()->id)->pluck('pivot.weight')->first()}}</td>
+                <td>{{$user->versions->where('id',$mutation->versions->sortByDesc('id')->first()->id)->pluck('pivot.weight')->first()}}</td>
                 @endforeach
                     
                 <td><a onclick="contentEdit('{{$mutation->mutation_count}}','{{ url('balances')}}/{{ $balance->balance_code}}','{{$mutation->mutation_count}}')" class="btnextra"><img src="../../public/images/edit_1.png" height="20" width="20"></a></td>
@@ -173,17 +173,36 @@
     
 </div>
 
-<script type="text/javascript">
-        $('#cover').bind('change', function() {
-            var fileSize = this.files[0].size;
-            var maxSize = 2097152;
-            if(fileSize>maxSize){
-                alert('File size is more then 2 MB, please choose an other picture!');
-                return false;
-            } else {
-                 document.getElementById("upload-form").submit();
-            }
-        });
+<script>
+$('select').on('keydown', function(e){
+    if(e.keyCode === 37 || e.keyCode === 39) { //up or down
+        e.preventDefault();
+        return false;
+    }
+});
+    
+$("#date").focus();
+    
+$(document).ready(function(){
+$('.move').keydown(function(e){
+     if (e.keyCode == 39) { 
+         var inputID = $(this).closest('td').next().attr('id')
+     console.log(inputID );
+         if(inputID == 'PP'){
+            $(this).closest('td').next().next().find('.move').focus();
+         }
+       $(this).closest('td').next().find('.move').focus();
+    }
+    
+    if (e.keyCode == 37) { 
+        var inputID = $(this).closest('td').prev().attr('id')
+         if(inputID == 'PP'){
+            $(this).closest('td').prev().prev().find('.move').focus();
+         }
+       $(this).closest('td').prev().find('.move').focus();
+    }
+});
+});
 </script>
 
 <script>
@@ -315,6 +334,20 @@ function openUsermodal(username,nickname,userid,iban,email) {
     document.getElementById("nicknameform").action = "{{ url('balances/users')}}/{{$balance->balance_code}}/" + userid;
     $('#usermodal').modal('show');
 }
+</script>
+
+
+<script type="text/javascript">
+        $('#cover').bind('change', function() {
+            var fileSize = this.files[0].size;
+            var maxSize = 2097152;
+            if(fileSize>maxSize){
+                alert('File size is more then 2 MB, please choose an other picture!');
+                return false;
+            } else {
+                 document.getElementById("upload-form").submit();
+            }
+        });
 </script>
 
 @endsection

@@ -50,8 +50,25 @@
          </div>
         <br>
         <div class="col-md-4"> 
+       
+            <ul class="overview">
+            <H5>Your total</H5>
+            <li>Total sum: &euro;{{ number_format(array_sum($creditoverview)-array_sum($debtoverview),2)}}</li>
+            <br>
+            <H5>Recent</H5>
+            @foreach($recentmutations as $recent)
+            <li>
+            &euro;{{number_format($recent->mutation->PP*$recent->users->where('id',Auth::user()->id)->pluck('pivot.weight')->first(),2)}} by                 
+            {{$recent->user->balances->where('id',$recent->mutation->balance->id)->pluck('pivot.nickname')->first()}} for 
+            {{$recent->description}}
+          
+            </li>
+            @endforeach
+            </ul>
+<!--
             <h5 style="text-align:center; font-size: 26px;">Your total:</h5>
             <h5 style="text-align:center; font-size: 26px;">&euro;{{ array_sum($creditoverview)-array_sum($debtoverview)}}</h5>
+-->
         </div>
         </div>
     

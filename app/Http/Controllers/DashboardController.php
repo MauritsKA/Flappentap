@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Company;
 use App\Mutation;
 use Auth;
+use Carbon\Carbon;
 
 
 class DashboardController extends Controller
@@ -45,8 +46,10 @@ class DashboardController extends Controller
             array_push($debtoverview,$totaldebt);
             array_push($creditoverview,$totalcredit);
         }
+        $lastweek = Carbon::now()->subWeek();
         
+        $recentmutations = $user->versions->sortbyDesc('id')->unique('mutation_id')->where('updated_at','>',$lastweek)->take(10);
         
-        return view('dashboard', compact('mutations','balances','creditoverview','debtoverview'));
+        return view('dashboard', compact('mutations','balances','creditoverview','debtoverview','recentmutations'));
     }
 }

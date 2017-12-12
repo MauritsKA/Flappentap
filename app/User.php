@@ -36,7 +36,7 @@ class User extends Authenticatable
     }  
     
     public function mutations(){
-       return $this->belongsToMany(Version::class)->withPivot('weight');
+       return $this->belongsToMany(Mutation::class);
     } 
     
     public function invitations(){
@@ -44,7 +44,7 @@ class User extends Authenticatable
     }
     
     public function versions(){
-       return $this->belongsToMany(Version::class);
+       return $this->belongsToMany(Version::class)->withPivot('weight');;
     } 
     
     public function approvals(){

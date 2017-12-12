@@ -12,11 +12,6 @@ class Mutation extends Model
         return 'mutation_count';
     }
     
-    public function company()
-    {
-        return $this->belongsTo(Company::class);
-    }
-    
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -30,21 +25,6 @@ class Mutation extends Model
     public function versions()
     {
         return $this->hasMany(Version::class);
-    }
-    
-    public function item()
-    {
-        return $this->belongsTo(Item::class);
-    }
-    
-    public function mutationtype()
-    {
-        return $this->belongsTo(Mutationtype::class);
-    }
-    
-    public function vattype()
-    {
-        return $this->belongsTo(Vattype::class);
     }
     
 }

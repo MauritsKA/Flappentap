@@ -187,7 +187,7 @@ class BalanceController extends Controller
             
         $url = url('approval').'/'.$token;
             
-        $admins = $balance->users->where('pivot.admin',1)->all();
+        $admins = $balance->users->where('pivot.admin',1)->where('pivot.archived',0)->all();
             
         foreach($admins as $admin){
             \Mail::to($admin->email)->send(new Userdelete($editor,$balance,$url,$removeduser,$admin));

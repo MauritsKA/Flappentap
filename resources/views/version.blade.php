@@ -10,9 +10,9 @@
     
 
 <hr>   
-    <h4>Mutation {{$mutation->mutation_count}}</h4>
+    <h4>Version overview of mutation {{$mutation->mutation_count}}</h4>
           <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table">
               <thead>
                 <tr>
                 <th style="min-width:10px; max-width:10px;">V</th>
@@ -21,7 +21,7 @@
                 <th style="min-width:80px; max-width:80px;">By</th>
                 <th style="min-width:120px; max-width:120px;">Dated at</th>
                 <th style="min-width:120px; max-width:120px;">Payed by</th>
-                <th style="min-width:80px; max-width:80px;">Size</th>
+                <th style="min-width:80px; max-width:80px;">Amount</th>
                 <th>PP</th>
                 <th style="min-width:120px; max-width:120px;">Description</th>
                 <th style="min-width:200px; ">Over</th>
@@ -47,9 +47,9 @@
                 @if($version->updatetype != "delete")
                 <td>{{$version->user->balances->where('id', $balance->id)->pluck('pivot.nickname')->first()}}</td>
                       
-                <td>&euro;{{$version->size}}</td>
+                <td>&euro;{{number_format($version->size,2)}}</td>
                 
-                <td>&euro;{{round(($version->size)/($version->users->sum('pivot.weight')),2)}}</td>
+                <td>&euro;{{number_format(($version->size)/($version->users->sum('pivot.weight')),2)}}</td>
                       
                 <td>{{$version->description}}</td>    
             

@@ -129,9 +129,13 @@ h5 {
   list-style-type: none;
 }
 
-.borderless td,
-.borderless th {
-  border: none;
+.tableline {
+  border-bottom: 1.5pt solid #ECEEEF;
+}
+
+.table-hover > tbody > tr.nohover:hover > th,
+.nohover > td {
+  background-color: #FFFFFF;
 }
 
 /* Table 

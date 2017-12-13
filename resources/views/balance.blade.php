@@ -86,7 +86,7 @@
                 <th style="min-width:10px; max-width:10px;">#</th>
                 <th style="min-width:10px; max-width:10px;">V</th>
                 <th style="min-width:180px; max-width:180px;">Dated at</th>
-                <th style="min-width:150px; max-width:120px;">Size</th>
+                <th style="min-width:150px; max-width:120px;">Amount</th>
                 <th style="min-width:200px; max-width:200px;">Description</th>
                 <th>User</th>
                 <th>PP</th>
@@ -168,10 +168,36 @@
                 
             </table>
           </div>
-        <a href="{{url('balances')}}/{{$balance->balance_code}}/history">History</a><br>
+    <select id="limit" class='custom-select'>
+    <option value="1">None</option>
+    <option value="6">5</option>
+    <option value="11" selected>10</option>
+    <option value="16">15</option>
+    <option value="21">20</option>
+    <option value="">All</option>
+</select> &nbsp;
+        <a href="{{url('balances')}}/{{$balance->balance_code}}/history">History</a> &nbsp;
         <a href="{{url('balances')}}/{{$balance->balance_code}}/edit">Edit balance</a>
     
 </div>
+
+<script>
+function show (min, max) {
+    var $table = $('#mutationtable'), $rows = $table.find('tbody tr');
+    min = min ? min - 1 : 0;
+    max = max ? max : $rows.length;
+    $rows.hide().slice(min, max).show();
+    return false;    
+}
+    
+$('#limit').bind('change', function () {
+    show(0, this.value);
+});
+
+$( document ).ready(function() {
+    show(0,11);
+});
+</script>
 
 <script>
 $('select').on('keydown', function(e){

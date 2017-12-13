@@ -48,7 +48,7 @@ class DashboardController extends Controller
         }
         $lastweek = Carbon::now()->subWeek();
         
-        $recentmutations = $user->versions->sortbyDesc('id')->unique('mutation_id')->where('updated_at','>',$lastweek)->take(10);
+        $recentmutations = $user->versions->sortbyDesc('id')->unique('mutation_id')->where('updated_at','>',$lastweek)->take(9);
         
         return view('dashboard', compact('mutations','balances','creditoverview','debtoverview','recentmutations'));
     }

@@ -50,27 +50,28 @@
          </div>
         <br>
         <div class="col-md-4"> 
-       
-            <ul class="overview">
-            <H5>Your total</H5>
-            <li>Total sum: &euro;{{ number_format(array_sum($creditoverview)-array_sum($debtoverview),2)}}</li>
-            <br>
-            <H5>Recent</H5>
-            @foreach($recentmutations as $recent)
-            <li>
-            &euro;{{number_format($recent->mutation->PP*$recent->users->where('id',Auth::user()->id)->pluck('pivot.weight')->first(),2)}} by                 
-            {{$recent->user->balances->where('id',$recent->mutation->balance->id)->pluck('pivot.nickname')->first()}} for 
-            {{$recent->description}}
-          
-            </li>
-            @endforeach
-            </ul>
-<!--
-            <h5 style="text-align:center; font-size: 26px;">Your total:</h5>
-            <h5 style="text-align:center; font-size: 26px;">&euro;{{ array_sum($creditoverview)-array_sum($debtoverview)}}</h5>
--->
+        <div class="table-responsive borderless">
+        <table class="table-hover">
+       <tr class="nohover"><th></th><th class="tableline" colspan="3" style="text-align:center"><H5>Your total</H5></th> </tr>    
+       <tr class="nohover"><td></td><td colspan="3" style="text-align:center">&euro;{{ number_format(array_sum($creditoverview)-array_sum($debtoverview),2)}}</td></tr> 
+        <tr><th style="height:20px;"></th></tr>
+        <tr class="nohover"><th></th><th class="tableline" colspan="3" style="text-align:center" > <H5>Recent activity</H5></th> </tr> 
+       <tr class="nohover"> <th style="width:20px;"></th><th style="min-width:80px">Amount</th>
+            <th style="min-width:80px">By</th>
+            <th>For</th></tr>
+        @foreach($recentmutations as $recent)
+        <tr onclick="document.location.href='{{url('')}}/balances/{{$recent->mutation->balance->balance_code}}';return false;" class="btnextra">
+            <td></td>
+            <td>&euro;{{number_format($recent->mutation->PP*$recent->users->where('id',Auth::user()->id)->pluck('pivot.weight')->first(),2)}}</td>
+            <td>{{$recent->user->balances->where('id',$recent->mutation->balance->id)->pluck('pivot.nickname')->first()}}</td>
+            <td>{{$recent->description}}</td>
+        </tr>
+        @endforeach
+        </table>
         </div>
+
         </div>
+    </div>
     
 </div>
 

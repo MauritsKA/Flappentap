@@ -71,6 +71,10 @@ class MutationController extends Controller
         
         $version = Version::orderBy('version_count', 'desc')->where('mutation_id', $mutation->id)->first();
         
+        
+        $archivedusers = $balance->users->where('pivot.archived',1);
+        $oldusers = $version->users;       
+        
         Mutation::find($mutation->id)->update([
             'user_id'=>request('user'), 
             'dated_at' => request('date'),
@@ -88,8 +92,7 @@ class MutationController extends Controller
             'size' => request('size'),
             'description' => request('description'),
         ]);
-        
-        
+                
         $users = $balance->users;
         foreach($users as $user){
             
@@ -98,6 +101,14 @@ class MutationController extends Controller
             if($weight != 0 || null){
             $version->users()->attach($user->id);
             $version->users()->updateExistingPivot($user->id, ['weight' => $weight]);
+            }
+        }
+        
+        foreach($archivedusers as $archiveduser){
+            if($oldusers->contains($archiveduser->id)){
+                $weight = $oldusers->where('id',$archiveduser->id)->pluck('pivot.weight')->first();
+                $version->users()->attach($archiveduser->id);
+                $version->users()->updateExistingPivot($archiveduser->id, ['weight' => $weight]);
             }
         }
         

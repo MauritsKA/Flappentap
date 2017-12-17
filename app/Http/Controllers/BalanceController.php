@@ -27,9 +27,7 @@ class BalanceController extends Controller
         $mutations = Mutation::where('balance_id', $balance->id)->orderBy('updated_at','desc')->get();
     
         $otherusers = $balance->users->where('pivot.archived',false)->whereNotIn('id',$user->id);
-        
         $thisuser = $balance->users->where('pivot.archived',false)->where('id',$user->id);
-        
         $users = $thisuser->merge($otherusers);
 
         $debtoverview=[];

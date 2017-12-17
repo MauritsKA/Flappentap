@@ -46,7 +46,7 @@
         <div class="row"> 
         <div class="col-md-6">            
             <div class="table-responsive">
-            <table class="table table-striped">
+            <table id="overviewtable" class="table table-striped">
                 
               <thead>
                  <tr>
@@ -76,7 +76,6 @@
     </div>  
     
         <br>
-    
     
   <h4>Mutations</h4>
           <div class="table-responsive">
@@ -264,10 +263,26 @@ function contentEdit(mutid,link,mutcount){
     var PP = $('#mut'+mutid+' td:nth-child(7)').text();
     var newdate = date.split("-").reverse().join("-");
     var userid = $('option:contains("'+user+'")').attr('id');
-    
+    console.log(userid)
     var users = [];
+    
     for (var i=8; i < countTD-2; i++){
-   users.push($('#mut'+mutid+' td:nth-child('+i+')').text());
+    var weight = parseInt($('#mut'+mutid+' td:nth-child('+i+')').text());
+        
+    if(isNaN(weight)){var weight=0;}
+    users.push(weight);
+    }
+    
+    function getSum(total, num) {
+    return total + num;
+    }
+    var sum = users.reduce(getSum);
+
+    var expectedtotal = sum*parseFloat(PP.substring(1));
+    
+    if(!$('#overviewtable tr > td:contains("'+user+'")').length || expectedtotal != size){
+        alert('You are trying to edit a mutation that is connected to a removed user. This is not possible');
+        return false; 
     }
     
     $('#mutationform').prop('action', link+'/edit/'+mutcount);
@@ -277,9 +292,11 @@ function contentEdit(mutid,link,mutcount){
     $("#PP").text(PP);
     $("#description").text(description);
     $("#user").val(userid);
+    
     for (var i=1; i < countTD-9; i++){
     $("#u"+i).val(users[i-1]);
     }
+    
     $("#add").text("edit");
     
     var $form = $('form');

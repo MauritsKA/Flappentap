@@ -7,6 +7,8 @@
 Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 
+Route::get('/faq', 'HomeController@faq');
+
 /////Facebook
 Route::get('/redirect', 'SocialAuthFacebookController@redirect');
 
@@ -30,7 +32,6 @@ Route::get('/approval/{approval}', 'InvitationController@approval');
 
 ///// Dashboard overview
 Route::get('/dashboard', 'DashboardController@index');
-
 
 ////////////////////////// Restricted per balance
 Route::group(["middleware" => 'checkbalance'], function(){

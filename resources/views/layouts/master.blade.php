@@ -13,7 +13,7 @@
         <title>Flappentap</title>
         
         <!-- Bootstrap core CSS -->
-        <link rel="stylesheet" href="https://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
 
         <!-- Custom styles for this template -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -42,23 +42,11 @@
           fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));</script>
         
-    
-    @if (Auth::check())
-    @include('layouts.nav') 
-    @else
-    @include('layouts.navhome') 
-    @endif  
-         
+    @include('layouts.nav')          
         
     @yield('content')
     
-    
-    @if (Request::url() == url('/') || Request::url() == url('/register') || Request::url() == url('/login'))
-    @include('layouts.footerhome') 
-    @else
     @include('layouts.footer')
-    @endif  
-        
         
     @include('layouts.subfooter')
         

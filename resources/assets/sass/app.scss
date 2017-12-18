@@ -1,5 +1,3 @@
-
-
 /* Master CSS
 -------------------------------------------------- */
 html {
@@ -47,14 +45,75 @@ body > .container {
 
 /* Usermodal lay out 
 -------------------------------------------------- */
-h5{
-    font-size: 16px;
-    color:#EF5E57;   
+h5{ 
+    color:#EF5E57; 
+    font-size: 20px;
+    line-height: 1;
+    font-weight:200;
 }
 
 .usermodal .modalitem{
     margin-bottom: 12px;  
 }
+
+/* FAQ toggle
+-------------------------------------------------- */
+.toggle {
+   &:last-child {
+            border-bottom: 1px solid lightgrey;
+        }
+    
+.toggle-title {
+position: relative;
+display: block;
+border-top: 1px solid lightgrey;
+margin-bottom: 6px;
+cursor: pointer;
+cursor: hand; 
+    
+
+.toggle-h5 {
+ margin: 0px;
+
+}
+&.active toggle-h5 {}
+}
+.toggle-inner {
+padding: 7px 25px 10px 25px;
+display: none;
+margin: -7px 0 6px;
+div {
+max-width: 100%;
+}
+}
+.toggle-title {
+.title-name {
+display: block;
+padding: 25px 25px 14px;
+}
+a i {
+font-size: 22px;
+margin-right: 5px;
+}
+i {
+position: absolute;
+background: url('../images/plus_minus.png') 0px -24px no-repeat;
+width: 24px;
+height: 24px;
+-webkit-transition: all 0.3s ease;
+-moz-transition: all 0.3s ease;
+-o-transition: all 0.3s ease;
+-ms-transition: all 0.3s ease;
+transition: all 0.3s ease;
+margin: 20px;
+right: 0;
+}
+&.active i {
+background: url('../images/plus_minus.png') 0px 0px no-repeat;
+}
+}
+}
+
 
 /* Covers & avatars
 -------------------------------------------------- */
@@ -170,6 +229,20 @@ h5{
     text-decoration: none;
 }
 
+.btnsecondary{
+    background-color: #fff;
+    color: #EF5E57;
+    box-shadow: none;
+    border: none;
+}
+
+.btnsecondary:hover, .btnsecondary:focus, .btnsecondary:active{
+    background-color: #EF5E57;
+    color: #fff;
+    border: none;
+    box-shadow: none;
+}
+
 .btn-outline-primary{
     border-color:  #EF5E57;
     color: #EF5E57;
@@ -179,7 +252,7 @@ h5{
     background-color: #EF5E57;
     border-color:  #EF5E57;
     color: white;
-     box-shadow: none;
+    box-shadow: none;
 }
 
 .btn-primary{
@@ -187,10 +260,11 @@ h5{
     border: none;
 }
 
-.btn-primary:hover, .btn-primary:active, .btn-primary:focus{
-    background-color: #353841;
+
+.btn-primary:hover, .btn-primary:active, .btn-primary:focus, .btn-primary:active:focus{
+    background-color: #353841 !important;
     border: none;
-     box-shadow: none;
+    box-shadow: none !important;
 }
 
 .facebook {

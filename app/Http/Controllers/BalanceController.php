@@ -53,6 +53,15 @@ class BalanceController extends Controller
             array_push($creditoverview,$totalcredit);
         }
         
+        $netsum = array_sum($debtoverview)-array_sum($creditoverview);
+        
+        
+        if($netsum != 0){
+            Session::flash('alert', 'Something doesn\'t add up. The net sum = &euro;'.$netsum.'!'); 
+            
+            return view('balance', compact('balance','user','mutations','users','creditoverview','debtoverview'));
+        }
+        
         return view('balance', compact('balance','user','mutations','users','creditoverview','debtoverview'));
     }
     

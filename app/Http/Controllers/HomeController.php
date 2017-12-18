@@ -13,7 +13,9 @@ class HomeController extends Controller
         if(auth::check()){
             return redirect('/dashboard');
         }
-        return view('home');
+        
+        $home = true;
+        return view('home', compact('home'));
     }
     
     public function faq()

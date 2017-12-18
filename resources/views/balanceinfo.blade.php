@@ -8,28 +8,39 @@
       <div class="mt-3">
         <h1>{{$balance->name}}</h1>
       </div>
-    <hr>    
-    <form id="upload-form" method="POST" action="{{ url('balances/')}}/{{$balance->balance_code}}/edit" enctype="multipart/form-data">
+    <hr> 
+      
+    <h5>Balance name</h5> 
+    <form id="upload-form" class="form-inline" method="POST" action="{{ url('balances/')}}/{{$balance->balance_code}}/edit" >
+        {{ csrf_field() }}
+    
+    
+    <div class="form-group">
+    <input type="text" class="form-control" id="balancename" name="balancename" placeholder="" required>
+    </div>        
+    &nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Change name</button>
+        
+    </form><br>
+        
+     <h5>Add admin</h5>
+    <form id="upload-form" class="form-inline" method="POST" action="{{ url('balances/')}}/{{$balance->balance_code}}/edit" enctype="multipart/form-data">
         {{ csrf_field() }}
         
-<div class="row">
-    <div class="col-md-6">        
     <div class="form-group">
-    <label for="name">Balance name</label>
     <input type="text" class="form-control" id="balancename" name="balancename" placeholder="" required>
-    </div>
-    </div>            
-</div>
-        
-         <button type="submit" value="Upload" class="btn btn-primary">Change name</button>
+    </div>        
+    &nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Change name</button>
         
     </form>
+
+   
+    
 <hr>
         
     <h3>Add users to list</h3><br>
      <form id="upload-form" method="POST" action="{{ url('balances/')}}/{{$balance->balance_code}}/edit" enctype="multipart/form-data">
         {{ csrf_field() }}
-         
+       
 <div class="form-group row">
     <div class="col-sm-1">
     <label for="user" "col-form-label">Email</label>

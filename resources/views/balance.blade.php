@@ -169,18 +169,18 @@
           </div>
     <select id="limit" class='custom-select'>
     <option value="1">None</option>
-    <option value="6">5</option>
     <option value="11" selected>10</option>
-    <option value="16">15</option>
     <option value="21">20</option>
+    <option value="51">50</option>
+    <option value="101">100</option>
     <option value="">All</option>
 </select> &nbsp;
         <a href="{{url('balances')}}/{{$balance->balance_code}}/history">History</a> &nbsp;
         <a href="{{url('balances')}}/{{$balance->balance_code}}/edit">Edit balance</a>
-    
+        
 </div>
 
-<script>
+<script>    
 function show (min, max) {
     var $table = $('#mutationtable'), $rows = $table.find('tbody tr');
     min = min ? min - 1 : 0;
@@ -194,8 +194,18 @@ $('#limit').bind('change', function () {
 });
 
 $( document ).ready(function() {
-    show(0,11);
+    var type = window.location.hash;
+    var index = $(type).index();
+    console.log(index)
+    if(type && index>11){
+        show(0,index-1);  
+       $("#limit").val("1").attr("selected", "selected");
+    } else{
+        show(0,11);
+    }
 });
+
+
 </script>
 
 <script>
@@ -257,7 +267,7 @@ function contentEdit(mutid,link,mutcount){
     var countTD=$("#mutationtable > tbody > tr:first > td").length;
     
     var date = $('#mut'+mutid+' td:nth-child(3)').text(); 
-    var size = $('#mut'+mutid+' td:nth-child(4)').text().substring(1);
+    var size = parseFloat($('#mut'+mutid+' td:nth-child(4)').text().substring(1));
     var description = $('#mut'+mutid+' td:nth-child(5)').text();
     var user = $('#mut'+mutid+' td:nth-child(6)').text();
     var PP = $('#mut'+mutid+' td:nth-child(7)').text();
@@ -280,7 +290,7 @@ function contentEdit(mutid,link,mutcount){
 
     var expectedtotal = sum*parseFloat(PP.substring(1));
     
-    if(!$('#overviewtable tr > td:contains("'+user+'")').length || expectedtotal != size){
+    if(!$('#overviewtable tr > td:contains("'+user+'")').length || (expectedtotal < 0.98*size || expectedtotal > 1.02*size)){
         alert('You are trying to edit a mutation that is connected to a removed user. This is not possible');
         return false; 
     }

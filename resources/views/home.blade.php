@@ -16,11 +16,8 @@
             <h1 class="cover-heading">Keep track of your cash</h1>
             <p class="lead">Flappentap provides a basic and intuitive platform for group expenditures and personal finance.</p>
               
-                
-              
-            <p class="lead">
-              <a class="btn btn-lg btn-secondary" href="{{ url('') }}/register" role="button">Get started</a>
-            </p>
+            <p class="lead">    
+            <a class="btn btn-lg btnsecondary" href="{{ url('') }}/register" role="button">Get started</a></p>
    
          
          </div>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Socialite; 
 use App\Services\SocialFacebookAccountService;
+use Session;
+use Auth;
 
 class SocialAuthFacebookController extends Controller
 {
@@ -28,18 +30,11 @@ class SocialAuthFacebookController extends Controller
        $user = $service->createOrGetUser(Socialite::driver('facebook')->user());
         auth()->login($user);
         
-        if(session()->get('logintry') == true){
-            session(['urlinvite' => null]); 
+        if(Session::get('urlinvite') && Session::get('emailinvite') == Auth::user()->email){
+        return redirect(Session::get('urlinvite'));
+        } else {
+        return redirect(url('/dashboard'));    
         }
-        
-        if(session('urlinvite')){ 
-            
-            $url = session()->get('urlinvite');
-            session(['urlinvite' => null]);  
-            session(['logintry' => true]); 
-            
-            return redirect($url);
-        }
-        return redirect('/dashboard');
     }
 }
+

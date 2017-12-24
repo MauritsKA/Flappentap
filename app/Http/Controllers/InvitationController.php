@@ -23,6 +23,7 @@ class InvitationController extends Controller
     public function accept(Invitation $invitation){
         
         session(['urlinvite' => Request::url()]); 
+        session(['emailinvite' => $invitation->email]); 
         $balance = $invitation->balance;
         $user = $invitation->user;
        

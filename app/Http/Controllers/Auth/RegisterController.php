@@ -34,7 +34,11 @@ class RegisterController extends Controller
     
     protected function redirectTo()
     {
-    return Session::get('urlinvite');
+        if(Session::get('urlinvite') && Session::get('emailinvite') == Auth::user()->email){
+        return Session::get('urlinvite');
+        } else {
+        return url('/dashboard');    
+        }
     }
 
     /**

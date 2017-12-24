@@ -139,13 +139,17 @@ background: url('../images/plus_minus.png') 0px 0px no-repeat;
 
 .balance_cover_hover {
     border-radius:20%; 
-    height:135px;
-    width:135px;
-    max-height: 30vmin;
-    max-width: 30vmin;
+    height:185px;
+    width:185px;
     position:absolute;
-    right: 0.2em;
-    top: 1.4em;
+    right: 0;
+    top: 50px;
+}
+
+@media (max-width: 576px) {
+.balance_cover_hover {
+display: none;
+}
 }
 
 .balance_cover_hover:hover {

@@ -44,7 +44,7 @@
     
     <input id="JSuserid" name="userid" type="hidden">   
     
-   <button type="submit" onclick="return confirm('Are you completely sure to remove this user?')" class="btn btn-link">Remove user from balance</button>
+   <button type="submit" onclick="return confirm('Are you completely sure to remove this user?')" class="btn btn-link">Request removal of user from balance</button>
     </form>   
 </div>
     

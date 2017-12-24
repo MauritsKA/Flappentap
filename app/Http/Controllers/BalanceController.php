@@ -6,6 +6,7 @@ use App\Balance;
 use App\Mutation;
 use App\Invitation;
 use App\Mail\Userdelete;
+use App\Mail\Adminmail;
 use Storage;
 use App\Mail\Invitationmail;
 use Illuminate\Support\Facades\Auth;
@@ -200,7 +201,7 @@ class BalanceController extends Controller
             \Mail::to($admin->email)->send(new Userdelete($editor,$balance,$url,$removeduser,$admin));
         }
             
-        return back()->with('status', 'Succesfully sent approval to admins for removal of '. $removeduser->name); 
+        return back()->with('status', 'Succesfully sent request to the admins for the removal of '. $removeduser->name); 
          
         } else {
             return back()->with('alert', 'Cannot remove '. $removeduser->name. ' as debt is not zero!');
@@ -216,10 +217,15 @@ class BalanceController extends Controller
     }
     
     public function edit(Balance $balance){
-        if(!request('balancename')){
+         Balance::find($balance->id)->update(['name'=>request('balancename')]);
         
+         return redirect('/balances/'.$balance->balance_code)->with('status', 'Succesfully changed balance name.');
+        
+    }
+    
+    public function addusers(Balance $balance){        
         $user = Auth::user();
-        
+                
         $i = 1;
         while(request('email'.$i)){
             $nickname = request('member'.$i);
@@ -251,9 +257,34 @@ class BalanceController extends Controller
         }
         
         return redirect('/balances/'.$balance->balance_code)->with('status', 'Succesfully invited new user');
-        } else{
-         Balance::find($balance->id)->update(['name'=>request('balancename')]);  
-         return redirect('/balances/'.$balance->balance_code)->with('status', 'Succesfully changed balance name.');
-        }
     }
+    
+    public function admin(Balance $balance){ 
+        
+        $inviter = Auth::user();
+        
+        $user = \App\User::where('email',request('adminemail'))->first();
+                
+        if($user == null){
+            
+            return back()->with('alert', 'This is not a valid email.');
+            
+        } elseif(!$balance->users->contains('id',$user->id)){
+             
+            return back()->with('alert', 'This email does not correspond with a member of this balance.');
+            
+        } elseif($balance->users->where('id',$user->id)->pluck('pivot.archived')->first()){
+            
+             return back()->with('alert', 'This user has been removed from the balance. Add the user before assigning as admin.');
+            
+        }
+                    
+        $balance->users()->updateExistingPivot($user->id, ['admin' => true]);
+        
+        \Mail::to($user->email)->send(new Adminmail($user,$balance,$inviter));
+        
+        return redirect('/balances/'.$balance->balance_code)->with('status', 'Succesfully added new admin');
+    }
+    
+        
 }

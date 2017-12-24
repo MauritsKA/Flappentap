@@ -28,6 +28,18 @@ class SocialAuthFacebookController extends Controller
        $user = $service->createOrGetUser(Socialite::driver('facebook')->user());
         auth()->login($user);
         
+        if(session()->get('logintry') == true){
+            session(['urlinvite' => null]); 
+        }
+        
+        if(session('urlinvite')){ 
+            
+            $url = session()->get('urlinvite');
+            session(['urlinvite' => null]);  
+            session(['logintry' => true]); 
+            
+            return redirect($url);
+        }
         return redirect('/dashboard');
     }
 }

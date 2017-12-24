@@ -9,7 +9,7 @@
 <hr>
     
     @if (session('status'))
-        <div class="col-sm-4 alert alert-success">
+        <div class="col-sm-6 alert alert-success">
         {{ session('status') }}
         </div>
     @endif

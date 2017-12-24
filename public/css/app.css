@@ -134,13 +134,17 @@ h5 {
 
 .balance_cover_hover {
   border-radius: 20%;
-  height: 135px;
-  width: 135px;
-  max-height: 30vmin;
-  max-width: 30vmin;
+  height: 185px;
+  width: 185px;
   position: absolute;
-  right: 0.2em;
-  top: 1.4em;
+  right: 0;
+  top: 50px;
+}
+
+@media (max-width: 576px) {
+  .balance_cover_hover {
+    display: none;
+  }
 }
 
 .balance_cover_hover:hover {
@@ -259,8 +263,8 @@ h5 {
 .btn-primary:hover, .btn-primary:active, .btn-primary:focus, .btn-primary:active:focus {
   background-color: #353841 !important;
   border: none;
-  -webkit-box-shadow: 0px 0px lightgrey !important;
-          box-shadow: 0px 0px lightgrey !important;
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
 }
 
 .facebook {

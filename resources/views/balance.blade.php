@@ -4,7 +4,7 @@
 
 @include('usermodal')
 
-<div class="container">
+<div class="container" style="position:relative;">
       <div class="mt-3">
         <h1 style="max-width: 68%;"><div class="balancetitle">{{$balance->name}} </div><div class='balance_cover_hover' style="background:url(../../storage/uploads/covers/{{$balance->cover_name}}) no-repeat center center;
                 background-size: cover;
@@ -159,7 +159,7 @@
                     
                 <td><a onclick="contentEdit('{{$mutation->mutation_count}}','{{ url('balances')}}/{{ $balance->balance_code}}','{{$mutation->mutation_count}}')" class="btnextra"><img src="../../public/images/edit_1.png" height="20" width="20"></a></td>
                 
-                <td class="{{ $mutation->show == 0 ? "invisibletd" : "visibletd"}}"><a onclick="return confirm('Are you sure to delete this item?')" href="{{ url('balances')}}/{{ $balance->balance_code}}/delete/{{$mutation->mutation_count}}" role="button"><img src="../../public/images/trash_1.png" height="25" width="25"></a></td>
+                <td class="{{ $mutation->show == 0 ? "invisibletd" : "visibletd"}}"><a onclick="contentDelete('{{$mutation->mutation_count}}','{{ url('balances')}}/{{ $balance->balance_code}}/delete/{{$mutation->mutation_count}}')" role="button"><img src="../../public/images/trash_1.png" height="25" width="25"></a></td>
                     
                 </tr>
                 @endforeach
@@ -196,7 +196,7 @@ $('#limit').bind('change', function () {
 $( document ).ready(function() {
     var type = window.location.hash;
     var index = $(type).index();
-    console.log(index)
+    
     if(type && index>11){
         show(0,index-1);  
        $("#limit").val("1").attr("selected", "selected");
@@ -222,7 +222,7 @@ $(document).ready(function(){
 $('.move').keydown(function(e){
      if (e.keyCode == 39) { 
          var inputID = $(this).closest('td').next().attr('id')
-     console.log(inputID );
+ 
          if(inputID == 'PP'){
             $(this).closest('td').next().next().find('.move').focus();
          }
@@ -262,6 +262,41 @@ $('.move').keydown(function(e){
 </script>
 
 <script>
+function contentDelete(mutid, url){
+       
+    var size = parseFloat($('#mut'+mutid+' td:nth-child(4)').text().substring(1));
+    var user = $('#mut'+mutid+' td:nth-child(6)').text();
+    var PP = $('#mut'+mutid+' td:nth-child(7)').text();
+    var countTD=$("#mutationtable > tbody > tr:first > td").length;
+    
+    var users = [];
+    for (var i=8; i < countTD-2; i++){
+    var weight = parseInt($('#mut'+mutid+' td:nth-child('+i+')').text());
+    
+    if(isNaN(weight)){var weight=0;}
+    users.push(weight);
+    }
+    
+    function getSum(total, num) {
+    return total + num;
+    }
+    var sum = users.reduce(getSum);
+    
+    var expectedtotal = sum*parseFloat(PP.substring(1));
+     
+    if(!$('#overviewtable tr > td:contains("'+user+'")').length || (expectedtotal < 0.98*size || expectedtotal > 1.02*size)){
+        alert('You are trying to delete a mutation that is connected to a removed user. This is not possible!');
+        return false; 
+    } else{
+        var check = confirm('Are you sure to delete this item?');
+        if(check){
+            window.location.href = url; 
+        }
+        return false;
+    }
+   
+};
+    
 function contentEdit(mutid,link,mutcount){
     
     var countTD=$("#mutationtable > tbody > tr:first > td").length;
@@ -273,12 +308,11 @@ function contentEdit(mutid,link,mutcount){
     var PP = $('#mut'+mutid+' td:nth-child(7)').text();
     var newdate = date.split("-").reverse().join("-");
     var userid = $('option:contains("'+user+'")').attr('id');
-    console.log(userid)
-    var users = [];
     
+    var users = [];
     for (var i=8; i < countTD-2; i++){
     var weight = parseInt($('#mut'+mutid+' td:nth-child('+i+')').text());
-        
+   
     if(isNaN(weight)){var weight=0;}
     users.push(weight);
     }
@@ -287,11 +321,12 @@ function contentEdit(mutid,link,mutcount){
     return total + num;
     }
     var sum = users.reduce(getSum);
+ 
 
     var expectedtotal = sum*parseFloat(PP.substring(1));
     
-    if(!$('#overviewtable tr > td:contains("'+user+'")').length || (expectedtotal < 0.98*size || expectedtotal > 1.02*size)){
-        alert('You are trying to edit a mutation that is connected to a removed user. This is not possible');
+    if(!$('#overviewtable tr > td:contains("'+user+'")').length || (expectedtotal < 0.98*size || expectedtotal > 1.02*size)){    
+        alert('You are trying to edit a mutation that is connected to a removed user. This is not possible!');
         return false; 
     }
     

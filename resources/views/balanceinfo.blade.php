@@ -9,6 +9,18 @@
         <h1>{{$balance->name}}</h1>
       </div>
     <hr> 
+    
+    @if (session('status'))
+        <div class="col-sm-6 alert alert-success">
+        {{ session('status') }}
+        </div>
+    @endif
+    
+    @if (session('alert'))
+        <div class="col-sm-6 alert alert-warning">
+        {{ session('alert') }}
+        </div>
+    @endif
       
     <h5>Balance name</h5> 
     <form id="upload-form" class="form-inline" method="POST" action="{{ url('balances/')}}/{{$balance->balance_code}}/edit" >
@@ -18,18 +30,18 @@
     <div class="form-group">
     <input type="text" class="form-control" id="balancename" name="balancename" placeholder="" required>
     </div>        
-    &nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Change name</button>
+    &nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Change</button>
         
     </form><br>
         
      <h5>Add admin</h5>
-    <form id="upload-form" class="form-inline" method="POST" action="{{ url('balances/')}}/{{$balance->balance_code}}/edit" enctype="multipart/form-data">
+    <form id="upload-form" class="form-inline" method="POST" action="{{ url('balances/')}}/{{$balance->balance_code}}/admin">
         {{ csrf_field() }}
         
     <div class="form-group">
-    <input type="text" class="form-control" id="balancename" name="balancename" placeholder="" required>
+    <input type="text" class="form-control" id="adminemail" name="adminemail" placeholder="Type email" required>
     </div>        
-    &nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Change name</button>
+    &nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Submit</button>
         
     </form>
 
@@ -38,7 +50,7 @@
 <hr>
         
     <h3>Add users to list</h3><br>
-     <form id="upload-form" method="POST" action="{{ url('balances/')}}/{{$balance->balance_code}}/edit" enctype="multipart/form-data">
+     <form id="upload-form" method="POST" action="{{ url('balances/')}}/{{$balance->balance_code}}/addusers">
         {{ csrf_field() }}
        
 <div class="form-group row">

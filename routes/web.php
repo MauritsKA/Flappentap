@@ -1,6 +1,5 @@
 <?php
 
-
 //////////////////////////// Unrestricted
 
 ///// Homepage
@@ -9,7 +8,7 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/faq', 'HomeController@faq');
 
-/////Facebook
+///// Facebook
 Route::get('/redirect', 'SocialAuthFacebookController@redirect');
 
 Route::get('/callback', 'SocialAuthFacebookController@callback');
@@ -46,6 +45,10 @@ Route::post('/balances/editcover/{balance}', 'BalanceController@editcover');
 Route::get('/balances/{balance}/edit', 'BalanceController@balance');
     
 Route::post('/balances/{balance}/edit', 'BalanceController@edit');
+    
+Route::post('/balances/{balance}/addusers', 'BalanceController@addusers');
+
+Route::post('/balances/{balance}/admin', 'BalanceController@admin');
 
 Route::post('/balances/users/{balance}/remove/{user}', 'BalanceController@removeuser');
     

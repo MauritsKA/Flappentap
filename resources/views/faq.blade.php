@@ -16,7 +16,7 @@
 		</h5>
 	</div>
 	<div class="toggle-inner">
-		<p>Flappentap provides a basic and intuitive platform to keep track of group expenses. By adding mutations to a balance you can clearly see how much each person in the group owes the rest. You can state who payed how much, when and what for and who should share this cost. The total sum is everything you payed minus everything you owe.</p>
+		<p>Flappentap provides a basic and intuitive platform to keep track of group expenses. By adding mutations to a balance you can clearly see how much each person in the group owes the rest. You can state who payed how much, when and what for and who should share in this cost. The total sum is everything you payed minus everything you owe.</p>
 	</div>
 	</div><!-- END OF TOGGLE -->
     
@@ -40,7 +40,7 @@
 		</h5>
 	</div>
 	<div class="toggle-inner">
-		<p>No, this platform is completely free.</p>
+		<p>No, this platform is completely free! However, you can <a href="#">donate</a>.</p>
 	</div>
 	</div><!-- END OF TOGGLE -->
     
@@ -88,7 +88,7 @@
 		</h5>
 	</div>
 	<div class="toggle-inner">
-		<p>No you cannot do this, as this would change the users debt in that balance.</p>
+		<p>No you cannot do this, as this would change the users debt in that balance. Re adding the user enables this option again.</p>
 	</div>
 	</div><!-- END OF TOGGLE -->
     

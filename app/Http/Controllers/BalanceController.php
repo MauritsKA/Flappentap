@@ -57,7 +57,7 @@ class BalanceController extends Controller
         $netsum = array_sum($debtoverview)-array_sum($creditoverview);
         
         
-        if($netsum != 0){
+        if($netsum <= -.01 || $netsum >= 0.01){
             Session::flash('alert', 'Something doesn\'t add up. The net sum = &euro;'.$netsum.'!'); 
             
             return view('balance', compact('balance','user','mutations','users','creditoverview','debtoverview'));

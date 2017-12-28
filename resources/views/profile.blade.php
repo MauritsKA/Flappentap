@@ -13,18 +13,19 @@
         </div>
     @endif
  
-<h5>Hi {{ $user->name}} </h5>
+<h5>Hi {{ $user->name}}, </h5>
 <br>
+
 
 <h5>Email</h5>
 <p>{{ $user->email}}</p> 
 <form class="form-inline" method="POST" id="emailform" action="{{ url('profile/email')}}">
 {{ csrf_field() }}  
         
-<div class="form-group">
-<input type="text" class="form-control" id="email" name="email" placeholder="new email" required>    
-</div> 
-&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Submit</button>
+
+<input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="email" name="email" placeholder="new email" required>    
+
+<button type="submit" class="btn btn-primary">Submit</button>
 </form>
     
      @if ($errors->has('email'))
@@ -39,10 +40,9 @@
 <form class="form-inline" method="POST" id="ibanform" action="{{ url('profile/iban')}}">
 {{ csrf_field() }}  
         
-<div class="form-group">
-<input type="text" class="form-control" id="iban" name="iban" placeholder="new IBAN" required>    
-</div> 
-&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Submit</button>
+<input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="iban" name="iban" placeholder="new IBAN" required>    
+
+<button type="submit" class="btn btn-primary">Submit</button>
 </form>   
 <br>
     
@@ -51,13 +51,11 @@
 <form class="form-inline" method="POST" id="passwordform" action="{{ url('profile/password')}}">
 {{ csrf_field() }}  
 
-<div class="form-group">
-<input type="password" class="form-control" id="password" name="password" placeholder="new password" required>    
-</div>   &nbsp;&nbsp;&nbsp;
-<div class="form-group">
-<input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="confirm password" required>    
-</div> 
-&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Submit</button>
+<input type="password" class="form-control mb-2 mr-sm-2 mb-sm-0" id="password" name="password" placeholder="new password" required>    
+
+<input type="password" class="form-control mb-2 mr-sm-2 mb-sm-0" id="password_confirmation" name="password_confirmation" placeholder="confirm password" required>    
+
+<button type="submit" class="btn btn-primary">Submit</button>
 </form>   
     
 @if ($errors->has('password'))

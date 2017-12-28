@@ -28,11 +28,9 @@
     <form class="form-inline" method="POST" id="nicknameform" action="{{ url('balances/users')}}/{{$balance->balance_code}}/">
     {{ csrf_field() }}  
         
-    <div class="form-group">
-    <input type="text" class="form-control" id="newnickname" name="newnickname" placeholder="new nickname" required>    
-    </div> 
-    
-    &nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Submit</button>
+    <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="newnickname" name="newnickname" placeholder="new nickname" required>    
+
+   <button type="submit" class="btn btn-primary">Submit</button>
     </form>   
 </div>
 
@@ -47,7 +45,6 @@
    <button type="submit" onclick="return confirm('Are you completely sure to remove this user?')" class="btn btn-link">Request removal of user from balance</button>
     </form>   
 </div>
-    
 
 </div>
 

@@ -16,7 +16,7 @@
     
     <a class="btn btn-primary" href="balances/create" role="button">Add new balance</a>
     <br> <br>
-    <div class="row">
+    <div class="row ">
      <div class="col-md-8">   
      <div class="table-responsive">
         <table class="table table-hover">
@@ -49,7 +49,7 @@
         </div>
          </div>
         <br>
-        <div class="col-md-4"> 
+        <div class="col-md-4" align="center"> 
         <div class="table-responsive borderless">
         <table class="table-hover">
        <tr class="nohover"><th></th><th class="tableline" colspan="3" style="text-align:center"><H5>Your total</H5></th> </tr>    

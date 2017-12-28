@@ -97,8 +97,8 @@
                 </tr>
               </thead>
                 
-              <tbody> 
-                  
+             
+                  <tbody id="fbody"> 
                <!-- TABLE FORM -->
                   <form class="form-inline" id="mutationform" method="POST" action="{{ url('balances')}}/{{ $balance->balance_code}}" >
                     {{ csrf_field() }}
@@ -109,7 +109,7 @@
                
                   <td> <input type="date" class="move form-control" id="date" name="date" placeholder="Date"></td> 
                       
-                  <td><input onchange="setprice()" type="number" step="0.01"  class="move form-control" id="size" name="size" placeholder="Size"></td>
+                  <td><input onchange="setprice()" type="number" step="0.01"  class="move form-control" id="size" name="size" placeholder="Amount"></td>
                       
                     <td><textarea class="move form-control" id="description" name="description" placeholder="Description" rows="1"></textarea></td> 
                        
@@ -134,7 +134,7 @@
                     <td></td>
                       
                 </tr></form>
-                  
+                 
                 <!-- TABLE DISPLAY -->
                 @foreach ($mutations as $mutation)
                 <tr id="mut{{$mutation->mutation_count}}" class="{{ $mutation->show == 0 ? "invisiblerow" : "visiblerow"}}">
@@ -159,7 +159,7 @@
                     
                 <td><a onclick="contentEdit('{{$mutation->mutation_count}}','{{ url('balances')}}/{{ $balance->balance_code}}','{{$mutation->mutation_count}}')" class="btnextra"><img src="../../public/images/edit_1.png" height="20" width="20"></a></td>
                 
-                <td class="{{ $mutation->show == 0 ? "invisibletd" : "visibletd"}}"><a onclick="contentDelete('{{$mutation->mutation_count}}','{{ url('balances')}}/{{ $balance->balance_code}}/delete/{{$mutation->mutation_count}}')" role="button"><img src="../../public/images/trash_1.png" height="25" width="25"></a></td>
+                <td class="{{ $mutation->show == 0 ? "invisibletd" : "visibletd"}}"><a onclick="contentDelete('{{$mutation->mutation_count}}','{{ url('balances')}}/{{ $balance->balance_code}}/delete/{{$mutation->mutation_count}}')" role="button" class="btnextra"><img src="../../public/images/trash_1.png" height="25" width="25"></a></td>
                     
                 </tr>
                 @endforeach
@@ -177,8 +177,45 @@
 </select> &nbsp;
         <a href="{{url('balances')}}/{{$balance->balance_code}}/history">History</a> &nbsp;
         <a href="{{url('balances')}}/{{$balance->balance_code}}/edit">Edit balance</a>
+    <input id="searchInput" value="Type To Filter" style="width:200px;" class="form-control">
         
 </div>
+
+<script>
+$("#searchInput").keyup(function () {
+    //split the current value of searchInput
+    var data = this.value.toUpperCase().split(" ");
+    //create a jquery object of the rows
+    var jo = $("#fbody").find("tr:gt(0)");
+    if (this.value == "") {
+        jo.show();
+        return;
+    }
+    //hide all the rows
+    jo.hide();
+
+    //Recusively filter the jquery object to get results.
+    jo.filter(function (i, v) {
+        var $t = $(this);
+        for (var d = 0; d < data.length; ++d) {
+            if ($t.text().toUpperCase().indexOf(data[d]) > -1) {
+                return true;
+            }
+        }
+        return false;
+    })
+    //show the rows that match.
+    .show();
+}).focus(function () {
+    this.value = "";
+    $(this).css({
+        "color": "black"
+    });
+    $(this).unbind('focus');
+}).css({
+    "color": "#C0C0C0"
+});
+</script>
 
 <script>    
 function show (min, max) {
@@ -241,141 +278,6 @@ $('.move').keydown(function(e){
 </script>
 
 <script>
-    function checksum(){
-        
-    var countTD=$("#mutationtable > tbody > tr:first > td").length;
-    var users = [];
-    for (var i=1; i < countTD-8; i++){
-    var weight = parseInt($("#u"+i).val());
-
-    if(isNaN(weight)){var weight=0;}
-    users.push(weight);
-    }
-    
-    function getSum(total, num) {
-    return total + num;
-    }
-    
-    var sum = users.reduce(getSum);
-    return sum; 
-    }
-</script>
-
-<script>
-function contentDelete(mutid, url){
-       
-    var size = parseFloat($('#mut'+mutid+' td:nth-child(4)').text().substring(1));
-    var user = $('#mut'+mutid+' td:nth-child(6)').text();
-    var PP = $('#mut'+mutid+' td:nth-child(7)').text();
-    var countTD=$("#mutationtable > tbody > tr:first > td").length;
-    
-    var users = [];
-    for (var i=8; i < countTD-2; i++){
-    var weight = parseInt($('#mut'+mutid+' td:nth-child('+i+')').text());
-    
-    if(isNaN(weight)){var weight=0;}
-    users.push(weight);
-    }
-    
-    function getSum(total, num) {
-    return total + num;
-    }
-    var sum = users.reduce(getSum);
-    
-    var expectedtotal = sum*parseFloat(PP.substring(1));
-     
-    if(!$('#overviewtable tr > td:contains("'+user+'")').length || (expectedtotal < 0.98*size || expectedtotal > 1.02*size)){
-        alert('You are trying to delete a mutation that is connected to a removed user. This is not possible!');
-        return false; 
-    } else{
-        var check = confirm('Are you sure to delete this item?');
-        if(check){
-            window.location.href = url; 
-        }
-        return false;
-    }
-   
-};
-    
-function contentEdit(mutid,link,mutcount){
-    
-    var countTD=$("#mutationtable > tbody > tr:first > td").length;
-    
-    var date = $('#mut'+mutid+' td:nth-child(3)').text(); 
-    var size = parseFloat($('#mut'+mutid+' td:nth-child(4)').text().substring(1));
-    var description = $('#mut'+mutid+' td:nth-child(5)').text();
-    var user = $('#mut'+mutid+' td:nth-child(6)').text();
-    var PP = $('#mut'+mutid+' td:nth-child(7)').text();
-    var newdate = date.split("-").reverse().join("-");
-    var userid = $('option:contains("'+user+'")').attr('id');
-    
-    var users = [];
-    for (var i=8; i < countTD-2; i++){
-    var weight = parseInt($('#mut'+mutid+' td:nth-child('+i+')').text());
-   
-    if(isNaN(weight)){var weight=0;}
-    users.push(weight);
-    }
-    
-    function getSum(total, num) {
-    return total + num;
-    }
-    var sum = users.reduce(getSum);
- 
-
-    var expectedtotal = sum*parseFloat(PP.substring(1));
-    
-    if(!$('#overviewtable tr > td:contains("'+user+'")').length || (expectedtotal < 0.98*size || expectedtotal > 1.02*size)){    
-        alert('You are trying to edit a mutation that is connected to a removed user. This is not possible!');
-        return false; 
-    }
-    
-    $('#mutationform').prop('action', link+'/edit/'+mutcount);
-    $("#Mid").text(mutid);
-    $("#date").val(newdate);
-    $("#size").val(size);
-    $("#PP").text(PP);
-    $("#description").text(description);
-    $("#user").val(userid);
-    
-    for (var i=1; i < countTD-9; i++){
-    $("#u"+i).val(users[i-1]);
-    }
-    
-    $("#add").text("edit");
-    
-    var $form = $('form');
-    editformstate = setform(); 
-    return editformstate;
-}    
-</script>
-
-<script>
-function setprice(){
-    
-    var size = parseInt($("#size").val());
-    console.log(size);
-    if(isNaN(size)){var size=0;}
-    var sum = checksum();
-    if(sum !== 0){
-    $("#PP").text('\u20AC'+ Math.round((size/sum)*100)/100);
-    }
-}
-</script>
-
-<script>
-function clearform(link){
-    $("#mutationform")[0].reset();
-    $('#description').val('');
-    $("#Mid").text('');
-    $("#add").text("add");
-    $('#mutationform').prop('action', link);
-    $("#PP").text('');
-  return false; 
-};
-</script>
-
-<script>
 function setform(){
     var $form = $('form');
     var setForm = $form.serialize();
@@ -407,35 +309,19 @@ if ($form.serialize() !== formstate) {
     return false; 
 }
 });
-
 </script>
 
 <script>
-function openUsermodal(username,nickname,userid,iban,email) {
-    
-    document.getElementById("JSnickname").innerHTML = nickname;
-    document.getElementById("JSusername").innerHTML = username;
-    document.getElementById("JSiban").innerHTML = iban;
-    document.getElementById("JSemail").innerHTML = email;
-    document.getElementById("JSuserid").value= userid;
-    document.getElementById("removeform").action = "{{ url('balances/users')}}/{{$balance->balance_code}}/remove/" + userid;
-    document.getElementById("nicknameform").action = "{{ url('balances/users')}}/{{$balance->balance_code}}/" + userid;
-    $('#usermodal').modal('show');
-}
-</script>
-
-
-<script type="text/javascript">
-        $('#cover').bind('change', function() {
-            var fileSize = this.files[0].size;
-            var maxSize = 2097152;
-            if(fileSize>maxSize){
-                alert('File size is more then 2 MB, please choose an other picture!');
-                return false;
-            } else {
-                 document.getElementById("upload-form").submit();
-            }
-        });
+$('#cover').bind('change', function() {
+    var fileSize = this.files[0].size;
+    var maxSize = 2097152;
+    if(fileSize>maxSize){
+        alert('File size is more then 2 MB, please choose an other picture!');
+        return false;
+    } else {
+         document.getElementById("upload-form").submit();
+    }
+});
 </script>
 
 @endsection

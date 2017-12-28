@@ -26,11 +26,9 @@
     <form id="upload-form" class="form-inline" method="POST" action="{{ url('balances/')}}/{{$balance->balance_code}}/edit" >
         {{ csrf_field() }}
     
-    
-    <div class="form-group">
-    <input type="text" class="form-control" id="balancename" name="balancename" placeholder="" required>
-    </div>        
-    &nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Change</button>
+    <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="balancename" name="balancename" placeholder="" required>
+        
+    <button type="submit" class="btn btn-primary">Change</button>
         
     </form><br>
         
@@ -38,14 +36,12 @@
     <form id="upload-form" class="form-inline" method="POST" action="{{ url('balances/')}}/{{$balance->balance_code}}/admin">
         {{ csrf_field() }}
         
-    <div class="form-group">
-    <input type="text" class="form-control" id="adminemail" name="adminemail" placeholder="Type email" required>
-    </div>        
-    &nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Submit</button>
+    <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="adminemail" name="adminemail" placeholder="Type email" required>
+    
+    <button type="submit" class="btn btn-primary">Submit</button>
         
     </form>
 
-   
     
 <hr>
         
@@ -101,83 +97,6 @@
         
     });
 });
-</script>
-
-<script>
-var lastid = 1;
-    
-function appendform() {
-    
-    var lastinputid = $('#usercontainer > div:last > :nth-child(2) > input').attr('id');
-    if(lastinputid){
-    var lastid = parseInt(lastinputid.substring(5))+1;
-    } else {
-        var lastid = 2;
-    }
-   
-    var container = document.getElementById("usercontainer");
-    var block = document.createElement("div");
-    block.className = "form-group row";
-    container.appendChild(block);
-    
-    // email input
-    var column = document.createElement("div");
-    column.className = "col-sm-1";
-    block.appendChild(column);
-    var label = document.createElement("label");
-    var t = document.createTextNode("Email");  
-    label.appendChild(t);  
-    column.appendChild(label);
-    
-    var column = document.createElement("div");
-    column.className = "col-md-5";
-    block.appendChild(column);
-    var input = document.createElement("input");
-    input.type = "text";
-    input.className= "form-control"
-    input.id = 'email' + lastid;
-    input.name = 'email' + lastid;
-    input.required = true;
-    column.appendChild(input);
-    
-    // name input
-    var column = document.createElement("div");
-    column.className = "col-sm-1";
-    block.appendChild(column);
-    var label = document.createElement("label");
-    var t = document.createTextNode("Name");  
-    label.appendChild(t);  
-    column.appendChild(label);
-    
-    var column = document.createElement("div");
-    column.className = "col-md-5";
-    block.appendChild(column);
-    var input = document.createElement("input");
-    input.type = "text";
-    input.className= "form-control"
-    input.id = 'member' + lastid;
-    input.name = 'member' + lastid;
-    input.required = true;
-    column.appendChild(input);
-   
-}
-
-function cutform() {
-    var emailinput = $('#usercontainer > div:last > :nth-child(2) > input');
-    console.log(emailinput.val());
-    var nameinput = $('#usercontainer > div:last > div:last > input');
-    var lastrow = $('#usercontainer > div:last');
-    if(emailinput && emailinput.val() || nameinput && nameinput.val()){
-     if(window.confirm("Are you sure? You are removing a line with a name and/or email!")){
-        lastrow.remove();
-     }
-    } else {
-    lastrow.remove();
-    }
-}
-    
-    
-//https://stackoverflow.com/questions/14853779/adding-input-elements-dynamically-to-form
 </script>
   
 @endsection

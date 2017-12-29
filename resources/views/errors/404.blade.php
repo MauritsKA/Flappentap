@@ -2,20 +2,16 @@
 
 @section('content')
 
-
+<div class="container">
      
         <span style=" 
-    line-height: 200px;
-    margin: auto;
-    margin-top: -100px;
-    position: absolute;
-    top: 50%;
-    left: 25%;       
-    width: 100%;">
+    margin-top: 10%;
+    margin-left: 8%;
+    position: absolute;">
         <h1>Oops, we can't find the page you're looking for!</h1>
         </span>
     
-
+</div>
 
 @endsection
 

@@ -25,7 +25,7 @@ class BalanceController extends Controller
     {   
         $user = Auth::user();
         
-        $mutations = Mutation::where('balance_id', $balance->id)->orderBy('updated_at','desc')->get();
+        $mutations = Mutation::where('balance_id', $balance->id)->orderBy('updated_at','desc')->orderBy('dated_at','desc')->get();
     
         $otherusers = $balance->users->where('pivot.archived',false)->whereNotIn('id',$user->id);
         $thisuser = $balance->users->where('pivot.archived',false)->where('id',$user->id);

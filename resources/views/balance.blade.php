@@ -74,10 +74,23 @@
         <div  class="col-md-6">
         </div>
     </div>  
-    
+      <input id="searchInput" value="Type To Filter" style="width:200px;" class="form-control" placeholder="Type To Filter"><select id="limit" class='custom-select'>
+    <option value="1">None</option>
+    <option value="11" selected>10</option>
+    <option value="21">20</option>
+    <option value="51">50</option>
+    <option value="101">100</option>
+    <option value="">All</option>
+</select>
         <br>
+   
+  <h4 style="display:inline;">Mutations</h4> <span style="float:right">
+        <a href="{{url('balances')}}/{{$balance->balance_code}}/history">History</a> &nbsp;
+        <a href="{{url('balances')}}/{{$balance->balance_code}}/edit">Edit balance</a> 
+    </span>
     
-  <h4>Mutations</h4>
+    
+    
           <div class="table-responsive">
             <table id="mutationtable" class="table table-striped">
               <thead>
@@ -167,17 +180,7 @@
                 
             </table>
           </div>
-    <select id="limit" class='custom-select'>
-    <option value="1">None</option>
-    <option value="11" selected>10</option>
-    <option value="21">20</option>
-    <option value="51">50</option>
-    <option value="101">100</option>
-    <option value="">All</option>
-</select> &nbsp;
-        <a href="{{url('balances')}}/{{$balance->balance_code}}/history">History</a> &nbsp;
-        <a href="{{url('balances')}}/{{$balance->balance_code}}/edit">Edit balance</a>
-    <input id="searchInput" value="Type To Filter" style="width:200px;" class="form-control">
+   
         
 </div>
 

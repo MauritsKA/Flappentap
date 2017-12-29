@@ -1,9 +1,9 @@
 <footer class="footer {{ Auth::check() || Request::url() == url('/faq')? 'normalfooter' : 'invertedfooter' }}">
       <div class="container">
-          <div class="mastfoot">
-    A platform by <a href="https://www.linkedin.com/in/mauritskorthalsaltes">Maurits</a>
-       &nbsp; contact &nbsp;
-              donate
+        
+          <span> A platform by <a href="https://www.linkedin.com/in/mauritskorthalsaltes">Maurits</a></span>
+   
+        <span style="float:right"><a href="mailto:support@flappentap.com">support@flappentap.com</a></span>
       </div>
-          </div>
+         
     </footer>

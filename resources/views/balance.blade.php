@@ -74,17 +74,10 @@
         <div  class="col-md-6">
         </div>
     </div>  
-      <input id="searchInput" value="Type To Filter" style="width:200px;" class="form-control" placeholder="Type To Filter"><select id="limit" class='custom-select'>
-    <option value="1">None</option>
-    <option value="11" selected>10</option>
-    <option value="21">20</option>
-    <option value="51">50</option>
-    <option value="101">100</option>
-    <option value="">All</option>
-</select>
+     
         <br>
    
-  <h4 style="display:inline;">Mutations</h4> <span style="float:right">
+  <h4 style="display:inline;">Payments</h4> <span style="float:right">
         <a href="{{url('balances')}}/{{$balance->balance_code}}/history">History</a> &nbsp;
         <a href="{{url('balances')}}/{{$balance->balance_code}}/edit">Edit balance</a> 
     </span>
@@ -97,8 +90,8 @@
                  <tr>
                 <th style="min-width:10px; max-width:10px;">#</th>
                 <th style="min-width:10px; max-width:10px;">V</th>
-                <th style="min-width:180px; max-width:180px;">Dated at</th>
-                <th style="min-width:150px; max-width:120px;">Amount</th>
+                <th style="min-width:140px; max-width:140px;">Dated at</th>
+                <th style="min-width:125px; max-width:125px;">Amount</th>
                 <th style="min-width:200px; max-width:200px;">Description</th>
                 <th>User</th>
                 <th>PP</th>
@@ -117,10 +110,12 @@
                     {{ csrf_field() }}
                   <tr id="formrow">
                       
+<!--
                   <td id="Mid"></td> 
-                  <td id="Vid"></td> 
+                 <td id="Vid"></td> 
+-->
                
-                  <td> <input type="date" class="move form-control" id="date" name="date" placeholder="Date"></td> 
+                  <td colspan="3"> <input type="date"   class="move form-control" id="date" name="date" placeholder="Date"></td> 
                       
                   <td><input onchange="setprice()" type="number" step="0.01"  class="move form-control" id="size" name="size" placeholder="Amount"></td>
                       
@@ -178,10 +173,21 @@
                 @endforeach
                 </tbody>
                 
-            </table>
+            </table>              
           </div>
+           <span style="display:block;padding-top:2px;">
+               <input id="searchInput" value="Type To Filter" style="width:200px;display:inline-block;" class="form-control" placeholder="Type To Filter">
+         
    
-        
+    <select style="display:inline-block;float:right;" id="limit" class='custom-select'>
+    <option value="1">None</option>
+    <option value="11" selected>10</option>
+    <option value="21">20</option>
+    <option value="51">50</option>
+    <option value="101">100</option>
+    <option value="">All</option>
+</select>
+     </span>   
 </div>
 
 <script>

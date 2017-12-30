@@ -40,7 +40,7 @@
 		</h5>
 	</div>
 	<div class="toggle-inner">
-		<p>No, this platform is completely free! However, you can <a href="#">donate</a>.</p>
+		<p>No, this platform is completely free!</p>
 	</div>
 	</div><!-- END OF TOGGLE -->
     
@@ -101,6 +101,18 @@
 	</div>
 	<div class="toggle-inner">
 		<p>Yes, for account verification, invitations to balances and requests towards the admins of a balance. There is no commercial usage of your email.</p>
+	</div>
+	</div><!-- END OF TOGGLE -->
+    
+     <div class="toggle">
+	<div class="toggle-title ">
+		<h5 class="toggle-h5">
+		<i></i>
+		<span class="title-name">Is a mobile app available?</span>
+		</h5>
+	</div>
+	<div class="toggle-inner">
+		<p>No, for the time being not. The website is optimized for pc but completely compatible for mobile. Work is in progress to create an Android app.</p>
 	</div>
 	</div><!-- END OF TOGGLE -->
   

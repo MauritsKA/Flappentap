@@ -186,7 +186,7 @@ class BalanceController extends Controller
         $editor = Auth::user();  
             
         $approval = \App\Approval::create([
-                'type' => 'removal',
+                'type' => 'UserRemoval',
                 'balance_id' => $balance->id,
                 'user_id' => $removeduser->id,
                 'editor_id' => Auth::user()->id,
@@ -285,6 +285,38 @@ class BalanceController extends Controller
         
         return redirect('/balances/'.$balance->balance_code)->with('status', 'Succesfully added new admin');
     }
+    
+    public function remove(Balance $balance)
+    {
+        dd('removing!');
+         
+        $token = 'B'.$balance->id.str_random(30);
+        while (\App\Invitation::where('token',$token)->first()){
+            $token = 'B'.$balance->id.str_random(30);
+        } 
+        
+        $editor = Auth::user();  
+            
+        $approval = \App\Approval::create([
+                'type' => 'BalanceDelete',
+                'balance_id' => $balance->id,
+                'user_id' => $removeduser->id,
+                'editor_id' => Auth::user()->id,
+                'token' => $token,
+        ]);
+            
+        $url = url('approval').'/'.$token;
+            
+        $admins = $balance->users->where('pivot.admin',1)->where('pivot.archived',0)->all();
+            
+        foreach($admins as $admin){
+            \Mail::to($admin->email)->send(new Userdelete($editor,$balance,$url,$removeduser,$admin));
+        }
+            
+        return back()->with('status', 'Succesfully sent request to the admins for the removal of '. $removeduser->name); 
+         
+    } 
+    
     
         
 }

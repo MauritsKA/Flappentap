@@ -46,6 +46,8 @@ Route::get('/balances/{balance}/edit', 'BalanceController@balance');
     
 Route::post('/balances/{balance}/edit', 'BalanceController@edit');
     
+Route::post('/balances/{balance}/remove', 'BalanceController@remove');
+    
 Route::post('/balances/{balance}/addusers', 'BalanceController@addusers');
 
 Route::post('/balances/{balance}/admin', 'BalanceController@admin');

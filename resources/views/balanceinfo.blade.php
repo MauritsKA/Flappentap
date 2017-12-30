@@ -42,7 +42,7 @@
         
     </form>
 
-    
+    <br>
 <hr>
         
     <h3>Add users to list</h3><br>
@@ -78,7 +78,17 @@
    <button onclick="checkSize();"  type="submit" value="Upload" class="btn btn-primary">Invite users</button>
         
     </form>
- <br><a href="{{url('balances')}}/{{$balance->balance_code}}">Back</a>
+    
+     <br><a href="{{url('balances')}}/{{$balance->balance_code}}">Back</a>
+
+    <br><hr>
+     <form class="form-inline" method="POST" id="removeform" action="{{ url('balances')}}/{{$balance->balance_code}}/remove">
+    {{ csrf_field() }}  
+    
+   <button type="submit" onclick="return confirm('Are you completely sure to delete this balance?')" class="btn btn-link">Request the complete deletion of this balance</button>
+    <small id="deleteHelp" class="form-text text-muted">This option is only visible for balance admins. On request every member of the balance has to approve the deletion through a comfirmation email. All payments and the final balance of debts will be saved as a PDF and emailed to every member on completion.</small>
+    </form>   
+    
 </div>
 
 

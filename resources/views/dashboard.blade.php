@@ -53,7 +53,7 @@
         <div class="table-responsive borderless">
         <table class="table-hover">
        <tr class="nohover"><th></th><th class="tableline" colspan="3" style="text-align:center"><H5>Your total</H5></th> </tr>    
-       <tr class="nohover"><td></td><td colspan="3" style="text-align:center">&euro;{{ number_format(array_sum($creditoverview)-array_sum($debtoverview),2)}}</td></tr> 
+       <tr class="nohover {{ array_sum($creditoverview)-array_sum($debtoverview) < 0 ? "negative" : "positive"}}"><td></td><td colspan="3" style="text-align:center">&euro;{{ number_format(array_sum($creditoverview)-array_sum($debtoverview),2)}}</td></tr> 
         <tr><th style="height:20px;"></th></tr>
             
             

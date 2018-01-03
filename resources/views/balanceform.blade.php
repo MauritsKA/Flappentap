@@ -32,7 +32,7 @@
 </div>
 <hr>
         
-    <h3>Add users to list</h3><br>
+    <h3>Add users to balance</h3><br>
 <div class="form-group row">
     <div class="col-sm-1">
     <label for="user" "col-form-label">Email</label>

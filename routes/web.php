@@ -55,6 +55,8 @@ Route::post('/balances/{balance}/admin', 'BalanceController@admin');
 Route::post('/balances/users/{balance}/remove/{user}', 'BalanceController@removeuser');
     
 Route::post('/balances/users/{balance}/{user}', 'BalanceController@edituser');
+    
+Route::get('download-pdf/{balance}', 'BalanceController@downloadPDF');
 
 ///// Mutations
 

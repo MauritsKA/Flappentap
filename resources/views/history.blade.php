@@ -10,7 +10,7 @@
 <hr> 
     
     <h4>Edit history</h4>
-@if($versions)
+
 <div class="table-responsive">
 <table border="0" class="table" id="historytable">
 <thead>
@@ -26,10 +26,11 @@
 </thead>
     
 <tbody>
+@if($versions)
 @foreach($versions as $version)
 @if($version->updatetype != 'create')
     <tr>
-        <td><a href="{{url('balances')}}/{{$balance->balance_code}}/{{$version->mutation->mutation_count}}" >{{$version->mutation_id}}</a></td>
+        <td><a href="{{url('balances')}}/{{$balance->balance_code}}/{{$version->mutation->mutation_count}}" >{{$version->mutation->mutation_count}}</a></td>
         <td> {{date('d-m-Y H:i:s', strtotime($version->updated_at))}}</td>
         <td>{{$version->editor->balances->where('id', $balance->id)->pluck('pivot.nickname')->first()}}</td>
         @if($version->updatetype != 'delete')
@@ -48,10 +49,11 @@
     </tr>
 @endif
 @endforeach
+@endif
 </tbody>
     
 </table>
- @endif
+ 
 </div>
  <select id="limit" class='custom-select'>
     <option value="10" selected>10</option>

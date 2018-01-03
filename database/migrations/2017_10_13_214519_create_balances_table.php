@@ -19,6 +19,7 @@ class CreateBalancesTable extends Migration
             $table->string('cover_name')->nullable()->default('default.jpg');
             $table->string('balance_code')->nullable()->default(null)->unique();
             $table->integer('user_id');
+            $table->boolean('archived')->default(false);
             $table->timestamps();
         });
     }

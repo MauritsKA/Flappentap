@@ -22,6 +22,6 @@ class HomeController extends Controller
     {   
         return view('faq');
     }
-
+    
 }
 

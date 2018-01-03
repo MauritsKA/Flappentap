@@ -33,7 +33,19 @@ class LoginController extends Controller
     protected function redirectTo()
     {
         if(Session::get('urlinvite') && Session::get('emailinvite') == Auth::user()->email){
+            
         return Session::get('urlinvite');
+            
+        } elseif(Session::get('urlapprove')){
+            if(Session::get('emailinvite')){
+                if(Session::get('emailinvite') == Auth::user()->email){
+                   return Session::get('urlapprove'); 
+                } else{
+                    return url('/dashboard');   
+                }
+            }
+         return Session::get('urlapprove');
+            
         } else {
         return url('/dashboard');    
         }

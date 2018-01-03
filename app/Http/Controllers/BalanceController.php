@@ -6,6 +6,8 @@ use App\Balance;
 use App\Mutation;
 use App\Invitation;
 use App\Mail\Userdelete;
+use App\Mail\Balancedelete;
+use App\Mail\Balancedeleteconfirm;
 use App\Mail\Adminmail;
 use Storage;
 use App\Mail\Invitationmail;
@@ -13,6 +15,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Session;
 use Request;
+use PDF;
+use App\Version;
 
 class BalanceController extends Controller
 {
@@ -23,6 +27,10 @@ class BalanceController extends Controller
     
     public function index(Balance $balance)
     {   
+        if($balance->archived == true){
+            return back();
+        }
+        
         $user = Auth::user();
         
         $mutations = Mutation::where('balance_id', $balance->id)->orderBy('updated_at','desc')->orderBy('dated_at','desc')->get();
@@ -58,7 +66,7 @@ class BalanceController extends Controller
         
         
         if($netsum <= -.01 || $netsum >= 0.01){
-            Session::flash('alert', 'Something doesn\'t add up. The net sum = &euro;'.$netsum.'!'); 
+            Session::flash('alert', 'Something doesn\'t add up. The net sum = &euro;'.$netsum.'! Please contact support.'); 
             
             return view('balance', compact('balance','user','mutations','users','creditoverview','debtoverview'));
         }
@@ -67,6 +75,10 @@ class BalanceController extends Controller
     }
     
     public function balance(Balance $balance){
+        if($balance->archived == true){
+            return back();
+        }
+        
         return view('balanceinfo', compact('balance'));
     }
     
@@ -287,9 +299,11 @@ class BalanceController extends Controller
     }
     
     public function remove(Balance $balance)
-    {
-        dd('removing!');
-         
+    {    
+        $users = $balance->users->where('pivot.archived',0)->all();
+        
+        foreach($users as $user){
+        
         $token = 'B'.$balance->id.str_random(30);
         while (\App\Invitation::where('token',$token)->first()){
             $token = 'B'.$balance->id.str_random(30);
@@ -300,23 +314,121 @@ class BalanceController extends Controller
         $approval = \App\Approval::create([
                 'type' => 'BalanceDelete',
                 'balance_id' => $balance->id,
-                'user_id' => $removeduser->id,
                 'editor_id' => Auth::user()->id,
+                'user_id' => $user->id,
                 'token' => $token,
         ]);
             
         $url = url('approval').'/'.$token;
             
-        $admins = $balance->users->where('pivot.admin',1)->where('pivot.archived',0)->all();
-            
-        foreach($admins as $admin){
-            \Mail::to($admin->email)->send(new Userdelete($editor,$balance,$url,$removeduser,$admin));
+         \Mail::to($user->email)->send(new Balancedelete($editor,$balance,$url,$user)); 
         }
             
-        return back()->with('status', 'Succesfully sent request to the admins for the removal of '. $removeduser->name); 
+        return back()->with('status', 'Succesfully sent request to all users for the removal of this balance'); 
          
     } 
     
+      public function confirmremove(Balance $balance)
+    {    
     
+        $pdf = $this->getPDF($balance);
+        
+        $user = $balance->users->where('pivot.archived',0)->first();
+        
+        
+//        foreach($users as $user){
+        
+         \Mail::to($user->email)->send(new Balancedeleteconfirm($balance,$user,$pdf)); 
+            
+        
+        
+        
+        return redirect('/dashboard/')->with('status', 'You succesfully approved the removal! The balance is now removed.'); 
+         
+    } 
+    
+     public function getPDF(Balance $balance)
+    {
+        
+        $mutations = $balance->mutations;
+           
+        $versions=null;
+        $version1=null;
+        foreach($mutations as $mutation){
+           
+            $versionpermutation = $mutation->versions->sortByDesc('updated_at')->first();
+            if(!$versions){
+                if(!$version1){
+                    $version1 = $versionpermutation;
+                } else {
+                    $versions = collect([$version1, $versionpermutation]);
+                }
+            } else {
+                $versions->push($versionpermutation);
+            }
+        }
+        
+    
+        if($versions){
+        $versions = $versions->sortByDesc('dated_at');
+        } 
+        
+        if($version1 && !$versions){
+           $versions = $version1; 
+        } 
+        
+        if(!$version1 && !$versions){
+            return false;
+        }  
+       
+        $user = Auth::user();
+        
+        $mutations = Mutation::where('balance_id', $balance->id)->orderBy('updated_at','desc')->orderBy('dated_at','desc')->get();
+    
+        $otherusers = $balance->users->where('pivot.archived',false)->whereNotIn('id',$user->id);
+        $thisuser = $balance->users->where('pivot.archived',false)->where('id',$user->id);
+        $users = $thisuser->merge($otherusers);
+
+        $debtoverview=[];
+        $creditoverview=[];
+        foreach($users as $user){
+            $totaldebt = 0;
+            $totalcredit = 0;
+            
+            foreach($mutations as $mutation){
+                $version = $mutation->versions->last();
+                
+                if($version->updatetype != 'delete'){
+                    $debt = $version->users->where('id',$user->id)->pluck('pivot.weight')->first()*$mutation->PP;
+                    $totaldebt = $debt+$totaldebt;
+                
+                    if($version->user->id == $user->id){
+                    $totalcredit = $version->size+$totalcredit; 
+                    }
+                }
+                
+            }
+            array_push($debtoverview,$totaldebt);
+            array_push($creditoverview,$totalcredit);
+        }
+        
+        $netsum = array_sum($debtoverview)-array_sum($creditoverview);
+
+        
+    	$pdf = PDF::loadView('pdfoverview', compact('versions', 'balance','creditoverview','debtoverview','users'));
+
+		return $pdf;
+
+    }
+    
+     public function downloadPDF(Balance $balance)
+    {
+        $pdf = $this->getPDF($balance);
+        
+        if($pdf == false){
+            return back()->with('alert', 'No payments found to save as PDF yet.');
+        }
+        return $pdf->download($balance->name.'.pdf');
+    }
         
 }

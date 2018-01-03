@@ -9,7 +9,7 @@ Approve
 @endcomponent
 
 @component('mail::panel')
-Upon removal the user has no acces to the balance anymore. Its mutations are still visible, but you cannot insert or edit any payment for or from that user. However, if you reassign the user to the balance, all the old mutations are reconnected automatically!
+Upon removal the user has no acces to the balance anymore. Its payments are still visible, but you cannot insert or edit any payment for or from that user. However, if you reassign the user to the balance, all the old payments are reconnected automatically!
 @endcomponent
 
 Regards, <br>

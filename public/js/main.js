@@ -1,17 +1,4 @@
 // Balance
-function openUsermodal(username,nickname,userid,iban,email) {
-    
-    document.getElementById("JSnickname").innerHTML = nickname;
-    document.getElementById("JSusername").innerHTML = username;
-    document.getElementById("JSiban").innerHTML = iban;
-    document.getElementById("JSemail").innerHTML = email;
-    document.getElementById("JSuserid").value= userid;
-    document.getElementById("removeform").action = "{{ url('balances/users')}}/{{$balance->balance_code}}/remove/" + userid;
-    document.getElementById("nicknameform").action = "{{ url('balances/users')}}/{{$balance->balance_code}}/" + userid;
-    $('#usermodal').modal('show');
-}
-
-// Balance
 function clearform(link){
     $("#mutationform")[0].reset();
     $('#description').val('');

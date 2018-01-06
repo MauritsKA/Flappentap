@@ -12,18 +12,18 @@ class Balancedeleteconfirm extends Mailable
     use Queueable, SerializesModels;
     public $balance;
     public $user;
-    public $pdf;
+
     
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($balance,$user,$pdf)
+    public function __construct($balance,$user)
     {
         $this->balance = $balance;
         $this->user = $user;
-        $this->pdf = $pdf;
+     
     }
 
     /**
@@ -33,8 +33,12 @@ class Balancedeleteconfirm extends Mailable
      */
     public function build()
     {
-    
+        $pdf = base64_encode(getPDF($this->balance,$this->user)->output());
+        
         return $this->subject('Confirmation of the removal of \''. $this->balance->name. '\' ')
-            ->markdown('emails.deleteconfirm')->attachData($this->pdf, $this->balance->name.'.pdf');
+            ->markdown('emails.deleteconfirm')->attachData(base64_decode($pdf), $this->balance->name.'.pdf');
     }
 }
+
+
+            

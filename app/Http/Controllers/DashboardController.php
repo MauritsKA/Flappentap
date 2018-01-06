@@ -22,7 +22,7 @@ class DashboardController extends Controller
     {   
         $user = Auth::user();
         
-        $balances = Auth::user()->balances->where('pivot.archived',0);
+        $balances = Auth::user()->balances->where('pivot.archived',0)->where('archived',0);
         
         $debtoverview=[];
         $creditoverview=[];

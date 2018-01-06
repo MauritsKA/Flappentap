@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Mail\Welcome;
 use Auth;
 use Session;
+use App\Jobs\SendWelcomeEmail;
 
 class RegisterController extends Controller
 {
@@ -81,8 +82,7 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
         ]);
         
-        \Mail::to($user)->send(new Welcome($user));
-            
+        $this->dispatch(new SendWelcomeEmail($user));            
         return $user;
     }
     

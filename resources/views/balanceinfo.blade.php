@@ -30,7 +30,13 @@
         
     <button type="submit" class="btn btn-primary">Change</button>
         
-    </form><br>
+    </form>
+       @if ($errors->has('email'))
+        <span class="help-block">
+        {{ $errors->first('email') }}
+        </span>
+    @endif
+    <br>
     
     @if($balance->users->where('id',Auth::user()->id)->pluck('pivot.admin')->first())
      <h5>Add admin</h5>
@@ -79,9 +85,15 @@
 </div><br>
 
     
-   <button onclick="checkSize();"  type="submit" value="Upload" class="btn btn-primary">Invite users</button>
+   <button onclick="checkSize();"  id="userbutton" type="submit" value="Upload" class="btn btn-primary">Invite users</button>
         
     </form>
+    
+       @if ($errors->has('email'))
+        <span class="help-block">
+        {{ $errors->first('email') }}
+        </span>
+    @endif
     
      <br><a href="{{url('balances')}}/{{$balance->balance_code}}">Back</a>
     
@@ -116,7 +128,7 @@
     });
 });
 </script>
-  
+
 @endsection
 
 

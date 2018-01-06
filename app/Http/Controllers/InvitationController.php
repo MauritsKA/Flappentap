@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Session;
 use Request;
+use App\Jobs\SendInvitationEmail;
+use App\Jobs\SendDeleteBalanceConfirmEmail;
 
 class InvitationController extends Controller
 {
@@ -133,16 +135,26 @@ class InvitationController extends Controller
         $usercount= $users->count();
         
         $count = 0;
+        
+       
         foreach($users as $user){
-             if(Approval::where('user_id',$user->id)->where('type','BalanceDelete')->where('balance_id',$balance->id)->get()->pluck('approved')->first() == true){
+             if(Approval::where('user_id',$user->id)->where('type','BalanceDelete')->where('balance_id',$balance->id)->get()->pluck('approved')->sum() >= 1){
                 $count++;
              }
         }
         
+       
+        
         if($count == $usercount){
             Balance::find($balance->id)->update(['archived'=>true]);
-        
-            app('App\Http\Controllers\BalanceController')->confirmremove($balance);
+            
+            $users = $balance->users->where('pivot.archived',0);
+                        
+            foreach($users as $user){
+                 $this->dispatch(new SendDeleteBalanceConfirmEmail($balance,$user));
+            }
+                   
+            return redirect('/dashboard/')->with('status', 'You succesfully approved the removal as last member! The balance is now removed.'); 
         
         } else {
             return redirect('/balances/'.$balance->balance_code)->with('status', 'You succesfully approved the removal! You\'re still waiting on other approvals.'); 
@@ -150,4 +162,6 @@ class InvitationController extends Controller
         
        
     }
+        
 }
+

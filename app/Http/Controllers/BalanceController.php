@@ -17,6 +17,10 @@ use Session;
 use Request;
 use PDF;
 use App\Version;
+use App\Jobs\SendAdminEmail;
+use App\Jobs\SendUserDeleteEmail;
+use App\Jobs\SendInvitationEmail;
+use App\Jobs\SendDeleteBalanceEmail;
 
 class BalanceController extends Controller
 {
@@ -140,7 +144,9 @@ class BalanceController extends Controller
             ]);
             
             $url = url('invitation').'/'.$token;
-            \Mail::to($email)->send(new Invitationmail($user,$balance,$url));
+            
+            $this->dispatch(new SendInvitationEmail($email, $user,$balance,$url));
+        
         }
         
         return redirect('/dashboard')->with('status', 'Succesfully added balance!');
@@ -210,7 +216,9 @@ class BalanceController extends Controller
         $admins = $balance->users->where('pivot.admin',1)->where('pivot.archived',0)->all();
             
         foreach($admins as $admin){
-            \Mail::to($admin->email)->send(new Userdelete($editor,$balance,$url,$removeduser,$admin));
+           
+            
+            $this->dispatch(new SendUserDeleteEmail($editor,$balance,$url,$removeduser,$admin)); 
         }
             
         return back()->with('status', 'Succesfully sent request to the admins for the removal of '. $removeduser->name); 
@@ -265,7 +273,8 @@ class BalanceController extends Controller
             ]);
             
             $url = url('invitation').'/'.$token;
-            \Mail::to($email)->send(new Invitationmail($user,$balance,$url));
+            
+           $this->dispatch(new SendInvitationEmail($email, $user,$balance,$url));
         }
         
         return redirect('/balances/'.$balance->balance_code)->with('status', 'Succesfully invited new user');
@@ -293,7 +302,7 @@ class BalanceController extends Controller
                     
         $balance->users()->updateExistingPivot($user->id, ['admin' => true]);
         
-        \Mail::to($user->email)->send(new Adminmail($user,$balance,$inviter));
+        $this->dispatch(new SendAdminEmail($user,$balance,$inviter)); 
         
         return redirect('/balances/'.$balance->balance_code)->with('status', 'Succesfully added new admin');
     }
@@ -320,110 +329,18 @@ class BalanceController extends Controller
         ]);
             
         $url = url('approval').'/'.$token;
-            
-         \Mail::to($user->email)->send(new Balancedelete($editor,$balance,$url,$user)); 
+          
+        $this->dispatch(new SendDeleteBalanceEmail($editor,$balance,$url,$user));     
         }
             
         return back()->with('status', 'Succesfully sent request to all users for the removal of this balance'); 
          
-    } 
-    
-      public function confirmremove(Balance $balance)
-    {    
-    
-        $pdf = $this->getPDF($balance);
-        
-        $user = $balance->users->where('pivot.archived',0)->first();
-        
-        
-//        foreach($users as $user){
-        
-         \Mail::to($user->email)->send(new Balancedeleteconfirm($balance,$user,$pdf)); 
-            
-        
-        
-        
-        return redirect('/dashboard/')->with('status', 'You succesfully approved the removal! The balance is now removed.'); 
-         
-    } 
-    
-     public function getPDF(Balance $balance)
-    {
-        
-        $mutations = $balance->mutations;
-           
-        $versions=null;
-        $version1=null;
-        foreach($mutations as $mutation){
-           
-            $versionpermutation = $mutation->versions->sortByDesc('updated_at')->first();
-            if(!$versions){
-                if(!$version1){
-                    $version1 = $versionpermutation;
-                } else {
-                    $versions = collect([$version1, $versionpermutation]);
-                }
-            } else {
-                $versions->push($versionpermutation);
-            }
-        }
-        
-    
-        if($versions){
-        $versions = $versions->sortByDesc('dated_at');
-        } 
-        
-        if($version1 && !$versions){
-           $versions = $version1; 
-        } 
-        
-        if(!$version1 && !$versions){
-            return false;
-        }  
-       
-        $user = Auth::user();
-        
-        $mutations = Mutation::where('balance_id', $balance->id)->orderBy('updated_at','desc')->orderBy('dated_at','desc')->get();
-    
-        $otherusers = $balance->users->where('pivot.archived',false)->whereNotIn('id',$user->id);
-        $thisuser = $balance->users->where('pivot.archived',false)->where('id',$user->id);
-        $users = $thisuser->merge($otherusers);
-
-        $debtoverview=[];
-        $creditoverview=[];
-        foreach($users as $user){
-            $totaldebt = 0;
-            $totalcredit = 0;
-            
-            foreach($mutations as $mutation){
-                $version = $mutation->versions->last();
-                
-                if($version->updatetype != 'delete'){
-                    $debt = $version->users->where('id',$user->id)->pluck('pivot.weight')->first()*$mutation->PP;
-                    $totaldebt = $debt+$totaldebt;
-                
-                    if($version->user->id == $user->id){
-                    $totalcredit = $version->size+$totalcredit; 
-                    }
-                }
-                
-            }
-            array_push($debtoverview,$totaldebt);
-            array_push($creditoverview,$totalcredit);
-        }
-        
-        $netsum = array_sum($debtoverview)-array_sum($creditoverview);
-
-        
-    	$pdf = PDF::loadView('pdfoverview', compact('versions', 'balance','creditoverview','debtoverview','users'));
-
-		return $pdf;
-
-    }
+    }  
     
      public function downloadPDF(Balance $balance)
     {
-        $pdf = $this->getPDF($balance);
+        $user = Auth::user();
+        $pdf = getPDF($balance,$user);
         
         if($pdf == false){
             return back()->with('alert', 'No payments found to save as PDF yet.');

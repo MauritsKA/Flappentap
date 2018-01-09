@@ -14,6 +14,12 @@
         </div>
     @endif
     
+    @if (session('alert'))
+        <div class="col-sm-6 alert alert-warning">
+        {{ session('alert') }}
+        </div>
+    @endif
+    
     <a class="btn btn-primary" href="balances/create" role="button">Add new balance</a>
     <br> <br>
     <div class="row ">
@@ -32,7 +38,7 @@
             <?php $count=0 ?>
             @foreach ($balances as $balance)
             <tr onclick="document.location.href='{{url('')}}/balances/{{$balance->balance_code}}';return false;" class="btnextra">
-                <td style="min-width:80px; max-width:80px;"><a href="{{url('')}}/balances/{{$balance->balance_code}}"><div class='balance_cover' style="background:url(../storage/uploads/covers/{{$balance->cover_name}}) no-repeat center center;
+                <td style="min-width:80px; max-width:80px;"><a href="{{url('')}}/balances/{{$balance->balance_code}}"><div class='balance_cover' style="background:url('{{url('/storage/uploads/covers')}}/{{$balance->cover_name}}?{{str_random(5)}}') no-repeat center center;
                 background-size: cover;
                 -webkit-background-size: cover;
                 -moz-background-size: cover; 

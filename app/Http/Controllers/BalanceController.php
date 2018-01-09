@@ -82,20 +82,32 @@ class BalanceController extends Controller
         if($balance->archived == true){
             return back();
         }
-        
         return view('balanceinfo', compact('balance'));
     }
     
     
     public function form()
     {
-        return view('balanceform');
+        return view('balanceform')->with('usernumber',null);
     }
     
     public function create()
     {        
        $user = Auth::user();
        
+        $checkemail = true; 
+        $i = 1;
+        while(request('email'.$i)){
+            $email = request('email'.$i);
+            $result = filter_var($email, FILTER_VALIDATE_EMAIL);
+            if($result == false){ $checkemail = false; }
+            $i++;
+        }
+        
+        if($checkemail == false){
+            return redirect()->back()->withInput()->with('alert', 'You entered an incorrect email.')->with('usernumber',$i-1);
+        }            
+        
        $balance = Balance::create([
             'name' => request('name'),
             'user_id' =>  $user->id,
@@ -245,6 +257,19 @@ class BalanceController extends Controller
     
     public function addusers(Balance $balance){        
         $user = Auth::user();
+        
+        $checkemail = true; 
+        $i = 1;
+        while(request('email'.$i)){
+            $email = request('email'.$i);
+            $result = filter_var($email, FILTER_VALIDATE_EMAIL);
+            if($result == false){ $checkemail = false; }
+            $i++;
+        }
+        
+        if($checkemail == false){
+            return redirect()->back()->withInput()->with('alert', 'You entered an incorrect email.')->with('usernumber',$i-1);
+        }   
                 
         $i = 1;
         while(request('email'.$i)){

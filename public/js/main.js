@@ -133,7 +133,7 @@ function checksum(){
 var lastid = 1;
 
 // Balance form     
-function appendform() {
+function appendform(old_email, old_member) {
     
     var lastinputid = $('#usercontainer > div:last > :nth-child(2) > input').attr('id');
     if(lastinputid){
@@ -164,6 +164,7 @@ function appendform() {
     input.className= "form-control"
     input.id = 'email' + lastid;
     input.name = 'email' + lastid;
+    input.value = old_email;
     input.required = true;
     column.appendChild(input);
     
@@ -184,6 +185,7 @@ function appendform() {
     input.className= "form-control"
     input.id = 'member' + lastid;
     input.name = 'member' + lastid;
+    input.value = old_member;
     input.required = true;
     column.appendChild(input);
    

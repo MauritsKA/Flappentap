@@ -64,13 +64,13 @@
     <label for="user" "col-form-label">Email</label>
     </div>
     <div class="col-md-5">
-    <input type="text" class="form-control" id="email1" name="email1" placeholder="" required>
+    <input type="text" class="form-control" id="email1" name="email1" placeholder="" value="{{ old('email1') }}" required>
     </div>
         
     <div class="col-sm-1">
     <label for="user">Name</label></div>
     <div class="col-md-5">
-    <input type="text" class="form-control" id="member1" name="member1" placeholder="" required>
+    <input type="text" class="form-control" id="member1" name="member1" placeholder="" value="{{ old('member1') }}" required>
     </div>
 </div>
         
@@ -79,7 +79,7 @@
         
 <div class="row">
     <div class="col-md-2">
-    <a onclick="appendform()"><img class="btnextra" src="{{url('/images/plus.png')}}" height="25" width="25"></a>&nbsp;&nbsp;
+    <a onclick="appendform(null,null)"><img class="btnextra" src="{{url('/images/plus.png')}}" height="25" width="25"></a>&nbsp;&nbsp;
     <a onclick="cutform()"><img class="btnextra" src="{{url('/images/minus.png')}}" height="25" width="25"></a>
     </div>
 </div><br>
@@ -110,6 +110,42 @@
     @endif
     
 </div>
+
+@if(session('usernumber') != null) 
+<script>
+var old_emails = null;
+var old_members = null;
+
+<?php $i = session('usernumber'); 
+
+if($i > 1){
+        $oldemails[] = null;
+        $oldmembers[] =  null;
+    $second = old('email'.$i);
+    for($j = 0; $j <= $i-2; $j++){
+        $oldemails[$j] =  old('email'.($j+2));
+        $oldmembers[$j] =  old('member'.($j+2));
+    }
+
+    $old_emails = json_encode($oldemails);
+    $old_members = json_encode($oldmembers);
+    
+    echo "var old_emails = ". $old_emails . ";\n";
+    echo "var old_members = ". $old_members . ";\n";
+
+}
+?>
+
+    if ({{$i}} > 1 ) {    
+       for (nr = 1; nr < {{$i}}; nr++) {  
+        var old_email = old_emails[nr-1];
+        var old_member = old_members[nr-1];
+        appendform(old_email, old_member);
+        } 
+    }
+
+</script>
+@endif
 
 
 <script>

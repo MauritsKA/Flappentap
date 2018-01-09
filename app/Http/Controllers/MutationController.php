@@ -20,7 +20,18 @@ class MutationController extends Controller
     
     public function create(Balance $balance)
     { 
-            
+        $users = $balance->users;
+        
+        $checkweight = 0;
+        foreach($users as $user){
+            $tempweight = request($user->id);
+            $checkweight += $tempweight;
+        }
+        
+        if($checkweight == 0){
+              return redirect()->back()->withInput()->with('alert', 'You did not state who should pay');
+        }
+        
         $mutation= Mutation::orderBy('id', 'desc')->where('balance_id', $balance->id)->first();
         
         if($mutation == null){ $mutation_count = 1; } 
@@ -47,7 +58,6 @@ class MutationController extends Controller
             'description' => request('description'),
         ]);
         
-        $users = $balance->users;
         foreach($users as $user){
             $weight = request($user->id);
             if($weight != 0 || null){
@@ -56,11 +66,7 @@ class MutationController extends Controller
             }
         }
         
-        if($version->users->sum('pivot.weight') != 0){
         Mutation::find($mutation->id)->update(['PP'=>($mutation->size)/($version->users->sum('pivot.weight'))]);
-        } else {
-             return back()->with('status', 'You did not state who should pay');
-        }
         
         return back()->with('status', 'Succesfully added mutation');
     }

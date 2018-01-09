@@ -6,7 +6,7 @@
 
 <div class="container" style="position:relative;">
       <div class="mt-3">
-        <h1 style="max-width: 68%;"><div class="balancetitle">{{$balance->name}} </div><div class='balance_cover_hover' style="background:url(../../storage/uploads/covers/{{$balance->cover_name}}) no-repeat center center;
+        <h1 style="max-width: 68%;"><div class="balancetitle">{{$balance->name}} </div><div class='balance_cover_hover' style="background:url(../../public/storage/uploads/covers/{{$balance->cover_name}}) no-repeat center center;
                 background-size: cover;
                 -webkit-background-size: cover;
                 -moz-background-size: cover; 
@@ -115,15 +115,15 @@
                  <td id="Vid"></td> 
 -->
                
-                  <td colspan="3"> <input type="date"   class="move form-control" id="date" name="date" placeholder="Date"></td> 
+                  <td colspan="3"> <input type="date"   class="move form-control" id="date" name="date" placeholder="Date" value="{{ old('date') }}"></td> 
                       
-                  <td><input onchange="setprice()" type="number" step="0.01"  class="move form-control" id="size" name="size" placeholder="Amount"></td>
+                  <td><input onchange="setprice()" type="number" step="0.01" class="move form-control" id="size" name="size" placeholder="Amount" value="{{ old('size') }}"></td>
                       
-                    <td><textarea class="move form-control" id="description" name="description" placeholder="Description" rows="1"></textarea></td> 
+                   <td><textarea class="move form-control" id="description" name="description" placeholder="Description" rows="1" value="">{{ old('description') }}</textarea></td> 
                        
                     <td><select class="move custom-select" name="user" id="user">
                         @foreach($users as $user)
-                        <option id="{{$user->id}}" value="{{$user->id}}">{{$user->pivot->nickname}}</option>
+                        <option id="{{$user->id}}" value="{{$user->id}}" @if(old('user') == $user->id) selected @endif>{{$user->pivot->nickname}}</option>
                         @endforeach
                         </select>
                     </td>
@@ -131,7 +131,7 @@
                     <td id="PP"></td>
                <?php $i=1; ?>       
                 @foreach($users as $user)
-                <td><input onchange="setprice()" type="number" step="1"  min="0" class="move form-control" id="u{{$i}}" name="{{$user->id}}"></td>
+                <td><input onchange="setprice()" type="number" step="1"  min="0" class="move form-control" id="u{{$i}}" name="{{$user->id}}" value="{{ old($user->id) }}"></td>
                 <?php $i++; ?> 
                 @endforeach
             
@@ -165,9 +165,9 @@
                 <td>{{$user->versions->where('id',$mutation->versions->sortByDesc('id')->first()->id)->pluck('pivot.weight')->first()}}</td>
                 @endforeach
                     
-                <td><a onclick="contentEdit('{{$mutation->mutation_count}}','{{ url('balances')}}/{{ $balance->balance_code}}','{{$mutation->mutation_count}}')" class="btnextra"><img src="../../public/images/edit_1.png" height="20" width="20"></a></td>
+                <td><a onclick="contentEdit('{{$mutation->mutation_count}}','{{ url('balances')}}/{{ $balance->balance_code}}','{{$mutation->mutation_count}}')" class="btnextra"><img src="{{url('/images/edit_1.png')}}" height="20" width="20"></a></td>
                 
-                <td class="{{ $mutation->show == 0 ? "invisibletd" : "visibletd"}}"><a onclick="contentDelete('{{$mutation->mutation_count}}','{{ url('balances')}}/{{ $balance->balance_code}}/delete/{{$mutation->mutation_count}}')" role="button" class="btnextra"><img src="../../public/images/trash_1.png" height="25" width="25"></a></td>
+                <td class="{{ $mutation->show == 0 ? "invisibletd" : "visibletd"}}"><a onclick="contentDelete('{{$mutation->mutation_count}}','{{ url('balances')}}/{{ $balance->balance_code}}/delete/{{$mutation->mutation_count}}')" role="button" class="btnextra"><img src="{{url('/images/trash_1.png')}}" height="25" width="25"></a></td>
                     
                 </tr>
                 @endforeach

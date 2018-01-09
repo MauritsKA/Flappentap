@@ -110,7 +110,7 @@ class BalanceController extends Controller
         $cover = request('cover');
         $cover_name = $code.'.'.$cover->getClientOriginalExtension();
         Balance::find($id)->update(['cover_name'=>$cover_name]);
-        $cover->move('../storage/uploads/covers', $cover_name);
+        $cover->move('../public/storage/uploads/covers', $cover_name);
         }   
         
         $balance->users()->attach($user->id);
@@ -163,12 +163,12 @@ class BalanceController extends Controller
         
         if(request('cover') != null){
             if($balance->cover_name != "default.jpg"){
-            unlink($base. '/storage/uploads/covers/'. $balance->cover_name);
+            unlink($base. '/public/storage/uploads/covers/'. $balance->cover_name);
             }
         $cover = request('cover');
         $cover_name = $code.'.'.$cover->getClientOriginalExtension();
         Balance::find($id)->update(['cover_name'=>$cover_name]);
-        $cover->move('../storage/uploads/covers', $cover_name);
+        $cover->move('../public/storage/uploads/covers', $cover_name);
         }       
         
         return back();

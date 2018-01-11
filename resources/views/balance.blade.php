@@ -6,7 +6,7 @@
 
 <div class="container" style="position:relative;">
       <div class="mt-3">
-        <h1 style="max-width: 68%;"><div class="balancetitle">{{$balance->name}} </div><div class='balance_cover_hover' style="background:url('{{url('/storage/uploads/covers')}}/{{$balance->cover_name}}?{{str_random(5)}}') no-repeat center center;
+        <h1 style="max-width: 68%;"><div class="balancetitle">{{$balance->name}} </div><div class='balance_cover_hover' style="background:url('{{url('/storage/uploads/covers')}}/{{$balance->cover_name}}') no-repeat center center;
                 background-size: cover;
                 -webkit-background-size: cover;
                 -moz-background-size: cover; 
@@ -250,7 +250,6 @@ $( document ).ready(function() {
         show(0,11);
     }
 });
-
 
 </script>
 

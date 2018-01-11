@@ -73,12 +73,16 @@ class MutationController extends Controller
     
     public function edit(Balance $balance, $mutation_count)
     { 
+        $archivedusers = $balance->users->where('pivot.archived',1);
+        
+        if( count($archivedusers) > 0 ){
+            return redirect()->back()->withInput()->with('alert', 'You are trying to edit a mutation that is connected to a removed user. This is not possible!');
+        }
+        
         $mutation = Mutation::where('balance_id', $balance->id)->where('mutation_count',$mutation_count)->get()->first();
         
         $version = Version::orderBy('version_count', 'desc')->where('mutation_id', $mutation->id)->first();
         
-        
-        $archivedusers = $balance->users->where('pivot.archived',1);
         $oldusers = $version->users;       
         
         Mutation::find($mutation->id)->update([
@@ -127,7 +131,12 @@ class MutationController extends Controller
     
     public function delete(Balance $balance, $mutation_count)
     { 
-      
+        $archivedusers = $balance->users->where('pivot.archived',1);
+        
+        if( count($archivedusers) > 0 ){
+            return back()->withInput()->with('alert', 'You are trying to delete a mutation that is connected to a removed user. This is not possible!');
+        }
+        
         $mutation = Mutation::where('balance_id', $balance->id)->where('mutation_count',$mutation_count)->get()->first();
         
         if($mutation->show == 1){

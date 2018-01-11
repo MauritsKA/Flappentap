@@ -94,7 +94,7 @@ class BalanceController extends Controller
     public function create()
     {        
        $user = Auth::user();
-       
+              
         $checkemail = true; 
         $i = 1;
         while(request('email'.$i)){
@@ -108,6 +108,10 @@ class BalanceController extends Controller
             return redirect()->back()->withInput()->with('alert', 'You entered an incorrect email.')->with('usernumber',$i-1);
         }            
         
+        if(filesize(request('cover')) >= 2097152){
+              return redirect()->back()->withInput()->with('alert', 'The file you uploaded is too large.')->with('usernumber',$i-1);
+        }
+        
        $balance = Balance::create([
             'name' => request('name'),
             'user_id' =>  $user->id,
@@ -120,7 +124,7 @@ class BalanceController extends Controller
         
         if(request('cover') != null){
         $cover = request('cover');
-        $cover_name = $code.'.'.$cover->getClientOriginalExtension();
+        $cover_name = $code.str_random(5).'.'.$cover->getClientOriginalExtension();
         Balance::find($id)->update(['cover_name'=>$cover_name]);
         $cover->move('../public/storage/uploads/covers', $cover_name);
         }   
@@ -171,6 +175,10 @@ class BalanceController extends Controller
         $id = $balance->id;
         $code = $balance->balance_code; 
         
+        if(filesize(request('cover')) >= 2097152){
+              return back()->with('alert', 'The file you uploaded is too large.');
+        }
+        
         $base = base_path();
         
         if(request('cover') != null){
@@ -178,7 +186,7 @@ class BalanceController extends Controller
             unlink($base. '/public/storage/uploads/covers/'. $balance->cover_name);
             }
         $cover = request('cover');
-        $cover_name = $code.'.'.$cover->getClientOriginalExtension();
+        $cover_name = $code.str_random(5).'.'.$cover->getClientOriginalExtension();
         Balance::find($id)->update(['cover_name'=>$cover_name]);
         $cover->move('../public/storage/uploads/covers', $cover_name);
         }       

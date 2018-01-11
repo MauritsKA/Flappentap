@@ -23,8 +23,8 @@ function setprice(){
 
 // Balance
 function contentEdit(mutid,link,mutcount){
-    
-    var countTD=$("#mutationtable > tbody > tr:first > td").length;
+   
+    var countTD=$("#mutationtable > tbody > tr:eq(1) > td").length;
     
     var date = $('#mut'+mutid+' td:nth-child(3)').text(); 
     var size = parseFloat($('#mut'+mutid+' td:nth-child(4)').text().substring(1));
@@ -35,18 +35,20 @@ function contentEdit(mutid,link,mutcount){
     var userid = $('option:contains("'+user+'")').attr('id');
     
     var users = [];
-    for (var i=8; i < countTD-2; i++){
-    var weight = parseInt($('#mut'+mutid+' td:nth-child('+i+')').text());
+    for (var i=8; i <= countTD-2; i++){
+       
+        var weight = parseInt($('#mut'+mutid+' td:nth-child('+i+')').text());
+
+        if(isNaN(weight)){ var weight=0; }
+        
+        users.push(weight);
+    }
    
-    if(isNaN(weight)){var weight=0;}
-    users.push(weight);
-    }
+        function getSum(total, num) {
+            return total + num;
+        }
     
-    function getSum(total, num) {
-    return total + num;
-    }
     var sum = users.reduce(getSum);
- 
 
     var expectedtotal = sum*parseFloat(PP.substring(1));
     
@@ -63,7 +65,7 @@ function contentEdit(mutid,link,mutcount){
     $("#description").text(description);
     $("#user").val(userid);
     
-    for (var i=1; i < countTD-9; i++){
+    for (var i=1; i <= countTD-9; i++){
     $("#u"+i).val(users[i-1]);
     }
     
@@ -80,10 +82,10 @@ function contentDelete(mutid, url){
     var size = parseFloat($('#mut'+mutid+' td:nth-child(4)').text().substring(1));
     var user = $('#mut'+mutid+' td:nth-child(6)').text();
     var PP = $('#mut'+mutid+' td:nth-child(7)').text();
-    var countTD=$("#mutationtable > tbody > tr:first > td").length;
+    var countTD=$("#mutationtable > tbody > tr:eq(1) > td").length;
     
     var users = [];
-    for (var i=8; i < countTD-2; i++){
+    for (var i=8; i <= countTD-2; i++){
     var weight = parseInt($('#mut'+mutid+' td:nth-child('+i+')').text());
     
     if(isNaN(weight)){var weight=0;}

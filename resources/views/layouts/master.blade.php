@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-        <link rel="icon" type="image/png" href="{{url('/images/Favicon.png')}}" sizes="32x32" />
+        <link rel="icon" type="image/png" href="{{url('/images/favicon.ico')}}" sizes="32x32" />
     
         <title>Flappentap</title>
         

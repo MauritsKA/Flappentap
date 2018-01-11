@@ -31,7 +31,7 @@ class SocialAuthFacebookController extends Controller
        $user = $service->createOrGetUser(Socialite::driver('facebook')->user());
         auth()->login($user);
         
-         $this->dispatch(new SendWelcomeEmail($user));        
+           
         
         if(Session::get('urlinvite') && Session::get('emailinvite') == Auth::user()->email){
         return redirect(Session::get('urlinvite'));

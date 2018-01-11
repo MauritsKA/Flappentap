@@ -23,6 +23,8 @@ class SocialFacebookAccountService
             ]);
 
             $user = User::whereEmail($providerUser->getEmail())->first();
+            
+            $this->dispatch(new SendWelcomeEmail($user));     
 
             if (!$user) {
 

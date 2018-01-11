@@ -15,7 +15,7 @@
             <div class="middle">
             <div class="text">
                 <label class="btn-file">
-                <img style=" cursor: pointer; cursor: hand;" src="../../public/images/file_1.png" height="25" width="25">
+                <img style=" cursor: pointer; cursor: hand;" src="{{url('/images/file_1.png')}}" height="25" width="25">
                     
                     <form id="upload-form" method="POST" action="{{ url('balances/editcover')}}/{{$balance->balance_code}}" enctype="multipart/form-data">
                     {{ csrf_field() }}

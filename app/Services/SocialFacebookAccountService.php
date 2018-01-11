@@ -3,8 +3,8 @@
 namespace App\Services;
 use App\SocialFacebookAccount;
 use App\User;
-use Laravel\Socialite\Contracts\User as ProviderUser;
 use App\Jobs\SendWelcomeEmail;
+use Laravel\Socialite\Contracts\User as ProviderUser;
 
 class SocialFacebookAccountService
 {
@@ -33,7 +33,7 @@ class SocialFacebookAccountService
                     'password' => md5(rand(1,10000)),
                 ]);
                 
-                 $this->dispatch(new SendWelcomeEmail($user));
+                 SendWelcomeEmail::dispatch($user);
             }
 
             $account->user()->associate($user);

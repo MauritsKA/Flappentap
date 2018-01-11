@@ -31,7 +31,7 @@
     <div class="form-group">
     <label>Add picture</label><br>
     <label class="btn-file">
-    <input accept="image/*" type="file" name="cover" id="cover" data-max-size="2097152" capture="camera"></label>
+    <input accept="image/*" type="file" name="cover" id="cover" data-max-size="2097152"></label>
     </div>
     </div>
             

@@ -23,9 +23,7 @@ class SocialFacebookAccountService
                 'provider' => 'facebook'
             ]);
 
-            $user = User::whereEmail($providerUser->getEmail())->first();
-            
-            $this->dispatch(new SendWelcomeEmail($user));     
+            $user = User::whereEmail($providerUser->getEmail())->first();     
 
             if (!$user) {
 
@@ -34,6 +32,8 @@ class SocialFacebookAccountService
                     'name' => $providerUser->getName(),
                     'password' => md5(rand(1,10000)),
                 ]);
+                
+                 $this->dispatch(new SendWelcomeEmail($user));
             }
 
             $account->user()->associate($user);

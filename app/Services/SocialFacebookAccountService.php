@@ -4,6 +4,7 @@ namespace App\Services;
 use App\SocialFacebookAccount;
 use App\User;
 use Laravel\Socialite\Contracts\User as ProviderUser;
+use App\Jobs\SendWelcomeEmail;
 
 class SocialFacebookAccountService
 {

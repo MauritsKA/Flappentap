@@ -12,7 +12,7 @@
         <title>Flappentap</title>
         
         <!-- Bootstrap core CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
 
         <!-- Custom styles for this template -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -31,8 +31,6 @@
     </head>
     
     <body>
-        
-        
         <div id="fb-root"></div>
         <script>(function(d, s, id) {
           var js, fjs = d.getElementsByTagName(s)[0];

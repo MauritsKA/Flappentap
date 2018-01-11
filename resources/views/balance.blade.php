@@ -176,6 +176,7 @@
             </table>              
           </div>
            <span style="display:block;padding-top:2px;">
+              
                <input id="searchInput" value="Type To Filter" style="width:200px;display:inline-block;" class="form-control" placeholder="Type To Filter">
          
    

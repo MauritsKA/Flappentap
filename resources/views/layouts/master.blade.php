@@ -9,7 +9,8 @@
         <meta name="author" content="">
         <link rel="icon" type="image/png" href="{{url('/images/favicon.ico')}}" sizes="32x32" />
     
-        <title>Flappentap</title>
+        <title>Flappentap - Keep track of your cash</title>
+        <meta name="description" content="Flappentap provides a basic and intuitive platform for group expenditures and personal finance.">
         
         <!-- Bootstrap core CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">

@@ -28,7 +28,7 @@ class SocialAuthFacebookController extends Controller
     public function callback(SocialFacebookAccountService $service)
     {
        $user = $service->createOrGetUser(Socialite::driver('facebook')->user());
-        auth()->login($user);
+        auth()->login($user,true);
         
         if(Session::get('urlinvite') && Session::get('emailinvite') == Auth::user()->email){
         return redirect(Session::get('urlinvite'));

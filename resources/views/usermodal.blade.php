@@ -43,6 +43,7 @@
     <input id="JSuserid" name="userid" type="hidden">   
     
    <button type="submit" onclick="return confirm('Are you completely sure to remove this user?')" class="btn btn-link">Request removal of user from balance</button>
+        <small style="padding: 0px 14px; 0px; 14px;" id="deleteHelp" class="form-text text-muted">This request is emailed to all admins. Any admin can approve the removal. If you wish to re-add a user, simply send an invitation to the same email. All past payments will be reconnected.</small>
     </form>   
 </div>
 

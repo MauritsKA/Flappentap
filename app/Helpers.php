@@ -5,7 +5,7 @@ use App\Mutation;
 function getPDF($balance,$user)
     {
         
-        $mutations = $balance->mutations;
+        $mutations = $balance->mutations->sortByDesc('dated_at');
            
         $versions=null;
         $version1=null;

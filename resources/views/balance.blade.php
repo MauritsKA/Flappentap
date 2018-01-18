@@ -62,7 +62,7 @@
             <tr>
                
                  <td style="vertical-align:middle;"><button type="button" class="btn btn-link" onclick="openUsermodal('{{$user->name}}','{{$user->pivot->nickname}}','{{$user->id}}','{{$user->iban}}','{{$user->email}}')">{{$user->pivot->nickname}}</button></td>
-                <td class="{{ $creditoverview[$count]-$debtoverview[$count] < 0 ? "negative" : "positive"}}" style="vertical-align:middle;">&euro;{{round($creditoverview[$count]-$debtoverview[$count],2)}}</td>
+                <td class="{{ $creditoverview[$count]-$debtoverview[$count] < 0 ? "negative" : "positive"}}" style="vertical-align:middle;">&euro;{{number_format($creditoverview[$count]-$debtoverview[$count],2)}}</td>
                 <?php $count++ ?>
             </tr>            
                 @endforeach    

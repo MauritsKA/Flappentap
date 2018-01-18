@@ -246,7 +246,6 @@ display: none;
 .btnsecondary:hover, .btnsecondary:focus, .btnsecondary:active{
     background-color: #EF5E57;
     color: #fff;
-    color: #fff;
     border: none;
     box-shadow: none;
 }
@@ -256,11 +255,11 @@ display: none;
     color: #EF5E57;
 }
 
-.btn-outline-primary:hover, .btn-outline-primary:active, btn-outline-primary:focus{
-    background-color: #EF5E57;
-    border-color:  #EF5E57;
-    color: white;
-    box-shadow: none;
+.btn-outline-primary:hover, .btn-outline-primary:active, btn-outline-primary:focus, .btn-primary:active:focus{
+    background-color: #EF5E57 !important;
+    border-color:  #EF5E57 !important;
+    color: white !important;
+    box-shadow: none !important;
 }
 
 .btn-primary{

@@ -44,7 +44,7 @@
                 -moz-background-size: cover; 
                 -o-background-size: cover;"></div></a></td>
                 <td style="vertical-align:middle; text-align:center;"><h5>{{$balance->name}}</h5></td>
-                <td class="{{ $creditoverview[$count]-$debtoverview[$count] < 0 ? "negative" : "positive"}}" style="vertical-align:middle; text-align:center;">&euro;{{round($creditoverview[$count]-$debtoverview[$count],2)}}</td>
+                <td class="{{ $creditoverview[$count]-$debtoverview[$count] < 0 ? "negative" : "positive"}}" style="vertical-align:middle; text-align:center;">&euro;{{ number_format($creditoverview[$count]-$debtoverview[$count],2)}}</td>
             </tr>
             <?php $count++ ?>
             @endforeach

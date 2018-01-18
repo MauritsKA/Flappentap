@@ -115,7 +115,7 @@ function contentDelete(mutid, url){
 // Balance 
 function checksum(){
         
-    var countTD=$("#mutationtable > tbody > tr:first > td").length;
+    var countTD=$("#mutationtable > tbody > tr:eq(1) > td").length;
     var users = [];
     for (var i=1; i < countTD-8; i++){
     var weight = parseInt($("#u"+i).val());

@@ -139,7 +139,7 @@
                   <td> <button onsubmit="checksum()" type="submit" class="btn btn-outline-primary" id="add">Add</button></td>
                       
                     <td><a  class="btnextra" onclick="clearform('{{ url('balances')}}/{{ $balance->balance_code}}');return false;" style="vertical-align:middle;">clear</a></td>
-                    <td></td>
+                  
                       
                 </tr></form>
                  

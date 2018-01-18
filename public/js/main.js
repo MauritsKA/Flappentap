@@ -13,7 +13,7 @@ function clearform(link){
 function setprice(){
     
     var size = parseInt($("#size").val());
-    console.log(size);
+  
     if(isNaN(size)){var size=0;}
     var sum = checksum();
     if(sum !== 0){
@@ -117,9 +117,9 @@ function checksum(){
         
     var countTD=$("#mutationtable > tbody > tr:eq(1) > td").length;
     var users = [];
+   
     for (var i=1; i < countTD-8; i++){
     var weight = parseInt($("#u"+i).val());
-
     if(isNaN(weight)){var weight=0;}
     users.push(weight);
     }

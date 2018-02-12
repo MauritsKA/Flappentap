@@ -9,6 +9,12 @@ html {
     vertical-align: top;
 }
 
+@media (min-width: 1400px) {
+    .container{
+        max-width: 1280px;
+    }
+}
+
 body {
 /* Margin bottom by footer height 
 -------------------------------------------------- */
@@ -253,6 +259,7 @@ display: none;
 .btn-outline-primary{
     border-color:  #EF5E57;
     color: #EF5E57;
+    box-shadow: none !important;
 }
 
 .btn-outline-primary:hover, .btn-outline-primary:active, btn-outline-primary:focus, .btn-primary:active:focus{

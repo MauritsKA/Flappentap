@@ -68,7 +68,7 @@ class MutationController extends Controller
         
         Mutation::find($mutation->id)->update(['PP'=>($mutation->size)/($version->users->sum('pivot.weight'))]);
         
-        return back()->with('status', 'Succesfully added mutation');
+        return back()->with('status', 'Succesfully added payment');
     }
     
     public function edit(Balance $balance, $mutation_count)
@@ -76,7 +76,7 @@ class MutationController extends Controller
         $archivedusers = $balance->users->where('pivot.archived',1);
         
         if( count($archivedusers) > 0 ){
-            return redirect()->back()->withInput()->with('alert', 'You are trying to edit a mutation that is connected to a removed user. This is not possible!');
+            return redirect()->back()->withInput()->with('alert', 'You are trying to edit a payment that is connected to a removed user. This is not possible!');
         }
         
         $mutation = Mutation::where('balance_id', $balance->id)->where('mutation_count',$mutation_count)->get()->first();
@@ -122,7 +122,7 @@ class MutationController extends Controller
             }
         }
         
-        Mutation::find($mutation->id)->update(['PP'=>($mutation->size)/($version->users->sum('pivot.weight'))]);
+        Mutation::find($mutation->id)->update(['PP'=>($version->size)/($version->users->sum('pivot.weight'))]);
         
         $mutation->update(['show'=>true]);
         
@@ -134,7 +134,7 @@ class MutationController extends Controller
         $archivedusers = $balance->users->where('pivot.archived',1);
         
         if( count($archivedusers) > 0 ){
-            return back()->withInput()->with('alert', 'You are trying to delete a mutation that is connected to a removed user. This is not possible!');
+            return back()->withInput()->with('alert', 'You are trying to delete a payment that is connected to a removed user. This is not possible!');
         }
         
         $mutation = Mutation::where('balance_id', $balance->id)->where('mutation_count',$mutation_count)->get()->first();

@@ -18,6 +18,7 @@
     <th>ID</th>
     <th>Time of edit</th>
     <th>Done by</th>
+    <th>Type</th>
     <th>Amount</th>
     <th>Payed by</th>
     <th>Price PP</th>
@@ -33,6 +34,7 @@
         <td><a href="{{url('balances')}}/{{$balance->balance_code}}/{{$version->mutation->mutation_count}}" >{{$version->mutation->mutation_count}}</a></td>
         <td> {{date('d-m-Y H:i:s', strtotime($version->updated_at))}}</td>
         <td>{{$version->editor->balances->where('id', $balance->id)->pluck('pivot.nickname')->first()}}</td>
+        <td>{{$version->updatetype}}</td>
         @if($version->updatetype != 'delete')
         <td>&euro;{{number_format($version->size,2)}}</td>
         <td>{{$version->user->balances->where('id', $balance->id)->pluck('pivot.nickname')->first()}}</td>

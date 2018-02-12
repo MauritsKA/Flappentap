@@ -17,8 +17,13 @@ function setprice(){
     if(isNaN(size)){var size=0;}
     var sum = checksum();
     if(sum !== 0){
-    $("#PP").text('\u20AC'+ Math.round((size/sum)*100)/100);
+    $("#PP").text('\u20AC'+ round(size/sum, 2));
     }
+}
+
+// Round anything
+function round(value, decimals) {
+  return Number(Math.round(value+'e'+decimals)+'e-'+decimals).toFixed(2);
 }
 
 // Balance

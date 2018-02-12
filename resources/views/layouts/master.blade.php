@@ -26,8 +26,7 @@
         
          <!-- JS -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-      
-        <script src="{{ asset('js/main.js') }}?2"></script>
+        <script src="{{ asset('js/main.js') }}?3"></script>
         
     </head>
     

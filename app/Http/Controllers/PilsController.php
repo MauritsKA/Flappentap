@@ -7,15 +7,13 @@ use App\Pils;
 
 class PilsController extends Controller
 {
-     public function pils(Request $request)
+     public function pils($userid)
     {
-        
-        $user = request('user');
+        $user = User::where('id',$userid)->first();
 
         $turf = Pils::create([
             'user_id' => $user,
         ]);
-        
     }
 
      public function index()

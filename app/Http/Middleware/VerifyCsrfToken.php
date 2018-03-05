@@ -12,6 +12,8 @@ class VerifyCsrfToken extends BaseVerifier
      * @var array
      */
     protected $except = [
-        'https://flappentap.com/pils'
+        'https://flappentap.com/pils',
+        'pils',
+        'pils/*'
     ];
 }

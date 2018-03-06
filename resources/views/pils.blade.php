@@ -27,7 +27,7 @@
         <script src="{{ asset('js/main.js') }}?3"></script>
 
         <script src="https://cdn.jsdelivr.net/npm/moment@2.21.0/moment.min.js"></script>    
-        <script src="../node_modules/chart.js/dist/chart.js">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.7.2/dist/Chart.js">
         </script>   
         
     </head>
@@ -89,7 +89,12 @@
 new Chart(document.getElementById("myChart"), {
   type: 'line',
   data: {
-    labels: [newDate(-6),newDate(-5),newDate(-4),newDate(-3),newDate(-2),newDate(-1),newDate(0)], datasets:[
+    labels: [
+    @for($k = -6; $k < 1; $k++)
+    newDate({{$k}}),
+    @endfor
+
+    ], datasets:[
     <?php $j=0; ?>
     @foreach($users as $user) 
          { 
@@ -146,8 +151,6 @@ function newDate(days) {
     d.setDate(d.getDate() + days).toLocaleString();
     return d;
 }
-
-console.log(newDate(-3))
 
 </script>
 

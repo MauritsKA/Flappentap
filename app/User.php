@@ -36,7 +36,7 @@ class User extends Authenticatable
     }  
     
     public function mutations(){
-       return $this->belongsToMany(Mutation::class);
+       return $this->hasMany(Mutation::class);
     } 
     
     public function invitations(){
@@ -49,5 +49,13 @@ class User extends Authenticatable
     
     public function approvals(){
         return $this->hasMany(Invitation::class);
+    }
+
+    public function pils(){
+        return $this->hasMany(Pils::class);
+    }
+
+    public function kratten(){
+        return $this->hasMany(Krat::class);
     }
 }

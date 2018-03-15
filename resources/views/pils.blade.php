@@ -83,6 +83,10 @@ $.ajaxSetup({
     }
 });
 
+$(function() {
+   setdata()
+});
+
 // Update interval
 setInterval(function(){
   setdata()
@@ -121,8 +125,8 @@ function getgraphdata(responsedata){
   dates = getdates(); 
 
   // Setup of data arrays
-  var pilsppperdag = new Array(responsedata.users.length);
-  for (j=0;j<responsedata.users.length;j++){
+  var pilsppperdag = new Array(responsedata.userids.length);
+  for (j=0;j<responsedata.userids.length;j++){
       pilsppperdag[j] = new Array(dates.length+1).join('0').split('').map(parseFloat);
   }
 
@@ -132,7 +136,7 @@ function getgraphdata(responsedata){
     pilsperdag = responsedata.pilsperdag[date]; // Get all pils from date
 
     for (var id in pilsperdag){ // For every pils present      
-      for (j=1;j<=responsedata.users.length;j++){ // For all users
+      for (j=1;j<=responsedata.userids.length;j++){ // For all users
         if( userids[j-1] == pilsperdag[id].user_id) {  // Check if user ID of pils is his 
           pilsppperdag[(j-1)][i]=pilsppperdag[(j-1)][i]+1 // if so add to arrays
         }
@@ -146,7 +150,7 @@ function getgraphdata(responsedata){
 // Update data for every user
 function adddata(responsedata){
   pilsppperdag = getgraphdata(responsedata)
-  for (i=0;i<users.length;i++){
+  for (i=0;i<userids.length;i++){
   myLineChart.data.datasets[i].data = pilsppperdag[i];
   }
   myLineChart.update();

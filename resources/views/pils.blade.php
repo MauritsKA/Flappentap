@@ -44,12 +44,12 @@
               <tbody>
 
                     <?php $count=0 ?>
-                @foreach($users as $user)       
+                @foreach($usernames as $username)       
             <tr>
              
-                 <td style="vertical-align:middle;">{{$user->pivot->nickname}}</td>
-                 <td id=p{{$user->id}} style="vertical-align:middle;"></td>
-                <td id=f{{$user->id}} style="vertical-align:middle;"></td>
+                 <td style="vertical-align:middle;">{{$username}}</td>
+                 <td id=p{{$userids[$count]}} style="vertical-align:middle;"></td>
+                <td id=f{{$userids[$count]}} style="vertical-align:middle;"></td>
             
             </tr>  
             <?php $count++ ?>  
@@ -61,6 +61,9 @@
             </table>
 
             <a class="btn btn-primary" href="pils/delete" role="button">Delete all</a>
+            <a class="btn btn-primary" onclick="setdata()" role="button">Refresh</a>
+            auto refresh every 10 seconds
+
 
           
 
@@ -83,7 +86,7 @@ $.ajaxSetup({
 // Update interval
 setInterval(function(){
   setdata()
-}, 1000);
+}, 10000);
 
 // Call AJAX and update overviews
 function setdata(){
@@ -91,7 +94,7 @@ function setdata(){
     if(response.success)
     
     responsedata = response;
-    for(i=0; i<response.users.length; i++){
+    for(i=0; i<response.userids.length; i++){
 
         var netpilsresult = response.pilscreditoverview[i]- response.pilsdebtoverview[i];
         var netresult = response.creditoverview[i]- response.debtoverview[i];
@@ -153,12 +156,10 @@ function adddata(responsedata){
 
 // Define users and set their color
 <?php 
-    $usernames = $users->pluck('pivot.nickname')->all();
     $js_usernames = json_encode($usernames);
     echo "var users = ". $js_usernames . ";\n"; 
 ?>
 <?php 
-    $userids = $users->pluck('id')->all();
     $js_userids = json_encode($userids);
     echo "var userids = ". $js_userids . ";\n"; 
 ?>

@@ -39,8 +39,9 @@ class PilsController extends Controller
      public function index()
     {         
     	$balance = Balance::where('id',1)->first();
-    	$users = $balance->users->where('pivot.archived',false);
-        return view('pils', compact('users'));
+    	$usernames = $balance->users->where('pivot.archived',false)->pluck('pivot.nickname')->all();
+        $userids = $balance->users->where('pivot.archived',false)->pluck('id')->all();
+        return view('pils', compact('usernames','userids'));
     }
 
  public function turf()
@@ -95,7 +96,9 @@ class PilsController extends Controller
             array_push($creditoverview,$totalcredit);
         }
 
-        return response()->json(['success' => true, 'debtoverview' => $debtoverview, 'creditoverview' => $creditoverview, 'pilsdebtoverview' => $pilsdebtoverview, 'pilscreditoverview' => $pilscreditoverview,'users'=>$users,'pilsperdag'=>$pilsperdag]);
+         $userids = $users->pluck('id')->all();
+
+        return response()->json(['success' => true, 'debtoverview' => $debtoverview, 'creditoverview' => $creditoverview, 'pilsdebtoverview' => $pilsdebtoverview, 'pilscreditoverview' => $pilscreditoverview,'userids'=>$userids,'pilsperdag'=>$pilsperdag]);
     }
 
     public function delete(){

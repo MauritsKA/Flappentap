@@ -15,7 +15,8 @@ Route::get('/callback', 'SocialAuthFacebookController@callback');
 
 /////Pilslijst
 Route::post('/pils', 'PilsController@pils');
-Route::get('/pils', 'PilsController@index');
+Route::get('/pils/', 'PilsController@index');
+Route::get('/turf/', 'PilsController@turf');
 Route::get('/pils/delete', 'PilsController@delete');
 
 

@@ -14,6 +14,7 @@ use Carbon\Carbon;
 
 class PilsController extends Controller
 {
+
      public function pils(Request $request)
     {
     	$userid = request('user');
@@ -22,29 +23,33 @@ class PilsController extends Controller
 
     	if($password == '26bfc225add76c1afc9736ae547b3752c0614341') {
 
-		if($krat == 'true'){
-			$krat = Krat::create([
-	            'user_id' => $userid,
-	        ]);
-
-    	}else{
-	       
-			 $turf = Pils::create([
-	            'user_id' => $userid,
-	        ]);
-    	}
+            if($krat == 'true'){
+    			$krat = Krat::create([
+    	            'user_id' => $userid,
+    	        ]);
+            }else {
+    	       $turf = Pils::create([
+    	            'user_id' => $userid,
+    	        ]);
+            }
 
     	} // password protection
-
     } 
 
      public function index()
-    {    
-     
+    {         
     	$balance = Balance::where('id',1)->first();
     	$users = $balance->users->where('pivot.archived',false);
+        return view('pils', compact('users'));
+    }
 
-    	$pilsdebtoverview=[];
+ public function turf()
+    {    
+     
+        $balance = Balance::where('id',1)->first();
+        $users = $balance->users->where('pivot.archived',false);
+
+        $pilsdebtoverview=[];
         $pilscreditoverview=[];
         foreach($users as $user){
             $totalpilsdebt = $user->pils->count();
@@ -55,14 +60,15 @@ class PilsController extends Controller
         }
 
 
-	$pilsperdag = Pils::select('id', 'user_id', 'created_at')
-    ->get()
-    ->groupBy(function($date) {
-        return Carbon::parse($date->created_at)->format('d/m/Y'); // grouping by years
-        //return Carbon::parse($date->created_at)->format('m'); // grouping by months
-    })->all();
+        $pilsperdag = Pils::select('id', 'user_id', 'created_at')
+        ->get()
+        ->groupBy(function($date) {
+            return Carbon::parse($date->created_at)->format('d/m/Y'); 
+        })->all(); 
 
-	
+        $pilsperuser = Pils::select('id', 'user_id', 'created_at')
+        ->get()
+        ->groupBy('user_id')->all(); 
 
         $mutations = Mutation::where('balance_id', $balance->id)->orderBy('updated_at','desc')->orderBy('dated_at','desc')->get();
    
@@ -89,7 +95,7 @@ class PilsController extends Controller
             array_push($creditoverview,$totalcredit);
         }
 
-        return view('pils', compact('pilsdebtoverview','pilscreditoverview','creditoverview','debtoverview','users','pilsperdag'));
+        return response()->json(['success' => true, 'debtoverview' => $debtoverview, 'creditoverview' => $creditoverview, 'pilsdebtoverview' => $pilsdebtoverview, 'pilscreditoverview' => $pilscreditoverview,'users'=>$users,'pilsperdag'=>$pilsperdag]);
     }
 
     public function delete(){

@@ -8,6 +8,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <link rel="icon" type="image/png" href="{{url('/images/favicon.ico')}}" sizes="32x32" />
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
     
         <title>Flappentap - Keep track of your cash</title>
         <meta name="description" content="Flappentap provides a basic and intuitive platform for group expenditures and personal finance.">
@@ -39,14 +40,7 @@
  <div class="row"> 
         <div class="col-md-6">            
             <table id="overviewtable" class="table table-striped" style="font-size: 40px">
-                
-             <!--  <thead>
-                 <tr>
-                     <th>Huisgenoot</th>
-                     <th>Pils</th>
-                     <th>Geld</th>
-                  </tr>
-              </thead>  -->               
+                        
               <tbody>
 
                     <?php $count=0 ?>
@@ -54,8 +48,8 @@
             <tr>
              
                  <td style="vertical-align:middle;">{{$user->pivot->nickname}}</td>
-                <td class="{{ $pilscreditoverview[$count]-$pilsdebtoverview[$count] < 0 ? "negative" : "positive"}}" style="vertical-align:middle;">{{$pilscreditoverview[$count]-$pilsdebtoverview[$count]}}</td>
-                <td class="{{ $creditoverview[$count]-$debtoverview[$count] < 0 ? "negative" : "positive"}}" style="vertical-align:middle;">&euro;{{number_format($creditoverview[$count]-$debtoverview[$count],2)}}</td>
+                 <td id=p{{$user->id}} style="vertical-align:middle;"></td>
+                <td id=f{{$user->id}} style="vertical-align:middle;"></td>
             
             </tr>  
             <?php $count++ ?>  
@@ -74,83 +68,191 @@
         <div  class="col-md-6">
 
         <canvas id="myChart" width="400" height="300"></canvas>
-
         </div>
     </div>  
 </div>
 
 <script>
-
-
-
-<?php $colors = array("#000000", "#FF0000", "#FFFF00", "#008000", "#0000FF", "#800080"); ?>
-
-
-new Chart(document.getElementById("myChart"), {
-  type: 'line',
-  data: {
-    labels: [
-    @for($k = -6; $k < 1; $k++)
-    newDate({{$k}}),
-    @endfor
-
-    ], datasets:[
-    <?php $j=0; ?>
-    @foreach($users as $user) 
-         { 
-        data: [
-
-        @for($i = 6; $i > -1; $i--)
-
-<?php 
-$day = Carbon\Carbon::now()->subDays($i)->format('d/m/Y');
-
-if(array_key_exists($day, $pilsperdag)){
-    $pilsperdagpp = $pilsperdag[$day]->where('user_id',$user->id)->count('user_id');
-    echo $pilsperdagpp . ',';
-} else {
-    echo '0,';
-}
-?>
-
-  @endfor
-
-        ],
-        label: "{{$user->pivot->nickname}}",
-        borderColor: '{{$colors[$j]}}',
-        fill: false
-      },
- <?php $j++; ?>
-    @endforeach
-
-    ]
-  },
-  options: {
-    animation: {
-        duration: 0
-    },
-    scales: {
-            xAxes: [{
-               type: 'time',
-                time: {
-                    displayFormats: {
-                        day: 'D MMM'
-                    }
-                }
-            }]
-        }
-  }
+//// AJAX calls
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
 });
 
+// Update interval
+setInterval(function(){
+  setdata()
+}, 1000);
 
+// Call AJAX and update overviews
+function setdata(){
+ $.get('{{url('/turf')}}', function(response){
+    if(response.success)
+    
+    responsedata = response;
+    for(i=0; i<response.users.length; i++){
 
+        var netpilsresult = response.pilscreditoverview[i]- response.pilsdebtoverview[i];
+        var netresult = response.creditoverview[i]- response.debtoverview[i];
+        if (netpilsresult < 0){ 
+          var pilsclass = "negative";
+        } else {
+          var pilsclass = "positive";
+        } 
+        if (netresult < 0){ 
+          var flapclass = "negative";
+        } else {
+          var flapclass = "positive";
+        } 
+        $( "#p"+(i+1) ).addClass( pilsclass).html(netpilsresult)
+        $( "#f"+(i+1) ).addClass( flapclass).html('\u20AC'+netresult.toFixed(2))
+    }   
 
+    adddata(responsedata)
+  }, 'json');
+}
+
+// Get data per user per day 
+function getgraphdata(responsedata){
+  dates = getdates(); 
+
+  // Setup of data arrays
+  var pilsppperdag = new Array(responsedata.users.length);
+  for (j=0;j<responsedata.users.length;j++){
+      pilsppperdag[j] = new Array(dates.length+1).join('0').split('').map(parseFloat);
+  }
+
+  for(i=0;i<dates.length;i++){
+
+    date = dates[i].toLocaleDateString("en-GB"); // Get correct date format
+    pilsperdag = responsedata.pilsperdag[date]; // Get all pils from date
+
+    for (var id in pilsperdag){ // For every pils present      
+      for (j=1;j<=responsedata.users.length;j++){ // For all users
+        if( userids[j-1] == pilsperdag[id].user_id) {  // Check if user ID of pils is his 
+          pilsppperdag[(j-1)][i]=pilsppperdag[(j-1)][i]+1 // if so add to arrays
+        }
+      }
+    }
+  }
+
+  return pilsppperdag
+}
+
+// Update data for every user
+function adddata(responsedata){
+  pilsppperdag = getgraphdata(responsedata)
+  for (i=0;i<users.length;i++){
+  myLineChart.data.datasets[i].data = pilsppperdag[i];
+  }
+  myLineChart.update();
+}
+
+////// SETUP OF GRAPH 
+
+// Define users and set their color
+<?php 
+    $usernames = $users->pluck('pivot.nickname')->all();
+    $js_usernames = json_encode($usernames);
+    echo "var users = ". $js_usernames . ";\n"; 
+?>
+<?php 
+    $userids = $users->pluck('id')->all();
+    $js_userids = json_encode($userids);
+    echo "var userids = ". $js_userids . ";\n"; 
+?>
+var colors = [];
+for(i=0; i<users.length;i++){
+  colors[i] = "#"+intToRGB(hashCode(users[i]));
+}
+
+// define data & options for graph
+dates = getdates(); // find the past 7 dates
+var data = {
+    labels:  dates ,
+    datasets: [ 
+    ]
+};
+
+var option = {
+      animation: {
+          duration: 0
+      },
+      scales: {
+              xAxes: [{
+                 type: 'time',
+                  time: {
+                      displayFormats: {
+                          day: 'D MMM'
+                      }
+                  }
+              }]
+          }
+    }
+
+// create line chart
+var canvas = document.getElementById('myChart');
+
+var myLineChart = Chart.Line(canvas,{
+  data:data,
+  options:option
+});
+
+// create dataset for every user
+for (i=0;i<users.length;i++){
+  myLineChart.data.datasets.push({
+        label: users[i],
+        borderColor: colors[i],
+        fill: false,
+  })
+}
+myLineChart.update();
+
+// date functions
+function getdates(){
+  var dates=[];
+  var i = 0;
+  for(k=-6; k<1; k++ ){
+    dates[i] = newDate(k);
+    i++;
+  }
+  return dates; 
+}
 
 function newDate(days) {
     d = new Date();
-    d.setDate(d.getDate() + days).toLocaleString();
+    d.setDate(d.getDate() + days).toLocaleString("en-GB");
     return d;
 }
+
+// java String #hashCode
+function hashCode(str) { 
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+       hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return hash;
+} 
+
+// Turn hash into RGB color
+function intToRGB(i){
+    var c = (i & 0x00FFFFFF)
+        .toString(16)
+        .toUpperCase();
+
+    return "00000".substring(0, 6 - c.length) + c;
+}
+
+// Function used to swap columns and rows for pilsperdagpp data
+
+function getCol(matrix, col){
+       var column = [];
+       for(var i=0; i<matrix.length; i++){
+          column.push(matrix[i][col]);
+       }
+       return column;
+    }
 
 </script>
 

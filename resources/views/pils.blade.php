@@ -62,17 +62,26 @@
 
             <a class="btn btn-primary" href="pils/delete" role="button">Delete all</a>
             <a class="btn btn-primary" onclick="setdata()" role="button">Refresh</a>
-            auto refresh every 10 seconds
-
-
-          
-
+            <a class="btn btn-primary" onclick="editlocal(1,false)" role="button">pils</a>
+            <a class="btn btn-primary" onclick="editlocal(1,true)" role="button">krat</a>
+            Auto refresh in <span id="timer"></span> seconds
+      
         </div>
         <div  class="col-md-6">
 
         <canvas id="myChart" width="400" height="300"></canvas>
         </div>
-    </div>  
+    </div>
+    <div class = "row" style="margin-top: 15px;">  
+       <div class="col-md-6">  
+
+            <iframe src="http://localhost/test.txt"></iframe>  
+       </div>
+       <div class="col-md-6"> 
+
+            <iframe src="http://localhost/test.txt"></iframe>   
+       </div>
+    </div>
 </div>
 
 <script>
@@ -84,13 +93,53 @@ $.ajaxSetup({
 });
 
 $(function() {
-   setdata()
+    setdata()
+    settimer()
 });
 
 // Update interval
 setInterval(function(){
   setdata()
-}, 10000);
+  settimer()
+  updatetime()
+}, 30000);
+
+// Local update of page
+function editlocal(userid,krat){
+  currentcount = parseInt($( "#p"+userid ).html());
+
+  if (krat != true){
+    nextcount = currentcount-1;
+
+        if (nextcount < 0){ 
+           $( "#p"+userid ).html(nextcount).removeClass().addClass("negative")
+        } else {
+          $( "#p"+userid ).html(nextcount).removeClass().addClass("positive")
+        } 
+  } else if (krat == true){
+    nextcount = currentcount+24;
+
+        if (nextcount < 0){ 
+           $( "#p"+userid ).html(nextcount).removeClass().addClass("negative")
+        } else {
+          $( "#p"+userid ).html(nextcount).removeClass().addClass("positive")
+        } 
+  }  
+}
+
+// Countdown timer
+setInterval(function(){
+  updatetimer()
+}, 1000);
+
+function settimer(){
+  $( "#timer" ).html(30);
+  }
+
+function updatetimer(){
+  currenttime = $( "#timer" ).html(); 
+  $( "#timer" ).html(currenttime -1);
+  }
 
 // Call AJAX and update overviews
 function setdata(){

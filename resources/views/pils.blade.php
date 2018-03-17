@@ -107,7 +107,7 @@ setInterval(function(){
 var turfid=0;
 setInterval(function(){
    getlocalhtml()
-}, 100);
+}, 300);
 
 // Get iframe text
 // Call AJAX and update overviews
@@ -116,15 +116,19 @@ function getlocalhtml(){
       if(response.success){
 
       lastturf = response.turfjes[response.turfjes.length-1]
-
       if(lastturf){
+
       if(turfid != lastturf.id){
-      turfid = lastturf.id;
-      userid = lastturf.user_id;
-      krat = lastturf.krat;
-      editlocal(userid,krat)
+        for(i=turfid; i<lastturf.id;i++){
+          turf = response.turfjes[i]
+          turfid = turf.id;
+          userid = turf.user_id;
+          krat = turf.krat;
+          editlocal(userid,krat)
+        }
       }
     }
+
   }
 
   }, 'json');

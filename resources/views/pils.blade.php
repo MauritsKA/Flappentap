@@ -75,11 +75,11 @@
     <div class = "row" style="margin-top: 15px;">  
        <div class="col-md-6">  
 
-            <iframe src="http://localhost/test.txt"></iframe>  
+            <iframe id="iframeId" src="http://localhost/test.txt"></iframe>  
        </div>
        <div class="col-md-6"> 
 
-            <iframe src="http://localhost/test.txt"></iframe>   
+            <iframe id="iframeIdhtml" src="http://localhost/testhtml.html"></iframe>   
        </div>
     </div>
 </div>
@@ -96,6 +96,39 @@ $(function() {
     setdata()
     settimer()
 });
+
+// Update Iframe 
+setInterval(function(){
+  var iframehtml = document.getElementById('iframeIdhtml');
+  iframehtml.src = iframehtml.src;
+   getlocalhtml()
+}, 10000);
+
+var turfid=0;
+setInterval(function(){
+   getlocalhtml()
+}, 100);
+
+// Get iframe text
+// Call AJAX and update overviews
+function getlocalhtml(){
+ $.get('http://localhost/testhtml.html', function(response){
+      if(response.success){
+
+      lastturf = response.turfjes[response.turfjes.length-1]
+
+      if(lastturf){
+      if(turfid != lastturf.id){
+      turfid = lastturf.id;
+      userid = lastturf.user_id;
+      krat = lastturf.krat;
+      editlocal(userid,krat)
+      }
+    }
+  }
+
+  }, 'json');
+}
 
 // Update interval
 setInterval(function(){

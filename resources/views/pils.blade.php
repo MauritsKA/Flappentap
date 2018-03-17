@@ -79,7 +79,7 @@
        </div>
        <div class="col-md-6"> 
 
-            <iframe id="iframeIdhtml" src="http://localhost/testhtml.php"></iframe>   
+            <iframe id="iframeIdhtml" src="http://localhost:8000/testhtml.php"></iframe>   
        </div>
     </div>
 </div>
@@ -112,7 +112,7 @@ setInterval(function(){
 // Get iframe text
 // Call AJAX and update overviews
 function getlocalhtml(){
- $.get('http://localhost/testhtml.php', function(response){
+ $.get('http://localhost:8000/testhtml.php', function(response){
       if(response.success){
 
       lastturf = response.turfjes[response.turfjes.length-1]

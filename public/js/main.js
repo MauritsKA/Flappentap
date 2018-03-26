@@ -56,11 +56,25 @@ function contentEdit(mutid,link,mutcount){
     var sum = users.reduce(getSum);
 
     var expectedtotal = sum*parseFloat(PP.substring(1));
+
+    var switched = false;
+
+    if (size < 0 && expectedtotal < 0){
+        size = size*-1;
+        expectedtotal = expectedtotal*-1;
+        switched = true;
+    } 
     
     if(!$('#overviewtable tr > td:contains("'+user+'")').length || (expectedtotal < 0.98*size || expectedtotal > 1.02*size)){    
         alert('You are trying to edit a mutation that is connected to a removed user. This is not possible!');
         return false; 
     }
+
+    if (switched){
+        size = size*-1;
+        expectedtotal = expectedtotal*-1;
+        switched = false;
+    } 
     
     $('#mutationform').prop('action', link+'/edit/'+mutcount);
     $("#Mid").text(mutid);

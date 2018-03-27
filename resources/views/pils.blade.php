@@ -75,11 +75,11 @@
     <div class = "row" style="margin-top: 15px;">  
        <div class="col-md-6">  
 
-            <iframe id="iframeId" src="http://localhost/test.txt"></iframe>  
+            <iframe id="iframeId" src=""></iframe>  
        </div>
        <div class="col-md-6"> 
 
-            <iframe id="iframeIdhtml" src="http://localhost:8000/testhtml.php"></iframe>   
+            <iframe id="iframeIdhtml" src=""></iframe>   
        </div>
     </div>
 </div>
@@ -95,50 +95,60 @@ $.ajaxSetup({
 $(function() {
     setdata()
     settimer()
+    
 });
 
-// Update Iframe 
-setInterval(function(){
-  var iframehtml = document.getElementById('iframeIdhtml');
-  iframehtml.src = iframehtml.src;
-   getlocalhtml()
-}, 10000);
+// Update Iframe
+function updatecmd(url){
+    $("#iframeIdhtml").attr('src', url);
+    var iframehtml = document.getElementById('iframeIdhtml');
+    iframehtml.src = iframehtml.src;
+}
 
-var turfid=0;
-setInterval(function(){
-   getlocalhtml()
-}, 300);
+// var turfid=0;
+// setInterval(function(){
+//    getlocalhtml()
+// }, 1000);
 
 // Get iframe text
 // Call AJAX and update overviews
-function getlocalhtml(){
- $.get('http://localhost:8000/testhtml.php', function(response){
-      if(response.success){
+// function getlocalhtml(){
+//  $.get('http://localhost/testhtml.html', function(response){
+//       if(response.success){
 
-      lastturf = response.turfjes[response.turfjes.length-1]
-      if(lastturf){
+//       lastturf = response.turfjes[response.turfjes.length-1]
+//       if(lastturf){
 
-      if(turfid != lastturf.id){
-        for(i=turfid; i<lastturf.id;i++){
-          turf = response.turfjes[i]
-          turfid = turf.id;
-          userid = turf.user_id;
-          krat = turf.krat;
-          editlocal(userid,krat)
-        }
-      }
-    }
+//       if(turfid != lastturf.id){
+//         for(i=turfid; i<lastturf.id;i++){
+//           turf = response.turfjes[i]
+//           turfid = turf.id;
+//           userid = turf.user_id;
+//           krat = turf.krat;
+//           editlocal(userid,krat)
+//         }
+//       }
+//     }
 
-  }
+//   }
 
-  }, 'json');
-}
+//   }, 'json');
+// }
 
 // Update interval
 setInterval(function(){
   setdata()
   settimer()
-  updatetime()
+  try {
+    updatetime()
+  }
+  catch (e) {
+      if (e instanceof ReferenceError) {  
+      } else {
+          throw e;
+      }
+}
+  
 }, 30000);
 
 // Local update of page

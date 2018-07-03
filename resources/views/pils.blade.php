@@ -143,7 +143,7 @@ setInterval(function(){
       }
 }
   
-}, 5000);
+}, 5000); // AJAX refresh time
 
 // Local update of page
 function editlocal(userid,krat){
@@ -171,10 +171,10 @@ function editlocal(userid,krat){
 // Countdown timer
 setInterval(function(){
   updatetimer()
-}, 5000);
+}, 1000);
 
 function settimer(){
-  $( "#timer" ).html(6);
+  $( "#timer" ).html(6); // change time clock
   }
 
 function updatetimer(){

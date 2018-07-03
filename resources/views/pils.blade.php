@@ -143,7 +143,7 @@ setInterval(function(){
       }
 }
   
-}, 3000);
+}, 5000);
 
 // Local update of page
 function editlocal(userid,krat){
@@ -171,10 +171,10 @@ function editlocal(userid,krat){
 // Countdown timer
 setInterval(function(){
   updatetimer()
-}, 1000);
+}, 5000);
 
 function settimer(){
-  $( "#timer" ).html(4);
+  $( "#timer" ).html(6);
   }
 
 function updatetimer(){

@@ -36,8 +36,26 @@ class PilsController extends Controller
     	} // password protection
     } 
 
+     public function delete(Request $request)
+    {
+        $userid = request('user');
+        $password = sha1(request('password'));
+        $krat = request('krat');
+
+        if($password == '26bfc225add76c1afc9736ae547b3752c0614341') {
+
+            if($krat == 'true'){
+               Krat::all()->sortByDesc('updated_at')->first()->delete();
+            }else {
+               Pils::all()->sortByDesc('updated_at')->first()->delete();
+            }
+
+        } // password protection
+    } 
+
      public function index()
     {         
+        
     	$balance = Balance::where('id',1)->first();
     	$usernames = $balance->users->where('pivot.archived',false)->pluck('pivot.nickname')->all();
         $userids = $balance->users->where('pivot.archived',false)->pluck('id')->all();
@@ -101,7 +119,7 @@ class PilsController extends Controller
         return response()->json(['success' => true, 'debtoverview' => $debtoverview, 'creditoverview' => $creditoverview, 'pilsdebtoverview' => $pilsdebtoverview, 'pilscreditoverview' => $pilscreditoverview,'userids'=>$userids,'pilsperdag'=>$pilsperdag]);
     }
 
-    public function delete(){
+    public function deleteall(){
     	Pils::truncate();
     	Krat::truncate();
 

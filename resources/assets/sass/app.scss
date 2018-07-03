@@ -65,6 +65,29 @@ h5{
     margin-bottom: 12px;  
 }
 
+/* Alert messages
+-------------------------------------------------- */
+
+.alert {
+    position:fixed; 
+    top: 65px; 
+    width: 100%;
+    z-index:9999; 
+    border-radius:1px
+}
+
+@media (max-width: 575px) {
+.alert {
+    left: 5px;
+}
+}
+
+@media (min-width: 768px) {
+.alert { 
+     left: 40px; 
+}
+}
+
 /* FAQ toggle
 -------------------------------------------------- */
 .toggle {

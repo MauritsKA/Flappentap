@@ -12,12 +12,14 @@
     
     @if (session('status'))
         <div class="col-sm-6 alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">×</button>
         {{ session('status') }}
         </div>
     @endif
     
     @if (session('alert'))
         <div class="col-sm-6 alert alert-warning">
+            <button type="button" class="close" data-dismiss="alert">×</button>
         {{ session('alert') }}
         </div>
     @endif

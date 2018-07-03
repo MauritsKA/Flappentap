@@ -38,9 +38,13 @@
 <div class="container">
     
  <div class="row"> 
-        <div class="col-md-6">            
+        <div class="col-md-6" style="background-image: url('https://yt3.ggpht.com/a-/ACSszfFSrI3JBVARa_v-6VSFVBPs4afLe4BFgpZVNA=s900-mo-c-c0xffffffff-rj-k-no');background-size: cover; background-repeat:no-repeat; color:white; ">            
             <table id="overviewtable" class="table table-striped" style="font-size: 40px">
-                        
+               <thead>
+                 <th></th>
+                 <th>Pils</th>
+                 <th>Geld</th>
+               </thead>         
               <tbody>
 
                     <?php $count=0 ?>
@@ -60,8 +64,8 @@
                 
             </table>
 
-            <a class="btn btn-primary" href="pils/delete" role="button">Delete all</a>
-            <a class="btn btn-primary" onclick="setdata()" role="button">Refresh</a>
+            <a class="btn btn-primary" href="pils/deleteall" role="button">Delete all</a>
+           <!--  <a class="btn btn-primary" onclick="setdata()" role="button">Refresh</a> -->
             <a class="btn btn-primary" onclick="editlocal(1,false)" role="button">pils</a>
             <a class="btn btn-primary" onclick="editlocal(1,true)" role="button">krat</a>
             Auto refresh in <span id="timer"></span> seconds
@@ -71,16 +75,6 @@
 
         <canvas id="myChart" width="400" height="300"></canvas>
         </div>
-    </div>
-    <div class = "row" style="margin-top: 15px;">  
-       <div class="col-md-6">  
-
-            <iframe id="iframeId" src=""></iframe>  
-       </div>
-       <div class="col-md-6"> 
-
-            <iframe id="iframeIdhtml" src=""></iframe>   
-       </div>
     </div>
 </div>
 
@@ -149,7 +143,7 @@ setInterval(function(){
       }
 }
   
-}, 30000);
+}, 3000);
 
 // Local update of page
 function editlocal(userid,krat){
@@ -180,7 +174,7 @@ setInterval(function(){
 }, 1000);
 
 function settimer(){
-  $( "#timer" ).html(30);
+  $( "#timer" ).html(4);
   }
 
 function updatetimer(){

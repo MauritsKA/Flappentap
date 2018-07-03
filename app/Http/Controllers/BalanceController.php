@@ -93,7 +93,7 @@ class BalanceController extends Controller
     
     public function create()
     {        
-       $user = Auth::user();
+        $user = Auth::user();
               
         $checkemail = true; 
         $i = 1;

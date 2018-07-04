@@ -33,12 +33,12 @@
         
     </head>
     
-    <body>   
+    <body  style="background-image: url('https://yt3.ggpht.com/a-/ACSszfFSrI3JBVARa_v-6VSFVBPs4afLe4BFgpZVNA=s900-mo-c-c0xffffffff-rj-k-no');background-size: cover background-repeat: repeat; color:white; ">   
 
 <div class="container">
     
  <div class="row"> 
-        <div class="col-md-6" style="background-image: url('https://yt3.ggpht.com/a-/ACSszfFSrI3JBVARa_v-6VSFVBPs4afLe4BFgpZVNA=s900-mo-c-c0xffffffff-rj-k-no');background-size: cover; background-repeat:no-repeat; color:white; ">            
+        <div class="col-md-6">            
             <table id="overviewtable" class="table table-striped" style="font-size: 40px">
                <thead>
                  <th></th>

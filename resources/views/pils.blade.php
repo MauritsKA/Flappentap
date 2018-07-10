@@ -33,7 +33,7 @@
         
     </head>
     
-    <body  style="background-image: url('https://yt3.ggpht.com/a-/ACSszfFSrI3JBVARa_v-6VSFVBPs4afLe4BFgpZVNA=s900-mo-c-c0xffffffff-rj-k-no');background-size: cover background-repeat: repeat; color:white; ">   
+    <body  style="background-image: url('{{url('/images/katalyse.jpg')}}');background-size: cover background-repeat: repeat; color:white; ">   
 
 <div class="container">
     
@@ -92,47 +92,13 @@ $(function() {
     
 });
 
-// Update Iframe
-function updatecmd(url){
-    $("#iframeIdhtml").attr('src', url);
-    var iframehtml = document.getElementById('iframeIdhtml');
-    iframehtml.src = iframehtml.src;
-}
-
-// var turfid=0;
-// setInterval(function(){
-//    getlocalhtml()
-// }, 1000);
-
-// Get iframe text
-// Call AJAX and update overviews
-// function getlocalhtml(){
-//  $.get('http://localhost/testhtml.html', function(response){
-//       if(response.success){
-
-//       lastturf = response.turfjes[response.turfjes.length-1]
-//       if(lastturf){
-
-//       if(turfid != lastturf.id){
-//         for(i=turfid; i<lastturf.id;i++){
-//           turf = response.turfjes[i]
-//           turfid = turf.id;
-//           userid = turf.user_id;
-//           krat = turf.krat;
-//           editlocal(userid,krat)
-//         }
-//       }
-//     }
-
-//   }
-
-//   }, 'json');
-// }
 
 // Update interval
 setInterval(function(){
   setdata()
   settimer()
+  updatecolor()
+
   try {
     updatetime()
   }
@@ -144,6 +110,25 @@ setInterval(function(){
 }
   
 }, 5000); // AJAX refresh time
+
+// Update color
+function updatecolor(){
+  var maxid = $('#overviewtable > tbody > tr:last > td:nth-child(2)').attr('id');
+  var maxint = parseInt(maxid.slice(-1));
+
+  var i;
+  for (i = 1; i <= maxint; i++) { 
+    currentcount = parseInt($( "#p"+i ).html());
+
+        if (currentcount < 0){ 
+           $( "#p"+i ).html(currentcount).removeClass().addClass("negative")
+        } else {
+          $( "#p"+i ).html(currentcount).removeClass().addClass("positive")
+        }       
+
+  }
+ 
+}
 
 // Local update of page
 function editlocal(userid,krat){

@@ -45,9 +45,9 @@ class PilsController extends Controller
         if($password == '26bfc225add76c1afc9736ae547b3752c0614341') {
 
             if($krat == 'true'){
-               Krat::all()->sortByDesc('updated_at')->first()->delete();
+               Krat::all()->sortByDesc('updated_at')->first()->update(['archived'=>true]);
             }else {
-               Pils::all()->sortByDesc('updated_at')->first()->delete();
+               Pils::all()->sortByDesc('updated_at')->first()->update(['archived'=>true]);
             }
 
         } // password protection
@@ -71,8 +71,8 @@ class PilsController extends Controller
         $pilsdebtoverview=[];
         $pilscreditoverview=[];
         foreach($users as $user){
-            $totalpilsdebt = $user->pils->count();
-            $totalpilscredit = $user->kratten->count()*24;
+            $totalpilsdebt = $user->pils->where('archived',false)->count();
+            $totalpilscredit = $user->kratten->where('archived',false)->count()*24;
                             
             array_push($pilsdebtoverview,$totalpilsdebt);
             array_push($pilscreditoverview,$totalpilscredit);

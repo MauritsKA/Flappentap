@@ -16,6 +16,7 @@ class CreateKratTable extends Migration
          Schema::create('krat', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
+            $table->boolean('archived')->default(false);
             $table->timestamps();
         });
     }

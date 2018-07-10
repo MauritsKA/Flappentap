@@ -16,6 +16,7 @@ class CreatePilsTable extends Migration
          Schema::create('pils', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
+            $table->boolean('archived')->default(false);
             $table->timestamps();
         });
     }

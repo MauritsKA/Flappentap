@@ -64,10 +64,10 @@
                 
             </table>
 
-          <!--   <a class="btn btn-primary" href="pils/deleteall" role="button">Delete all</a> -->
-           <!--  <a class="btn btn-primary" onclick="setdata()" role="button">Refresh</a> -->
-            <!-- <a class="btn btn-primary" onclick="editlocal(1,false)" role="button">pils</a>
-            <a class="btn btn-primary" onclick="editlocal(1,true)" role="button">krat</a> -->
+            <a class="btn btn-primary" href="pils/deleteall" role="button">Delete all</a>
+            <a class="btn btn-primary" onclick="setdata()" role="button">Refresh</a>
+            <a class="btn btn-primary" onclick="editlocal(1,false)" role="button">pils</a>
+            <a class="btn btn-primary" onclick="editlocal(1,true)" role="button">krat</a>
             Auto refresh in <span id="timer"></span> seconds
       
         </div>

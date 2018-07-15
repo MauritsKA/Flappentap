@@ -263,7 +263,7 @@ function adddata(responsedata){
     $js_userids = json_encode($userids);
     echo "var userids = ". $js_userids . ";\n"; 
 ?>
-var colors = ['#00AC50','#2BA6D','#9b001b','#e83120','#D2D6DF','#0095D9'];
+var colors = ['#00AC50','#f2c235','#9b001b','#e83120','#D2D6DF','#0095D9'];
 // for(i=0; i<users.length;i++){
 //   colors[i] = "#"+intToRGB(hashCode(users[i]));
 

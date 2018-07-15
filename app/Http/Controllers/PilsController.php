@@ -38,6 +38,7 @@ class PilsController extends Controller
 
      public function delete(Request $request)
     {
+       
         $userid = request('user');
         $password = sha1(request('password'));
         $krat = request('krat');

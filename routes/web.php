@@ -19,9 +19,9 @@ Route::post('/pils/delete', 'PilsController@delete');
 
 Route::get('/pils/', 'PilsController@index');
 Route::get('/turf/', 'PilsController@turf');
-
-Route::get('/pils/deleteall', 'PilsController@deleteall');
-
+Route::get('/pilstotaal/', 'PilsController@pilstotaal');
+Route::get('/krattotaal/', 'PilsController@krattotaal');
+//Route::get('/pils/deleteall', 'PilsController@deleteall');
 
 //////////////////////////// Restricted by login
 

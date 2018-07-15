@@ -63,6 +63,18 @@ class PilsController extends Controller
         return view('pils', compact('usernames','userids'));
     }
 
+     public function pilstotaal()
+    {         
+        $pilsen = Pils::all();
+        return view('pilstotaal', compact('pilsen'));
+    }
+
+     public function krattotaal()
+    {         
+        $kratten = Krat::all();
+        return view('krattotaal', compact('kratten'));
+    }
+
  public function turf()
     {    
      
@@ -120,10 +132,10 @@ class PilsController extends Controller
         return response()->json(['success' => true, 'debtoverview' => $debtoverview, 'creditoverview' => $creditoverview, 'pilsdebtoverview' => $pilsdebtoverview, 'pilscreditoverview' => $pilscreditoverview,'userids'=>$userids,'pilsperdag'=>$pilsperdag]);
     }
 
-    public function deleteall(){
-    	Pils::truncate();
-    	Krat::truncate();
+    // public function deleteall(){
+    // 	Pils::truncate();
+    // 	Krat::truncate();
 
-    	return back();
-    }
+    // 	return back();
+    // }
 }

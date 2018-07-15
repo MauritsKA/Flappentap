@@ -36,6 +36,23 @@
     <body  style="background-image: url('{{url('/images/katalyse.jpg')}}');background-size: cover background-repeat: repeat; color:white; ">   
 
 <div class="container">
+
+<div id="VideoDiv" style="z-index: 1000;position: absolute;left: 200px;top: 280px; display:none;">
+<video id="myVideo" width="320" muted="muted">
+  <source src="{{url('/images/bal.mp4')}}" type="video/mp4">
+</video>
+</div>
+
+<script> 
+var vid = document.getElementById("myVideo"); 
+
+function playVid() { 
+   $("#VideoDiv").show();
+    vid.play(); 
+} 
+$('#myVideo').on('ended',function(){ $("#VideoDiv").hide(); });
+ 
+</script> 
     
  <div class="row"> 
         <div class="col-md-6">            
@@ -64,10 +81,10 @@
                 
             </table>
 
-            <a class="btn btn-primary" href="pils/deleteall" role="button">Delete all</a>
+           <!--  <a class="btn btn-primary" href="pils/deleteall" role="button">Delete all</a>
             <a class="btn btn-primary" onclick="setdata()" role="button">Refresh</a>
             <a class="btn btn-primary" onclick="editlocal(1,false)" role="button">pils</a>
-            <a class="btn btn-primary" onclick="editlocal(1,true)" role="button">krat</a>
+            <a class="btn btn-primary" onclick="editlocal(1,true)" role="button">krat</a> -->
             Auto refresh in <span id="timer"></span> seconds
       
         </div>
@@ -125,7 +142,6 @@ function updatecolor(){
         } else {
           $( "#p"+i ).html(currentcount).removeClass().addClass("positive")
         }       
-
   }
  
 }
@@ -173,11 +189,14 @@ function setdata(){
     if(response.success)
     
     responsedata = response;
-    for(i=0; i<response.userids.length; i++){
+    for(i=1; i<=response.userids.length; i++){
 
-        var netpilsresult = response.pilscreditoverview[i]- response.pilsdebtoverview[i];
-        var netresult = response.creditoverview[i]- response.debtoverview[i];
+        var netpilsresult = response.pilscreditoverview[i-1]- response.pilsdebtoverview[i-1];
+        var netresult = response.creditoverview[i-1]- response.debtoverview[i-1];
+        var currentcount = $( "#p"+i).html();   
+
         if (netpilsresult < 0){ 
+          if ((netpilsresult != currentcount) && (i==6)){ playVid() }
           var pilsclass = "negative";
         } else {
           var pilsclass = "positive";
@@ -187,8 +206,8 @@ function setdata(){
         } else {
           var flapclass = "positive";
         } 
-        $( "#p"+(i+1) ).addClass( pilsclass).html(netpilsresult)
-        $( "#f"+(i+1) ).addClass( flapclass).html('\u20AC'+netresult.toFixed(2))
+        $( "#p"+i ).addClass(pilsclass).html(netpilsresult)
+        $( "#f"+i ).addClass(flapclass).html('\u20AC'+netresult.toFixed(2))
     }   
 
     updatecolor()

@@ -191,6 +191,8 @@ function setdata(){
         $( "#f"+(i+1) ).addClass( flapclass).html('\u20AC'+netresult.toFixed(2))
     }   
 
+    updatecolor()
+
     adddata(responsedata)
   }, 'json');
 }

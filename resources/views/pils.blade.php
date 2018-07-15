@@ -263,10 +263,11 @@ function adddata(responsedata){
     $js_userids = json_encode($userids);
     echo "var userids = ". $js_userids . ";\n"; 
 ?>
-var colors = [];
-for(i=0; i<users.length;i++){
-  colors[i] = "#"+intToRGB(hashCode(users[i]));
-}
+var colors = ['#00AC50','#2BA6D','#9b001b','#e83120','#D2D6DF','#0095D9'];
+// for(i=0; i<users.length;i++){
+//   colors[i] = "#"+intToRGB(hashCode(users[i]));
+
+// }
 
 // define data & options for graph
 dates = getdates(); // find the past 7 dates

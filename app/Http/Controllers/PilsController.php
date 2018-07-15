@@ -46,9 +46,9 @@ class PilsController extends Controller
         if($password == '26bfc225add76c1afc9736ae547b3752c0614341') {
 
             if($krat == 'true'){
-               Krat::all()->sortByDesc('updated_at')->where('archived','false')->first()->update(['archived'=>true]);
+               Krat::all()->sortByDesc('updated_at')->where('user_id',$userid)->where('archived','false')->first()->update(['archived'=>true]);
             }else {
-               Pils::all()->sortByDesc('updated_at')->where('archived','false')->first()->update(['archived'=>true]);
+               Pils::all()->sortByDesc('updated_at')->where('user_id',$userid)->where('archived','false')->first()->update(['archived'=>true]);
             }
 
         } // password protection

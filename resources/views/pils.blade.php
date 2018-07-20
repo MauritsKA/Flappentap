@@ -37,21 +37,32 @@
 
 <div class="container">
 
-<div id="VideoDiv" style="z-index: 1000;position: absolute;left: 200px;top: 280px; display:none;">
-<video id="myVideo" width="320" muted="muted">
+<div id="VideoDiv4" style="z-index: 1000;position: absolute;left: 200px;top: 280px; display:none;">
+<video id="myVideo4" width="320" muted="muted">
   <source src="{{url('/images/bal.mp4')}}" type="video/mp4">
 </video>
 </div>
 
-<script> 
-var vid = document.getElementById("myVideo"); 
+<div id="VideoDiv6" style="z-index: 1000;position: absolute;left: 200px;top: 280px; display:none;">
+<video id="myVideo6" width="320" muted="muted">
+  <source src="{{url('/images/choco.mp4')}}" type="video/mp4">
+</video>
+</div>
 
-function playVid() { 
+<script> 
+var vid4 = document.getElementById("myVideo4"); 
+function playVid4() { 
    $("#VideoDiv").show();
-    vid.play(); 
+    vid4.play(); 
 } 
-$('#myVideo').on('ended',function(){ $("#VideoDiv").hide(); });
+$('#myVideo4').on('ended',function(){ $("#VideoDiv4").hide(); });
  
+var vid6 = document.getElementById("myVideo6"); 
+function playVid6() { 
+   $("#VideoDiv").show();
+    vid6.play(); 
+} 
+$('#myVideo6').on('ended',function(){ $("#VideoDiv6").hide(); });
 </script> 
     
  <div class="row"> 
@@ -199,7 +210,10 @@ function setdata(){
         var currentcount = $( "#p"+i).html();   
 
         if (netpilsresult < 0){ 
-          if ((netpilsresult != currentcount) && (response.userids[i-1]==6)){ playVid() }
+          if ((netpilsresult != currentcount) && (response.userids[i-1]==4)){ playVid4() }
+          if ((netpilsresult != currentcount) && (response.userids[i-1]==6)){ playVid6() }
+          
+
           var pilsclass = "negative";
 
           if($( "#p"+i ).hasClass("positive")){

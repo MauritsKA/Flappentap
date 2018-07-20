@@ -39,13 +39,13 @@
 
 <div id="VideoDiv4" style="z-index: 1000;position: absolute;left: 200px;top: 280px; display:none;">
 <video id="myVideo4" width="320" muted="muted">
-  <source src="{{url('/images/bal.mp4')}}" type="video/mp4">
+  <source src="{{url('/images/choco.mp4')}}" type="video/mp4">
 </video>
 </div>
 
 <div id="VideoDiv6" style="z-index: 1000;position: absolute;left: 200px;top: 280px; display:none;">
 <video id="myVideo6" width="320" muted="muted">
-  <source src="{{url('/images/choco.mp4')}}" type="video/mp4">
+  <source src="{{url('/images/bal.mp4')}}" type="video/mp4">
 </video>
 </div>
 

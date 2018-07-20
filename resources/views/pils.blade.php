@@ -135,13 +135,20 @@ function updatecolor(){
 
   var i;
   for (i = 1; i <= maxint; i++) { 
-    currentcount = parseInt($( "#p"+i ).html());
+    currentpcount = parseInt($( "#p"+i ).html());
+     currentfcount = parseInt($( "#p"+i ).html());
 
-        if (currentcount < 0){ 
-           $( "#p"+i ).html(currentcount).removeClass().addClass("negative")
+        if (currentpcount < 0){ 
+           $( "#p"+i ).html(currentpcount).removeClass().addClass("negative")
         } else {
-          $( "#p"+i ).html(currentcount).removeClass().addClass("positive")
-        }       
+          $( "#p"+i ).html(currentpcount).removeClass().addClass("positive")
+        }      
+
+        if (currentfcount < 0){ 
+           $( "#f"+i ).html(currentfcount).removeClass().addClass("negative")
+        } else {
+          $( "#f"+i ).html(currentfcount).removeClass().addClass("positive")
+        }   
   }
  
 }
@@ -196,7 +203,7 @@ function setdata(){
         var currentcount = $( "#p"+i).html();   
 
         if (netpilsresult < 0){ 
-          if ((netpilsresult != currentcount) && (i==6)){ playVid() }
+          if ((netpilsresult != currentcount) && (response.userids[i-1]==6)){ playVid() }
           var pilsclass = "negative";
         } else {
           var pilsclass = "positive";
@@ -247,6 +254,7 @@ function getgraphdata(responsedata){
 function adddata(responsedata){
   pilsppperdag = getgraphdata(responsedata)
   for (i=0;i<userids.length;i++){
+    
   myLineChart.data.datasets[i].data = pilsppperdag[i];
   }
   myLineChart.update();

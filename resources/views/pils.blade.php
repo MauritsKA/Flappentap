@@ -136,7 +136,7 @@ function updatecolor(){
   var i;
   for (i = 1; i <= maxint; i++) { 
     currentpcount = parseInt($( "#p"+i ).html());
-     currentfcount = parseInt($( "#p"+i ).html());
+    currentfcount = parseInt($( "#f"+i ).html());
 
         if (currentpcount < 0){ 
            $( "#p"+i ).html(currentpcount).removeClass().addClass("negative")
@@ -254,7 +254,7 @@ function getgraphdata(responsedata){
 function adddata(responsedata){
   pilsppperdag = getgraphdata(responsedata)
   for (i=0;i<userids.length;i++){
-    
+
   myLineChart.data.datasets[i].data = pilsppperdag[i];
   }
   myLineChart.update();

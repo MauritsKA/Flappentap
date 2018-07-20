@@ -52,14 +52,14 @@
 <script> 
 var vid4 = document.getElementById("myVideo4"); 
 function playVid4() { 
-   $("#VideoDiv").show();
+   $("#VideoDiv4").show();
     vid4.play(); 
 } 
 $('#myVideo4').on('ended',function(){ $("#VideoDiv4").hide(); });
  
 var vid6 = document.getElementById("myVideo6"); 
 function playVid6() { 
-   $("#VideoDiv").show();
+   $("#VideoDiv6").show();
     vid6.play(); 
 } 
 $('#myVideo6').on('ended',function(){ $("#VideoDiv6").hide(); });

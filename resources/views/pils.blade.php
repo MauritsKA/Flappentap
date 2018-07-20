@@ -136,19 +136,15 @@ function updatecolor(){
   var i;
   for (i = 1; i <= maxint; i++) { 
     currentpcount = parseInt($( "#p"+i ).html());
-    currentfcount = parseInt($( "#f"+i ).html());
+   currentfcount = parseInt($( "#f"+i ).html());
+
 
         if (currentpcount < 0){ 
            $( "#p"+i ).html(currentpcount).removeClass().addClass("negative")
         } else {
           $( "#p"+i ).html(currentpcount).removeClass().addClass("positive")
         }      
-
-        if (currentfcount < 0){ 
-           $( "#f"+i ).html(currentfcount).removeClass().addClass("negative")
-        } else {
-          $( "#f"+i ).html(currentfcount).removeClass().addClass("positive")
-        }   
+      
   }
  
 }
@@ -205,13 +201,30 @@ function setdata(){
         if (netpilsresult < 0){ 
           if ((netpilsresult != currentcount) && (response.userids[i-1]==6)){ playVid() }
           var pilsclass = "negative";
+
+          if($( "#p"+i ).hasClass("positive")){
+            $( "#p"+i ).removeClass("positive")
+          }
+
         } else {
           var pilsclass = "positive";
+
+           if($( "#p"+i ).hasClass("negative")){
+            $( "#p"+i ).removeClass("negative")
+          }
         } 
         if (netresult < 0){ 
           var flapclass = "negative";
+
+          if($( "#f"+i ).hasClass("positive")){
+            $( "#f"+i ).removeClass("positive")
+          }
         } else {
           var flapclass = "positive";
+          if($( "#f"+i ).hasClass("negative")){
+            $( "#f"+i ).removeClass("negative")
+          }
+
         } 
         $( "#p"+i ).addClass(pilsclass).html(netpilsresult)
         $( "#f"+i ).addClass(flapclass).html('\u20AC'+netresult.toFixed(2))

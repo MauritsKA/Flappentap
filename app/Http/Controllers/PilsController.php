@@ -92,13 +92,13 @@ class PilsController extends Controller
         }
 
 
-        $pilsperdag = Pils::select('id', 'user_id', 'created_at')
+        $pilsperdag = Pils::select('id', 'user_id', 'created_at')->where('archived',false)
         ->get()
         ->groupBy(function($date) {
             return Carbon::parse($date->created_at)->format('d/m/Y'); 
         })->all(); 
 
-        $pilsperuser = Pils::select('id', 'user_id', 'created_at')
+        $pilsperuser = Pils::select('id', 'user_id', 'created_at')->where('archived',false)
         ->get()
         ->groupBy('user_id')->all(); 
 

@@ -127,9 +127,17 @@ class PilsController extends Controller
             array_push($creditoverview,$totalcredit);
         }
 
-         $userids = $users->pluck('id')->all();
+      
+        $userids = $users->pluck('id')->all();
+        
+        $usernames = [];
+        foreach($userids as $userid){
+            $nickname = User::where('id', $userid)->first()->balances->where('id', 1)->pluck('pivot.nickname')->first();
 
-        return response()->json(['success' => true, 'debtoverview' => $debtoverview, 'creditoverview' => $creditoverview, 'pilsdebtoverview' => $pilsdebtoverview, 'pilscreditoverview' => $pilscreditoverview,'userids'=>$userids,'pilsperdag'=>$pilsperdag]);
+            array_push($usernames, $nickname);
+        }
+
+        return response()->json(['success' => true, 'debtoverview' => $debtoverview, 'creditoverview' => $creditoverview, 'pilsdebtoverview' => $pilsdebtoverview, 'pilscreditoverview' => $pilscreditoverview,'userids'=>$userids,'usernames'=>$usernames,'pilsperdag'=>$pilsperdag]);
     }
 
     // public function deleteall(){

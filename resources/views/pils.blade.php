@@ -75,13 +75,13 @@ $('#myVideo6').on('ended',function(){ $("#VideoDiv6").hide(); });
                </thead>         
               <tbody>
 
-                    <?php $count=0 ?>
+                    <?php $count=1 ?>
                 @foreach($usernames as $username)       
             <tr>
              
-                 <td style="vertical-align:middle;">{{$username}}</td>
-                 <td id=p{{$userids[$count]}} style="vertical-align:middle;"></td>
-                <td id=f{{$userids[$count]}} style="vertical-align:middle;"></td>
+                 <td id=u{{$count}} style="vertical-align:middle;">{{$username}}</td>
+                 <td id=p{{$count}} style="vertical-align:middle;"></td>
+                <td id=f{{$count}} style="vertical-align:middle;"></td>
             
             </tr>  
             <?php $count++ ?>  
@@ -240,6 +240,7 @@ function setdata(){
           }
 
         } 
+        $( "#u"+i ).html(response.usernames[i-1])
         $( "#p"+i ).addClass(pilsclass).html(netpilsresult)
         $( "#f"+i ).addClass(flapclass).html('\u20AC'+netresult.toFixed(2))
     }   

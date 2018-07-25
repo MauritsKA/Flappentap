@@ -28,9 +28,23 @@ class BalanceController extends Controller
     {
         $this->middleware('auth');
     }
+
+     public function setmax(Balance $balance,$setmax)
+    {   
+        session(['take_max' => $setmax]);
+        return redirect('balances/'.$balance->balance_code);
+    }
+       
     
     public function index(Balance $balance)
     {   
+       
+        $value = session('take_max');
+        if (!$value){
+             session(['take_max' => 10]);
+        }
+
+
         if($balance->archived == true){
             return back();
         }
@@ -68,7 +82,8 @@ class BalanceController extends Controller
         
         $netsum = array_sum($debtoverview)-array_sum($creditoverview);
         
-        
+        $mutations = $mutations->take(session('take_max'));
+
         if($netsum <= -.01 || $netsum >= 0.01){
             Session::flash('alert', 'Something doesn\'t add up. The net sum = &euro;'.$netsum.'! Please contact support.'); 
             

@@ -72,6 +72,8 @@ Route::get('download-pdf/{balance}', 'BalanceController@downloadPDF');
 
 Route::get('/balances/{balance}', 'BalanceController@index');
 
+Route::get('/balances/{balance}/{setmax}', 'BalanceController@setmax');
+
 Route::post('/balances/{balance}', 'MutationController@create');
 
 Route::post('/balances/{balance}/edit/{mutation}', 'MutationController@edit');

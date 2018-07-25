@@ -183,12 +183,12 @@
          
    
     <select style="display:inline-block;float:right;" id="limit" class='custom-select'>
-    <option value="1">None</option>
-    <option value="11" selected>10</option>
-    <option value="21">20</option>
-    <option value="51">50</option>
-    <option value="101">100</option>
-    <option value="">All</option>
+<!--     <option value="0">None</option> -->
+    <option value="10" selected>10</option>
+    <option value="20">20</option>
+    <option value="50">50</option>
+    <option value="100">100</option>
+    <option value="999999999">All</option>
 </select>
      </span>   
 </div>
@@ -230,28 +230,37 @@ $("#searchInput").keyup(function () {
 </script>
 
 <script>    
-function show (min, max) {
-    var $table = $('#mutationtable'), $rows = $table.find('tbody tr');
-    min = min ? min - 1 : 0;
-    max = max ? max : $rows.length;
-    $rows.hide().slice(min, max).show();
-    return false;    
-}
+// function show (min, max) {
+//     var $table = $('#mutationtable'), $rows = $table.find('tbody tr');
+//     min = min ? min - 1 : 0;
+//     max = max ? max : $rows.length;
+//     $rows.hide().slice(min, max).show();
+//     return false;    
+// }
     
-$('#limit').bind('change', function () {
-    show(0, this.value);
-});
+// $('#limit').bind('change', function () {
+//     show(0, this.value);
+// });
 
-$( document ).ready(function() {
-    var type = window.location.hash;
-    var index = $(type).index();
+// $( document ).ready(function() {
+//     var type = window.location.hash;
+//     var index = $(type).index();
     
-    if(type && index>11){
-        show(0,index-1);  
-       $("#limit").val("1").attr("selected", "selected");
-    } else{
-        show(0,11);
-    }
+//     if(type && index>11){
+//         show(0,index-1);  
+//        $("#limit").val("1").attr("selected", "selected");
+//     } else{
+//         show(0,11);
+//     }
+// });
+
+var take_max = {{session('take_max')}};
+$("#limit").val(take_max).attr("selected", "selected");
+
+
+$('#limit').bind('change', function () {
+    var url = '{{Request::url()}}';
+     window.location.href = url + '/'+ this.value;
 });
 
 </script>

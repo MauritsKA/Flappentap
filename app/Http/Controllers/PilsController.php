@@ -17,9 +17,16 @@ class PilsController extends Controller
 
      public function pils(Request $request)
     {
-       	$userid = request('user');
+       	$usernumber = request('user');
     	$password = sha1(request('password'));
     	$krat = request('krat');
+
+        $balance = Balance::first();
+        
+        $userarray = $balance->users->where('pivot.archived',false)->all();
+        $keys = array_keys($userarray);
+
+        $userid = $userarray[$keys[$usernumber-1]]->id;
 
        	if($password == '26bfc225add76c1afc9736ae547b3752c0614341') {
 
@@ -55,11 +62,13 @@ class PilsController extends Controller
     } 
 
      public function index()
-    {         
+    {        
+        $balance = Balance::where('id',1)->first(); 
         
-    	$balance = Balance::where('id',1)->first();
     	$usernames = $balance->users->where('pivot.archived',false)->pluck('pivot.nickname')->all();
+
         $userids = $balance->users->where('pivot.archived',false)->pluck('id')->all();
+
         return view('pils', compact('usernames','userids'));
     }
 

@@ -46,9 +46,16 @@ class PilsController extends Controller
      public function delete(Request $request)
     {
        
-        $userid = request('user');
+        $usernumber = request('user');
         $password = sha1(request('password'));
         $krat = request('krat');
+
+         $balance = Balance::first();
+        
+        $userarray = $balance->users->where('pivot.archived',false)->all();
+        $keys = array_keys($userarray);
+
+        $userid = $userarray[$keys[$usernumber-1]]->id;
 
         if($password == '26bfc225add76c1afc9736ae547b3752c0614341') {
 

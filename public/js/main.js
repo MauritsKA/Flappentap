@@ -65,10 +65,10 @@ function contentEdit(mutid,link,mutcount){
         switched = true;
     } 
     
-    if(!$('#overviewtable tr > td:contains("'+user+'")').length || (expectedtotal < 0.98*size || expectedtotal > 1.02*size)){    
-        alert('You are trying to edit a mutation that is connected to a removed user. This is not possible!');
-        return false; 
-    }
+    // if(!$('#overviewtable tr > td:contains("'+user+'")').length || (expectedtotal < 0.98*size || expectedtotal > 1.02*size)){    
+    //     alert('You are trying to edit a mutation that is connected to a removed user. This is not possible!');
+    //     return false; 
+    // }
 
     if (switched){
         size = size*-1;

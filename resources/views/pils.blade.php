@@ -86,6 +86,14 @@ $('#myVideo6').on('ended',function(){ $("#VideoDiv6").hide(); });
             </tr>  
             <?php $count++ ?>  
                 @endforeach
+
+                 <tr>
+             
+                 <td style="vertical-align:middle;"></td>
+                 <td id=ptotal style="vertical-align:middle;"></td>
+                <td id=ftotal style="vertical-align:middle;"></td>
+            
+            </tr> 
                         
         
              </tbody>
@@ -96,7 +104,7 @@ $('#myVideo6').on('ended',function(){ $("#VideoDiv6").hide(); });
             <a class="btn btn-primary" onclick="setdata()" role="button">Refresh</a>
             <a class="btn btn-primary" onclick="editlocal(1,false)" role="button">pils</a>
             <a class="btn btn-primary" onclick="editlocal(1,true)" role="button">krat</a> -->
-            Auto refresh in <span id="timer"></span> seconds
+            Auto refresh in <span id="timer"></span> minutes
       
         </div>
         <div  class="col-md-6">
@@ -120,8 +128,56 @@ $(function() {
     
 });
 
-
 // Update interval
+var countertimeout;
+var countertimeoutlong;
+
+function setupdate() {
+    countertimeout = setTimeout(function(){ 
+        setdata()
+        settimer()
+        updatecolor()
+
+        try {
+          updatetime()
+        }
+        catch (e) {
+            if (e instanceof ReferenceError) {  
+            } else {
+                throw e;
+            }
+        }
+
+    }, 60000); //minute
+}
+
+function setupdatelong() {
+    countertimeoutlong = setTimeout(function(){ 
+        setdata()
+        settimer()
+        updatecolor()
+
+        try {
+          updatetime()
+        }
+        catch (e) {
+            if (e instanceof ReferenceError) {  
+            } else {
+                throw e;
+            }
+        }
+
+    }, 600000); //10 minutes
+}
+
+function stopupdate() {
+    clearTimeout(countertimeout);
+}
+
+function stopupdatelong() {
+    clearTimeout(countertimeoutlong);
+}
+
 setInterval(function(){
   setdata()
   settimer()
@@ -137,7 +193,7 @@ setInterval(function(){
       }
 }
   
-}, 5000); // AJAX refresh time
+}, 3600000); // 1 hour auto refresh
 
 // Update color
 function updatecolor(){
@@ -157,11 +213,16 @@ function updatecolor(){
         }      
       
   }
- 
 }
 
 // Local update of page
-function editlocal(userid,krat){
+function addlocal(userid,krat){
+  stopupdate()
+  setupdate()
+
+  stopupdatelong()
+  setupdatelong()
+
   currentcount = parseInt($( "#p"+userid ).html());
 
   if (krat != true){
@@ -181,15 +242,74 @@ function editlocal(userid,krat){
           $( "#p"+userid ).html(nextcount).removeClass().addClass("positive")
         } 
   }  
+  setpilstotal()
+}
+
+function deletelocal(userid,krat){
+  stopupdate()
+  setupdate()
+
+  stopupdatelong()
+  setupdatelong()
+
+  currentcount = parseInt($( "#p"+userid ).html());
+
+  if (krat != true){
+    nextcount = currentcount+1;
+
+        if (nextcount < 0){ 
+           $( "#p"+userid ).html(nextcount).removeClass().addClass("negative")
+        } else {
+          $( "#p"+userid ).html(nextcount).removeClass().addClass("positive")
+        } 
+  } else if (krat == true){
+    nextcount = currentcount-24;
+
+        if (nextcount < 0){ 
+           $( "#p"+userid ).html(nextcount).removeClass().addClass("negative")
+        } else {
+          $( "#p"+userid ).html(nextcount).removeClass().addClass("positive")
+        } 
+  } 
+  setpilstotal()
+
+}
+
+function setpilstotal(){
+  var lastint = parseInt($(".table tr:last").prev().find("td").attr('id').substr(1));
+
+    var pilstotal = 0;
+    for(i=1; i<=lastint; i++){
+      var pils = parseInt($( "#p"+i ).html());
+      pilstotal = pilstotal + pils
+    }
+
+    if (pilstotal < 0){          
+      var pilsclass = "negative";
+
+      if($( "#ptotal").hasClass("positive")){
+        $( "#ptotal" ).removeClass("positive")
+      }
+
+    } else {
+      var pilsclass = "positive";
+
+      if($( "#ptotal" ).hasClass("negative")){
+        $( "#ptotal" ).removeClass("negative")
+      }
+    } 
+
+    $("#ptotal").addClass(pilsclass).html(pilstotal)
+
 }
 
 // Countdown timer
 setInterval(function(){
   updatetimer()
-}, 1000);
+}, 60000);
 
 function settimer(){
-  $( "#timer" ).html(6); // change time clock
+  $( "#timer" ).html(60); // change time clock
   }
 
 function updatetimer(){
@@ -213,7 +333,6 @@ function setdata(){
           if ((netpilsresult != currentcount) && (response.userids[i-1]==4)){ playVid4() }
           if ((netpilsresult != currentcount) && (response.userids[i-1]==6)){ playVid6() }
           
-
           var pilsclass = "negative";
 
           if($( "#p"+i ).hasClass("positive")){
@@ -227,6 +346,7 @@ function setdata(){
             $( "#p"+i ).removeClass("negative")
           }
         } 
+
         if (netresult < 0){ 
           var flapclass = "negative";
 
@@ -235,17 +355,19 @@ function setdata(){
           }
         } else {
           var flapclass = "positive";
+
           if($( "#f"+i ).hasClass("negative")){
             $( "#f"+i ).removeClass("negative")
           }
-
         } 
+
         $( "#u"+i ).html(response.usernames[i-1])
         $( "#p"+i ).addClass(pilsclass).html(netpilsresult)
         $( "#f"+i ).addClass(flapclass).html('\u20AC'+netresult.toFixed(2))
     }   
 
     updatecolor()
+    setpilstotal()
 
     adddata(responsedata)
   }, 'json');

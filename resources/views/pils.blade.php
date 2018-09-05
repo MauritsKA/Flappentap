@@ -104,12 +104,13 @@ $('#myVideo6').on('ended',function(){ $("#VideoDiv6").hide(); });
             <a class="btn btn-primary" onclick="setdata()" role="button">Refresh</a>
             <a class="btn btn-primary" onclick="editlocal(1,false)" role="button">pils</a>
             <a class="btn btn-primary" onclick="editlocal(1,true)" role="button">krat</a> -->
-            Auto refresh in <span id="timer"></span> minutes
+          
       
         </div>
         <div  class="col-md-6">
 
         <canvas id="myChart" width="400" height="300"></canvas>
+          Auto refresh in <span id="timer"></span> minutes
         </div>
     </div>
 </div>

@@ -118,16 +118,16 @@ function contentDelete(mutid, url){
     
     var expectedtotal = sum*parseFloat(PP.substring(1));
      
-    if(!$('#overviewtable tr > td:contains("'+user+'")').length || (expectedtotal < 0.98*size || expectedtotal > 1.02*size)){
-        alert('You are trying to delete a mutation that is connected to a removed user. This is not possible!');
-        return false; 
-    } else{
+    // if(!$('#overviewtable tr > td:contains("'+user+'")').length || (expectedtotal < 0.98*size || expectedtotal > 1.02*size)){
+    //     alert('You are trying to delete a mutation that is connected to a removed user. This is not possible!');
+    //     return false; 
+    // } else{
         var check = confirm('Are you sure to delete this item?');
         if(check){
             window.location.href = url; 
         }
         return false;
-    }
+    //}
    
 };
 

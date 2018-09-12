@@ -75,7 +75,9 @@ class MutationController extends Controller
     { 
         $mutation = Mutation::where('balance_id', $balance->id)->where('mutation_count',$mutation_count)->get()->first();
 
-        $archivedusers = $mutation->users->where('pivot.archived',1);
+        $version = $mutation->versions->last();
+
+        $archivedusers = $version->users->where('pivot.archived',1);
         
         if( count($archivedusers) > 0 ){
             return redirect()->back()->withInput()->with('alert', 'You are trying to edit a payment that is connected to a removed user. This is not possible!');
@@ -133,7 +135,9 @@ class MutationController extends Controller
     { 
         $mutation = Mutation::where('balance_id', $balance->id)->where('mutation_count',$mutation_count)->get()->first();
 
-        $archivedusers = $mutation->users->where('pivot.archived',1);
+        $version = $mutation->versions->last();
+
+        $archivedusers = $version->users->where('pivot.archived',1);
         
         if( count($archivedusers) > 0 ){
             return back()->withInput()->with('alert', 'You are trying to delete a payment that is connected to a removed user. This is not possible!');

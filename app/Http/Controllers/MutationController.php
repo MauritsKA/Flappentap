@@ -77,6 +77,7 @@ class MutationController extends Controller
 
         $version = $mutation->versions->last();
         $users = $version->users;
+        $owner = $mutation->user;
 
         $archivedusercount = 0;
         foreach($users as $user){
@@ -84,6 +85,10 @@ class MutationController extends Controller
             $check = count($checkarchived);
             $archivedusercount = $archivedusercount + $check;
         }
+
+        $checkowner = $owner->balances->where('id',$balance->id)->first()->users->where('id',$owner->id)->where('pivot.archived',1);
+        $check = count($checkowner);
+        $archivedusercount = $archivedusercount + $check;
        
         if( $archivedusercount > 0 ){
             return redirect()->back()->withInput()->with('alert', 'You are trying to edit a payment that is connected to a removed user. This is not possible!');
@@ -146,6 +151,7 @@ class MutationController extends Controller
         $version = $mutation->versions->last();
 
         $users = $version->users;
+        $owner = $mutation->user;
 
         $archivedusercount = 0;
         foreach($users as $user){
@@ -153,6 +159,10 @@ class MutationController extends Controller
             $check = count($checkarchived);
             $archivedusercount = $archivedusercount + $check;
         }
+
+        $checkowner = $owner->balances->where('id',$balance->id)->first()->users->where('id',$owner->id)->where('pivot.archived',1);
+        $check = count($checkowner);
+        $archivedusercount = $archivedusercount + $check;
         
         if( $archivedusercount > 0 ){
             return back()->withInput()->with('alert', 'You are trying to delete a payment that is connected to a removed user. This is not possible!');

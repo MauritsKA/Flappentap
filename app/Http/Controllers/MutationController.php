@@ -154,7 +154,7 @@ class MutationController extends Controller
             $archivedusercount = $archivedusercount + $check;
         }
         
-        if( $archivedusers > 0 ){
+        if( $archivedusercount > 0 ){
             return back()->withInput()->with('alert', 'You are trying to delete a payment that is connected to a removed user. This is not possible!');
         }
 

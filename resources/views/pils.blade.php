@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="nl">
+<html lang="nl" >
     
     <head>
         <meta charset="utf-8">
@@ -33,8 +33,8 @@
         
     </head>
     
-    <body id="fullbody" style="background-image: url('{{url('/images/katalyse.jpg')}}');background-size: cover background-repeat: repeat; color:white; ">   
-
+    <body  id="fullbody" style="background-image: url('{{url('/images/katalyse.jpg')}}');background-size: cover background-repeat: repeat; color:white; ">   
+<div>
 <div class="container">
 
 <div id="VideoDiv4" style="z-index: 1000;position: absolute;left: 200px;top: 280px; display:none;">
@@ -48,6 +48,8 @@
   <source src="{{url('/images/bal.mp4')}}" type="video/mp4">
 </video>
 </div>
+
+<button id="fullscreenbutton" onclick="openFullscreen();"></button>
 
 <script> 
 var vid4 = document.getElementById("myVideo4"); 
@@ -113,6 +115,8 @@ $('#myVideo6').on('ended',function(){ $("#VideoDiv6").hide(); });
           Auto refresh in <span id="timer"></span> minutes
         </div>
     </div>
+</div>
+
 </div>
 
 <script>
@@ -530,6 +534,8 @@ function getCol(matrix, col){
     }
 
 </script>
+
+</div>
 
 
 @include('layouts.subfooter')                          

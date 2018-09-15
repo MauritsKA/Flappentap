@@ -33,7 +33,7 @@
         
     </head>
     
-    <body  style="background-image: url('{{url('/images/katalyse.jpg')}}');background-size: cover background-repeat: repeat; color:white; ">   
+    <body id="fullbody" style="background-image: url('{{url('/images/katalyse.jpg')}}');background-size: cover background-repeat: repeat; color:white; ">   
 
 <div class="container">
 
@@ -116,6 +116,20 @@ $('#myVideo6').on('ended',function(){ $("#VideoDiv6").hide(); });
 </div>
 
 <script>
+
+var elem = document.getElementById("fullbody");
+function openFullscreen() {
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.mozRequestFullScreen) { /* Firefox */
+    elem.mozRequestFullScreen();
+  } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE/Edge */
+    elem.msRequestFullscreen();
+  }
+}
+
 //// AJAX calls
 $.ajaxSetup({
     headers: {

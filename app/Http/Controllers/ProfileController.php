@@ -45,12 +45,13 @@ class ProfileController extends Controller
         'password' => 'required|string|min:6|confirmed',
         ]);
         
-        
-        if ($request->password == $request->checkpassword){
+       if ($request->password == $request->password_confirmation){
         Auth::user()->update(['password'=> bcrypt($request->password)]);
-        }
-        
+
         return back()->with('status', 'Succesfully changed your password!');
+        } 
+        
+      return back()->with('alert', 'Something went wrong!');
         
     }
     

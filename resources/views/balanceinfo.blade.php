@@ -53,7 +53,7 @@
     <br>
     @endif
     
-    <a href="{{url('download-pdf')}}/{{balance_code}}">Download as PDF</a>
+    <a href="{{url('download-pdf')}}/{{$balance->balance_code}}">Download as PDF</a>
     
 <hr>
         

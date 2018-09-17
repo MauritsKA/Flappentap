@@ -81,13 +81,13 @@ class PilsController extends Controller
 
      public function pilstotaal()
     {         
-        $pilsen = Pils::all();
+        $pilsen = Pils::all()->sortByDesc('updated_at');
         return view('pilstotaal', compact('pilsen'));
     }
 
      public function krattotaal()
     {         
-        $kratten = Krat::all();
+        $kratten = Krat::all()->sortByDesc('updated_at');
         return view('krattotaal', compact('kratten'));
     }
 

@@ -34,7 +34,7 @@
     </head>
     
 <body  id="fullbody" >   
-<div style="height:1920px; width:1080px; background-image: url('{{url('/images/katalyse.jpg')}}');background-size: cover background-repeat: repeat; color:white; ">
+<div style="height:1920px; width:1080px; background-image: url('{{url('/images/katalyse.jpg')}}');background-size: cover background-repeat: repeat; color:white; overflow:hidden;">
 <div class="container">
 
 <div id="VideoDiv4" style="z-index: 1000;position: absolute;left: 200px;top: 280px; display:none;">
@@ -68,7 +68,7 @@ $('#myVideo6').on('ended',function(){ $("#VideoDiv6").hide(); });
 </script> 
     
  <div class="row"> 
-        <div style="margin-left: 150px;" class="col-xs-6">            
+        <div style="margin-left: 150px; margin-top: 100px;" class="col-xs-6">            
             <table id="overviewtable" class="table table-striped" style="font-size: 40px">
                <thead>
                  <th></th>

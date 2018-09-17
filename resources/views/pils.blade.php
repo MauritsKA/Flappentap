@@ -33,8 +33,8 @@
         
     </head>
     
-    <body  id="fullbody" style="background-image: url('{{url('/images/katalyse.jpg')}}');background-size: cover background-repeat: repeat; color:white; ">   
-<div>
+<body  id="fullbody" >   
+<div style="height:1920px; width:1080px; background-image: url('{{url('/images/katalyse.jpg')}}');background-size: cover background-repeat: repeat; color:white; ">
 <div class="container">
 
 <div id="VideoDiv4" style="z-index: 1000;position: absolute;left: 200px;top: 280px; display:none;">
@@ -68,7 +68,7 @@ $('#myVideo6').on('ended',function(){ $("#VideoDiv6").hide(); });
 </script> 
     
  <div class="row"> 
-        <div class="col-md-6">            
+        <div style="margin-left: 150px;" class="col-xs-6">            
             <table id="overviewtable" class="table table-striped" style="font-size: 40px">
                <thead>
                  <th></th>
@@ -109,10 +109,11 @@ $('#myVideo6').on('ended',function(){ $("#VideoDiv6").hide(); });
           
       
         </div>
-        <div  class="col-md-6">
+        <div  class="col-xs-6">
 
-        <canvas id="myChart" width="400" height="300"></canvas>
+        <canvas id="myChart" width="900" height="400"></canvas>
           Auto refresh in <span id="timer"></span> minutes
+          <div><p>TOEDLES VAN YOKO EN NOODLES</p></div>
         </div>
     </div>
 </div>
